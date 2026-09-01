@@ -131,8 +131,14 @@ public class FideleEditController extends BaseController {
 
     @FXML
     private void handleSave(ActionEvent event) {
-        if (txtNom.getText() == null || txtNom.getText().trim().isEmpty()) {
-            NotificationUtil.showWarning("Validation", "Le nom est obligatoire.");
+        if (txtNom == null || txtNom.getText() == null || txtNom.getText().trim().isEmpty()) {
+            NotificationUtil.showWarning("Validation", "Le nom de famille est obligatoire.");
+            if (txtNom != null) txtNom.requestFocus();
+            return;
+        }
+        if (txtPrenoms == null || txtPrenoms.getText() == null || txtPrenoms.getText().trim().isEmpty()) {
+            NotificationUtil.showWarning("Validation", "Le prénom est obligatoire.");
+            if (txtPrenoms != null) txtPrenoms.requestFocus();
             return;
         }
 

@@ -142,7 +142,7 @@ public class FideleWizardController extends BaseController {
 
     @FXML
     private void handleSubmit(ActionEvent event) {
-        if (!validateStep(currentStep)) return;
+        if (!validateAllSteps()) return;
 
         FideleDto dto = buildDtoFromForm();
 
@@ -156,12 +156,19 @@ public class FideleWizardController extends BaseController {
                         if (submitBtn != null) submitBtn.setDisable(false);
 
                         if (throwable != null) {
-                            NotificationUtil.showError("Erreur d'inscription", throwable.getMessage());
-                        } else {
+                            String errorMsg = throwable.getMessage();
+                            if (throwable.getCause() != null && throwable.getCause().getMessage() != null) {
+                                errorMsg = throwable.getCause().getMessage();
+                            }
+                            NotificationUtil.showError("Erreur d'inscription", errorMsg != null ? errorMsg : "Impossible d'enregistrer le fidèle.");
+                        } else if (created != null && created.getId() != null) {
                             NotificationUtil.showSuccess("Inscription réussie", "Le fidèle " + dto.getNomComplet() + " a été enregistré avec succès.");
                             Map<String, Object> params = new HashMap<>();
                             params.put("fideleId", created.getId());
                             navigationService.navigateToContent(NavigationService.View.FIDELE_DETAILS, params);
+                        } else {
+                            NotificationUtil.showSuccess("Inscription réussie", "Le fidèle a été enregistré avec succès.");
+                            navigationService.navigateToContent(NavigationService.View.FIDELES_LIST);
                         }
                     });
                 });
@@ -169,66 +176,84 @@ public class FideleWizardController extends BaseController {
 
     private boolean validateStep(int step) {
         if (step == 1) {
-            if (txtNom.getText() == null || txtNom.getText().trim().isEmpty()) {
+            if (txtNom == null || txtNom.getText() == null || txtNom.getText().trim().isEmpty()) {
                 NotificationUtil.showWarning("Champ requis", "Le nom de famille est obligatoire.");
-                txtNom.requestFocus();
+                if (txtNom != null) txtNom.requestFocus();
                 return false;
             }
-            if (txtPrenoms.getText() == null || txtPrenoms.getText().trim().isEmpty()) {
+            if (txtPrenoms == null || txtPrenoms.getText() == null || txtPrenoms.getText().trim().isEmpty()) {
                 NotificationUtil.showWarning("Champ requis", "Le(s) prénom(s) sont obligatoires.");
-                txtPrenoms.requestFocus();
+                if (txtPrenoms != null) txtPrenoms.requestFocus();
                 return false;
             }
         }
         return true;
     }
 
+    private boolean validateAllSteps() {
+        if (txtNom == null || txtNom.getText() == null || txtNom.getText().trim().isEmpty()) {
+            NotificationUtil.showWarning("Champ requis", "Le nom de famille est obligatoire (Étape 1).");
+            currentStep = 1;
+            updateStepView();
+            if (txtNom != null) txtNom.requestFocus();
+            return false;
+        }
+        if (txtPrenoms == null || txtPrenoms.getText() == null || txtPrenoms.getText().trim().isEmpty()) {
+            NotificationUtil.showWarning("Champ requis", "Le(s) prénom(s) sont obligatoires (Étape 1).");
+            currentStep = 1;
+            updateStepView();
+            if (txtPrenoms != null) txtPrenoms.requestFocus();
+            return false;
+        }
+        return true;
+    }
+
     private FideleDto buildDtoFromForm() {
         FideleDto dto = new FideleDto();
-        dto.setNom(txtNom.getText() != null ? txtNom.getText().trim().toUpperCase() : "");
-        dto.setPrenoms(txtPrenoms.getText() != null ? txtPrenoms.getText().trim() : "");
-        dto.setSexe(comboSexe.getValue());
-        dto.setDateNaissance(dpDateNaissance.getValue());
-        dto.setLieuNaissance(txtLieuNaissance.getText());
-        dto.setEthnie(txtEthnie.getText());
-        dto.setProfession(txtProfession.getText());
-        dto.setNiveauEtude(txtNiveauEtude.getText());
+        dto.setNom(txtNom != null && txtNom.getText() != null ? txtNom.getText().trim().toUpperCase() : "");
+        dto.setPrenoms(txtPrenoms != null && txtPrenoms.getText() != null ? txtPrenoms.getText().trim() : "");
+        dto.setSexe(comboSexe != null && comboSexe.getValue() != null ? comboSexe.getValue() : Sexe.MASCULIN);
+        dto.setDateNaissance(dpDateNaissance != null ? dpDateNaissance.getValue() : null);
+        dto.setLieuNaissance(txtLieuNaissance != null && txtLieuNaissance.getText() != null ? txtLieuNaissance.getText().trim() : "");
+        dto.setEthnie(txtEthnie != null && txtEthnie.getText() != null ? txtEthnie.getText().trim() : "");
+        dto.setProfession(txtProfession != null && txtProfession.getText() != null ? txtProfession.getText().trim() : "");
+        dto.setNiveauEtude(txtNiveauEtude != null && txtNiveauEtude.getText() != null ? txtNiveauEtude.getText().trim() : "");
 
-        dto.setTelephone(txtTelephone.getText());
-        dto.setContactMoov(txtContactMoov.getText());
-        dto.setEmail(txtEmail.getText());
-        dto.setQuartier(txtQuartier.getText());
-        dto.setAdresse(txtAdresse.getText());
-        dto.setPrefectureRegion(txtPrefectureRegion.getText());
-        dto.setNomPere(txtNomPere.getText());
-        dto.setPrenomPere(txtPrenomPere.getText());
-        dto.setNomMere(txtNomMere.getText());
-        dto.setPrenomMere(txtPrenomMere.getText());
+        dto.setTelephone(txtTelephone != null && txtTelephone.getText() != null ? txtTelephone.getText().trim() : "");
+        dto.setContactMoov(txtContactMoov != null && txtContactMoov.getText() != null ? txtContactMoov.getText().trim() : "");
+        dto.setEmail(txtEmail != null && txtEmail.getText() != null ? txtEmail.getText().trim() : "");
+        dto.setQuartier(txtQuartier != null && txtQuartier.getText() != null && !txtQuartier.getText().isBlank() ? txtQuartier.getText().trim() : "Adidogomé");
+        dto.setAdresse(txtAdresse != null && txtAdresse.getText() != null ? txtAdresse.getText().trim() : "");
+        dto.setPrefectureRegion(txtPrefectureRegion != null && txtPrefectureRegion.getText() != null ? txtPrefectureRegion.getText().trim() : "");
+        dto.setNomPere(txtNomPere != null && txtNomPere.getText() != null ? txtNomPere.getText().trim() : "");
+        dto.setPrenomPere(txtPrenomPere != null && txtPrenomPere.getText() != null ? txtPrenomPere.getText().trim() : "");
+        dto.setNomMere(txtNomMere != null && txtNomMere.getText() != null ? txtNomMere.getText().trim() : "");
+        dto.setPrenomMere(txtPrenomMere != null && txtPrenomMere.getText() != null ? txtPrenomMere.getText().trim() : "");
 
-        dto.setStatutMatrimonial(comboStatutMatrimonial.getValue());
-        dto.setDateMariage(dpDateMariage.getValue());
-        dto.setEgliseMariage(txtEgliseMariage.getText());
-        dto.setPasteurMariage(txtPasteurMariage.getText());
-        dto.setNomConjoint(txtNomConjoint.getText());
-        dto.setConfessionFoiConjoint(txtConfessionConjoint.getText());
-        if (spinGarcons != null && spinGarcons.getValue() != null) dto.setNombreGarcons(spinGarcons.getValue());
-        if (spinFilles != null && spinFilles.getValue() != null) dto.setNombreFilles(spinFilles.getValue());
+        dto.setStatutMatrimonial(comboStatutMatrimonial != null && comboStatutMatrimonial.getValue() != null ? comboStatutMatrimonial.getValue() : Statut.CELIBATAIRE);
+        dto.setDateMariage(dpDateMariage != null ? dpDateMariage.getValue() : null);
+        dto.setEgliseMariage(txtEgliseMariage != null && txtEgliseMariage.getText() != null ? txtEgliseMariage.getText().trim() : "");
+        dto.setPasteurMariage(txtPasteurMariage != null && txtPasteurMariage.getText() != null ? txtPasteurMariage.getText().trim() : "");
+        dto.setNomConjoint(txtNomConjoint != null && txtNomConjoint.getText() != null ? txtNomConjoint.getText().trim() : "");
+        dto.setConfessionFoiConjoint(txtConfessionConjoint != null && txtConfessionConjoint.getText() != null ? txtConfessionConjoint.getText().trim() : "");
+        dto.setNombreGarcons(spinGarcons != null && spinGarcons.getValue() != null ? spinGarcons.getValue() : 0);
+        dto.setNombreFilles(spinFilles != null && spinFilles.getValue() != null ? spinFilles.getValue() : 0);
 
-        dto.setDateConversion(dpDateConversion.getValue());
-        dto.setEgliseConversion(txtEgliseConversion.getText());
-        dto.setBaptise(chkBaptise.isSelected());
-        dto.setDateBapteme(dpDateBapteme.getValue());
-        dto.setLieuBapteme(txtLieuBapteme.getText());
-        dto.setPasteurBapteme(txtPasteurBapteme.getText());
-        dto.setDateBaptemeEsprit(dpDateBaptemeEsprit.getValue());
-        dto.setAncienneDenomination(txtAncienneDenomination.getText());
-        dto.setLettreRecommandationPresentee(chkLettreRecommandation.isSelected());
-        dto.setDateIntegrationAdidogome(dpDateIntegration.getValue());
+        dto.setDateConversion(dpDateConversion != null ? dpDateConversion.getValue() : null);
+        dto.setEgliseConversion(txtEgliseConversion != null && txtEgliseConversion.getText() != null ? txtEgliseConversion.getText().trim() : "");
+        dto.setBaptise(chkBaptise != null && chkBaptise.isSelected());
+        dto.setDateBapteme(dpDateBapteme != null ? dpDateBapteme.getValue() : null);
+        dto.setLieuBapteme(txtLieuBapteme != null && txtLieuBapteme.getText() != null ? txtLieuBapteme.getText().trim() : "");
+        dto.setPasteurBapteme(txtPasteurBapteme != null && txtPasteurBapteme.getText() != null ? txtPasteurBapteme.getText().trim() : "");
+        dto.setDateBaptemeEsprit(dpDateBaptemeEsprit != null ? dpDateBaptemeEsprit.getValue() : null);
+        dto.setAncienneDenomination(txtAncienneDenomination != null && txtAncienneDenomination.getText() != null ? txtAncienneDenomination.getText().trim() : "");
+        dto.setLettreRecommandationPresentee(chkLettreRecommandation != null && chkLettreRecommandation.isSelected());
+        dto.setDateIntegrationAdidogome(dpDateIntegration != null && dpDateIntegration.getValue() != null ? dpDateIntegration.getValue() : LocalDate.now());
 
-        dto.setCarteMembreValide(chkCarteMembre.isSelected());
-        dto.setCarnetDimeValide(chkCarnetDime.isSelected());
-        dto.setPayeDimes(chkPayeDimes.isSelected());
-        dto.setFrequenceDime(comboFrequenceDime.getValue());
+        dto.setCarteMembreValide(chkCarteMembre != null ? chkCarteMembre.isSelected() : true);
+        dto.setCarnetDimeValide(chkCarnetDime != null ? chkCarnetDime.isSelected() : true);
+        dto.setPayeDimes(chkPayeDimes != null ? chkPayeDimes.isSelected() : true);
+        dto.setFrequenceDime(comboFrequenceDime != null && comboFrequenceDime.getValue() != null ? comboFrequenceDime.getValue() : FrequenceDime.REGULIEREMENT);
         dto.setActif(true);
 
         return dto;
