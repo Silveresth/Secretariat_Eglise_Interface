@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<ScrollPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.eglise.secretariat.controllers.fideles.FideleDetailsController"
+            fitToWidth="true" style="-fx-background-color: transparent; -fx-background: transparent;">
+
+    <VBox spacing="20.0" style="-fx-padding: 24px;">
+
+        <!-- Top Navigation & Action Row -->
+        <HBox alignment="CENTER_LEFT" spacing="12.0">
+            <Button text="← Retour à l'annuaire" onAction="#handleBack" styleClass="btn-outline" />
+            <Region HBox.hgrow="ALWAYS" />
+            <ProgressIndicator fx:id="loadingIndicator" maxHeight="20.0" maxWidth="20.0" />
+            <Button text="✏️ Modifier la Fiche" onAction="#handleEdit" styleClass="btn-outline" />
+            <Button text="📄 Exporter Fiche PDF" onAction="#handleExportPdf" styleClass="btn-secondary" />
+        </HBox>
+
+        <!-- Profile Header Hero Card -->
+        <HBox styleClass="card-accent-navy" alignment="CENTER_LEFT" spacing="20.0" style="-fx-padding: 24px;">
+            <Label fx:id="headerAvatarLabel" text="JM"
+                   style="-fx-background-color: #dce1ff; -fx-text-fill: #00236f; -fx-font-weight: bold; -fx-font-size: 24px; -fx-background-radius: 50%; -fx-min-width: 64px; -fx-min-height: 64px; -fx-max-width: 64px; -fx-max-height: 64px; -fx-alignment: center;" />
+            
+            <VBox spacing="6.0">
+                <Label fx:id="headerNomCompletLabel" text="DUPONT Jean Emmanuel" styleClass="font-headline-lg" style="-fx-font-size: 22px;" />
+                <HBox spacing="8.0" alignment="CENTER_LEFT">
+                    <Label fx:id="headerMatrimonialBadge" text="Marié(e)" styleClass="badge-neutral" />
+                    <Label fx:id="headerCarteBadge" text="CARTE VALIDE" styleClass="badge-success" />
+                    <Label fx:id="headerDimeBadge" text="DÎME À JOUR" styleClass="badge-success" />
+                </HBox>
+            </VBox>
+        </HBox>
+
+        <!-- Tabbed Information Panels -->
+        <TabPane tabClosingPolicy="UNAVAILABLE" styleClass="card" style="-fx-padding: 0;">
+            
+            <!-- Tab 1: Informations Personnelles & Civiles -->
+            <Tab text="Identité &amp; Coordonnées">
+                <VBox spacing="20.0" style="-fx-padding: 24px;">
+                    <GridPane hgap="24.0" vgap="16.0">
+                        <columnConstraints>
+                            <ColumnConstraints percentWidth="50.0" />
+                            <ColumnConstraints percentWidth="50.0" />
+                        </columnConstraints>
+
+                        <!-- Left Block: Identité -->
+                        <VBox styleClass="card" spacing="12.0" GridPane.columnIndex="0">
+                            <Label text="Identité Civile" styleClass="font-title-lg" style="-fx-text-fill: #00236f;" />
+                            <Separator />
+                            <GridPane hgap="12.0" vgap="10.0">
+                                <Label text="Nom de famille :" styleClass="font-label-sm" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+                                <Label fx:id="lblNom" text="-" styleClass="font-body-md" GridPane.rowIndex="0" GridPane.columnIndex="1" />
+
+                                <Label text="Prénom(s) :" styleClass="font-label-sm" GridPane.rowIndex="1" GridPane.columnIndex="0" />
+                                <Label fx:id="lblPrenoms" text="-" styleClass="font-body-md" GridPane.rowIndex="1" GridPane.columnIndex="1" />
+
+                                <Label text="Sexe :" styleClass="font-label-sm" GridPane.rowIndex="2" GridPane.columnIndex="0" />
+                                <Label fx:id="lblSexe" text="-" styleClass="font-body-md" GridPane.rowIndex="2" GridPane.columnIndex="1" />
+
+                                <Label text="Date de Naissance :" styleClass="font-label-sm" GridPane.rowIndex="3" GridPane.columnIndex="0" />
+                                <Label fx:id="lblNaissance" text="-" styleClass="font-body-md" GridPane.rowIndex="3" GridPane.columnIndex="1" />
+
+                                <Label text="Lieu de Naissance :" styleClass="font-label-sm" GridPane.rowIndex="4" GridPane.columnIndex="0" />
+                                <Label fx:id="lblLieuNaissance" text="-" styleClass="font-body-md" GridPane.rowIndex="4" GridPane.columnIndex="1" />
+
+                                <Label text="Ethnie :" styleClass="font-label-sm" GridPane.rowIndex="5" GridPane.columnIndex="0" />
+                                <Label fx:id="lblEthnie" text="-" styleClass="font-body-md" GridPane.rowIndex="5" GridPane.columnIndex="1" />
+
+                                <Label text="Profession :" styleClass="font-label-sm" GridPane.rowIndex="6" GridPane.columnIndex="0" />
+                                <Label fx:id="lblProfession" text="-" styleClass="font-body-md" GridPane.rowIndex="6" GridPane.columnIndex="1" />
+
+                                <Label text="Niveau d'étude :" styleClass="font-label-sm" GridPane.rowIndex="7" GridPane.columnIndex="0" />
+                                <Label fx:id="lblNiveauEtude" text="-" styleClass="font-body-md" GridPane.rowIndex="7" GridPane.columnIndex="1" />
+                            </GridPane>
+                        </VBox>
+
+                        <!-- Right Block: Contacts & Domicile -->
+                        <VBox styleClass="card" spacing="12.0" GridPane.columnIndex="1">
+                            <Label text="Coordonnées &amp; Domicile" styleClass="font-title-lg" style="-fx-text-fill: #00236f;" />
+                            <Separator />
+                            <GridPane hgap="12.0" vgap="10.0">
+                                <Label text="Téléphone Mobile :" styleClass="font-label-sm" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+                                <Label fx:id="lblTelephone" text="-" styleClass="font-body-md" GridPane.rowIndex="0" GridPane.columnIndex="1" />
+
+                                <Label text="Contact Moov / Secondaire :" styleClass="font-label-sm" GridPane.rowIndex="1" GridPane.columnIndex="0" />
+                                <Label fx:id="lblContactMoov" text="-" styleClass="font-body-md" GridPane.rowIndex="1" GridPane.columnIndex="1" />
+
+                                <Label text="Adresse Email :" styleClass="font-label-sm" GridPane.rowIndex="2" GridPane.columnIndex="0" />
+                                <Label fx:id="lblEmail" text="-" styleClass="font-body-md" style="-fx-text-fill: #00236f;" GridPane.rowIndex="2" GridPane.columnIndex="1" />
+
+                                <Label text="Quartier de Résidence :" styleClass="font-label-sm" GridPane.rowIndex="3" GridPane.columnIndex="0" />
+                                <Label fx:id="lblQuartier" text="-" styleClass="font-body-md" GridPane.rowIndex="3" GridPane.columnIndex="1" />
+
+                                <Label text="Adresse Complète :" styleClass="font-label-sm" GridPane.rowIndex="4" GridPane.columnIndex="0" />
+                                <Label fx:id="lblAdresse" text="-" styleClass="font-body-md" wrapText="true" GridPane.rowIndex="4" GridPane.columnIndex="1" />
+                            </GridPane>
+                        </VBox>
+                    </GridPane>
+                </VBox>
+            </Tab>
+
+            <!-- Tab 2: Famille & Filiation -->
+            <Tab text="Famille &amp; Filiation">
+                <VBox spacing="20.0" style="-fx-padding: 24px;">
+                    <GridPane hgap="24.0" vgap="16.0">
+                        <columnConstraints>
+                            <ColumnConstraints percentWidth="50.0" />
+                            <ColumnConstraints percentWidth="50.0" />
+                        </columnConstraints>
+
+                        <!-- Situation Matrimoniale -->
+                        <VBox styleClass="card" spacing="12.0" GridPane.columnIndex="0">
+                            <Label text="Situation Matrimoniale" styleClass="font-title-lg" style="-fx-text-fill: #00236f;" />
+                            <Separator />
+                            <GridPane hgap="12.0" vgap="10.0">
+                                <Label text="Statut :" styleClass="font-label-sm" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+                                <Label fx:id="lblStatutMatrimonial" text="-" styleClass="font-body-md" GridPane.rowIndex="0" GridPane.columnIndex="1" />
+
+                                <Label text="Date Mariage :" styleClass="font-label-sm" GridPane.rowIndex="1" GridPane.columnIndex="0" />
+                                <Label fx:id="lblDateMariage" text="-" styleClass="font-body-md" GridPane.rowIndex="1" GridPane.columnIndex="1" />
+
+                                <Label text="Église de Mariage :" styleClass="font-label-sm" GridPane.rowIndex="2" GridPane.columnIndex="0" />
+                                <Label fx:id="lblEgliseMariage" text="-" styleClass="font-body-md" GridPane.rowIndex="2" GridPane.columnIndex="1" />
+
+                                <Label text="Pasteur Célébrant :" styleClass="font-label-sm" GridPane.rowIndex="3" GridPane.columnIndex="0" />
+                                <Label fx:id="lblPasteurMariage" text="-" styleClass="font-body-md" GridPane.rowIndex="3" GridPane.columnIndex="1" />
+
+                                <Label text="Nom Conjoint(e) :" styleClass="font-label-sm" GridPane.rowIndex="4" GridPane.columnIndex="0" />
+                                <Label fx:id="lblConjoint" text="-" styleClass="font-body-md" GridPane.rowIndex="4" GridPane.columnIndex="1" />
+
+                                <Label text="Nombre d'enfants :" styleClass="font-label-sm" GridPane.rowIndex="5" GridPane.columnIndex="0" />
+                                <Label fx:id="lblEnfants" text="-" styleClass="font-body-md" GridPane.rowIndex="5" GridPane.columnIndex="1" />
+                            </GridPane>
+                        </VBox>
+
+                        <!-- Filiation -->
+                        <VBox styleClass="card" spacing="12.0" GridPane.columnIndex="1">
+                            <Label text="Filiation Parentale" styleClass="font-title-lg" style="-fx-text-fill: #00236f;" />
+                            <Separator />
+                            <GridPane hgap="12.0" vgap="10.0">
+                                <Label text="Nom &amp; Prénom du Père :" styleClass="font-label-sm" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+                                <Label fx:id="lblPere" text="-" styleClass="font-body-md" GridPane.rowIndex="0" GridPane.columnIndex="1" />
+
+                                <Label text="Nom &amp; Prénom de la Mère :" styleClass="font-label-sm" GridPane.rowIndex="1" GridPane.columnIndex="0" />
+                                <Label fx:id="lblMere" text="-" styleClass="font-body-md" GridPane.rowIndex="1" GridPane.columnIndex="1" />
+                            </GridPane>
+                        </VBox>
+                    </GridPane>
+                </VBox>
+            </Tab>
+
+            <!-- Tab 3: Parcours Spirituel -->
+            <Tab text="Parcours Spirituel">
+                <VBox spacing="16.0" style="-fx-padding: 24px;">
+                    <VBox styleClass="card" spacing="12.0">
+                        <Label text="Baptêmes &amp; Intégration" styleClass="font-title-lg" style="-fx-text-fill: #00236f;" />
+                        <Separator />
+                        <GridPane hgap="16.0" vgap="12.0">
+                            <Label text="Conversion :" styleClass="font-label-sm" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+                            <Label fx:id="lblConversion" text="-" styleClass="font-body-md" GridPane.rowIndex="0" GridPane.columnIndex="1" />
+
+                            <Label text="Baptême d'eau :" styleClass="font-label-sm" GridPane.rowIndex="1" GridPane.columnIndex="0" />
+                            <Label fx:id="lblBaptemeEau" text="-" styleClass="font-body-md" GridPane.rowIndex="1" GridPane.columnIndex="1" />
+
+                            <Label text="Baptême du Saint-Esprit :" styleClass="font-label-sm" GridPane.rowIndex="2" GridPane.columnIndex="0" />
+                            <Label fx:id="lblBaptemeEsprit" text="-" styleClass="font-body-md" GridPane.rowIndex="2" GridPane.columnIndex="1" />
+
+                            <Label text="Dénominations :" styleClass="font-label-sm" GridPane.rowIndex="3" GridPane.columnIndex="0" />
+                            <Label fx:id="lblDenominations" text="-" styleClass="font-body-md" GridPane.rowIndex="3" GridPane.columnIndex="1" />
+
+                            <Label text="Lettre de Recommandation :" styleClass="font-label-sm" GridPane.rowIndex="4" GridPane.columnIndex="0" />
+                            <Label fx:id="lblLettreEntrante" text="-" styleClass="font-body-md" GridPane.rowIndex="4" GridPane.columnIndex="1" />
+
+                            <Label text="Date d'intégration paroissiale :" styleClass="font-label-sm" GridPane.rowIndex="5" GridPane.columnIndex="0" />
+                            <Label fx:id="lblIntegration" text="-" styleClass="font-body-md" GridPane.rowIndex="5" GridPane.columnIndex="1" />
+                        </GridPane>
+                    </VBox>
+                </VBox>
+            </Tab>
+
+            <!-- Tab 4: Vie de Membre & Engagements -->
+            <Tab text="Vie d'Église &amp; Dîme">
+                <VBox spacing="20.0" style="-fx-padding: 24px;">
+                    <GridPane hgap="24.0" vgap="16.0">
+                        <columnConstraints>
+                            <ColumnConstraints percentWidth="50.0" />
+                            <ColumnConstraints percentWidth="50.0" />
+                        </columnConstraints>
+
+                        <!-- Statuts Administratifs -->
+                        <VBox styleClass="card" spacing="12.0" GridPane.columnIndex="0">
+                            <Label text="Conformité Administrative" styleClass="font-title-lg" style="-fx-text-fill: #00236f;" />
+                            <Separator />
+                            <GridPane hgap="12.0" vgap="10.0">
+                                <Label text="Carte de Membre :" styleClass="font-label-sm" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+                                <Label fx:id="lblCarteStatus" text="-" styleClass="font-body-md" GridPane.rowIndex="0" GridPane.columnIndex="1" />
+
+                                <Label text="Carnet de Dîme :" styleClass="font-label-sm" GridPane.rowIndex="1" GridPane.columnIndex="0" />
+                                <Label fx:id="lblCarnetDimeStatus" text="-" styleClass="font-body-md" GridPane.rowIndex="1" GridPane.columnIndex="1" />
+
+                                <Label text="Fréquence de Dîme :" styleClass="font-label-sm" GridPane.rowIndex="2" GridPane.columnIndex="0" />
+                                <Label fx:id="lblFrequenceDime" text="-" styleClass="font-body-md" GridPane.rowIndex="2" GridPane.columnIndex="1" />
+
+                                <Label text="Assiduité aux Réunions :" styleClass="font-label-sm" GridPane.rowIndex="3" GridPane.columnIndex="0" />
+                                <Label fx:id="lblReunionsStatus" text="-" styleClass="font-body-md" GridPane.rowIndex="3" GridPane.columnIndex="1" />
+                            </GridPane>
+                        </VBox>
+
+                        <!-- Engagements & Ministères -->
+                        <VBox styleClass="card" spacing="12.0" GridPane.columnIndex="1">
+                            <Label text="Départements &amp; Ministères" styleClass="font-title-lg" style="-fx-text-fill: #00236f;" />
+                            <Separator />
+                            <VBox fx:id="engagementsListContainer" spacing="8.0" />
+                        </VBox>
+                    </GridPane>
+                </VBox>
+            </Tab>
+
+        </TabPane>
+
+    </VBox>
+
+</ScrollPane>

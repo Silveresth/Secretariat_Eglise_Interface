@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<ScrollPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.eglise.secretariat.controllers.profile.ProfileSettingsController"
+            fitToWidth="true" style="-fx-background-color: transparent; -fx-background: transparent;">
+
+    <VBox spacing="20.0" style="-fx-padding: 24px;" alignment="TOP_CENTER">
+
+        <VBox maxWidth="880.0" spacing="16.0">
+
+            <!-- Header -->
+            <VBox spacing="2.0">
+                <Label text="Paramètres du Système" styleClass="font-display-lg" style="-fx-font-size: 24px;" />
+                <Label text="Gérez vos informations de compte administrateur et les paramètres de l'église / API." styleClass="font-body-muted" />
+            </VBox>
+
+            <!-- TabPane -->
+            <TabPane tabClosingPolicy="UNAVAILABLE" styleClass="card" style="-fx-padding: 0;">
+                
+                <!-- Tab 1: Mon Profil Secrétaire -->
+                <Tab text="Mon Profil Secrétaire">
+                    <VBox spacing="20.0" style="-fx-padding: 24px;">
+                        <VBox styleClass="card-accent-navy" spacing="16.0">
+                            <Label text="Informations Personnelles" styleClass="font-title-lg" style="-fx-text-fill: #00236f;" />
+                            <Separator />
+
+                            <GridPane hgap="16.0" vgap="14.0">
+                                <columnConstraints>
+                                    <ColumnConstraints percentWidth="50.0" />
+                                    <ColumnConstraints percentWidth="50.0" />
+                                </columnConstraints>
+
+                                <VBox spacing="4.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                                    <Label text="Nom Complet" styleClass="font-label-sm" />
+                                    <TextField fx:id="txtNomComplet" styleClass="text-input" />
+                                </VBox>
+
+                                <VBox spacing="4.0" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                                    <Label text="Adresse Email" styleClass="font-label-sm" />
+                                    <TextField fx:id="txtEmail" styleClass="text-input" />
+                                </VBox>
+
+                                <VBox spacing="4.0" GridPane.columnSpan="2" GridPane.rowIndex="1" style="-fx-padding: 8px 0 0 0;">
+                                    <Label text="Mot de passe actuel *" styleClass="font-label-sm" />
+                                    <PasswordField fx:id="txtMotDePasseActuel" promptText="••••••••" styleClass="text-input" maxWidth="350.0" text="secretaire123" />
+                                </VBox>
+
+                                <VBox spacing="4.0" GridPane.columnSpan="2" GridPane.rowIndex="2" style="-fx-padding: 8px 0 0 0;">
+                                    <Label text="Nouveau Mot de Passe (optionnel)" styleClass="font-label-sm" />
+                                    <PasswordField fx:id="txtNouveauMotDePasse" promptText="••••••••" styleClass="text-input" maxWidth="350.0" />
+                                </VBox>
+                            </GridPane>
+
+                            <HBox alignment="CENTER_RIGHT" spacing="12.0" style="-fx-padding: 8px 0 0 0;">
+                                <ProgressIndicator fx:id="loadingIndicator" maxHeight="20.0" maxWidth="20.0" visible="false" />
+                                <Button fx:id="btnSaveProfil" text="💾 Enregistrer les modifications" onAction="#handleSaveProfil" styleClass="btn-primary" />
+                            </HBox>
+                        </VBox>
+                    </VBox>
+                </Tab>
+
+                <!-- Tab 2: Informations de l'Église -->
+                <Tab text="Profil de l'Église &amp; API">
+                    <VBox spacing="20.0" style="-fx-padding: 24px;">
+                        <VBox styleClass="card-accent-gold" spacing="16.0">
+                            <Label text="Organisation &amp; Connexion Backend" styleClass="font-title-lg" style="-fx-text-fill: #904d00;" />
+                            <Separator />
+
+                            <GridPane hgap="16.0" vgap="14.0">
+                                <columnConstraints>
+                                    <ColumnConstraints percentWidth="50.0" />
+                                    <ColumnConstraints percentWidth="50.0" />
+                                </columnConstraints>
+
+                                <VBox spacing="4.0" GridPane.columnSpan="2" GridPane.rowIndex="0">
+                                    <Label text="Nom Officiel de l'Église" styleClass="font-label-sm" />
+                                    <TextField fx:id="txtNomEglise" styleClass="text-input" />
+                                </VBox>
+
+                                <VBox spacing="4.0" GridPane.columnSpan="2" GridPane.rowIndex="1">
+                                    <Label text="Adresse Physique" styleClass="font-label-sm" />
+                                    <TextField fx:id="txtAdresseEglise" styleClass="text-input" />
+                                </VBox>
+
+                                <VBox spacing="4.0" GridPane.columnIndex="0" GridPane.rowIndex="2">
+                                    <Label text="Téléphone Secrétariat" styleClass="font-label-sm" />
+                                    <TextField fx:id="txtTelephoneEglise" styleClass="text-input" />
+                                </VBox>
+
+                                <VBox spacing="4.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                    <Label text="Numéro d'Enregistrement Légal" styleClass="font-label-sm" />
+                                    <TextField fx:id="txtNumeroEnregistrement" styleClass="text-input" />
+                                </VBox>
+
+                                <VBox spacing="4.0" GridPane.columnSpan="2" GridPane.rowIndex="3" style="-fx-padding: 8px 0 0 0;">
+                                    <Label text="URL du Serveur Backend (Spring Boot API)" styleClass="font-label-sm" />
+                                    <TextField fx:id="txtApiBaseUrl" promptText="http://localhost:8080" styleClass="text-input" />
+                                    <Label text="Point d'accès aux endpoints REST (ex: http://localhost:8080 ou https://api.eglise.org)" styleClass="font-body-muted" style="-fx-font-size: 11px;" />
+                                </VBox>
+                            </GridPane>
+
+                            <HBox alignment="CENTER_RIGHT" spacing="12.0" style="-fx-padding: 8px 0 0 0;">
+                                <Button fx:id="btnSaveEglise" text="☁️ Mettre à jour les informations" onAction="#handleSaveEglise" styleClass="btn-secondary" />
+                            </HBox>
+                        </VBox>
+                    </VBox>
+                </Tab>
+
+            </TabPane>
+
+        </VBox>
+
+    </VBox>
+
+</ScrollPane>

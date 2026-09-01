@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+
+<ScrollPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.eglise.secretariat.controllers.documents.DocumentsController"
+            fitToWidth="true" style="-fx-background-color: transparent; -fx-background: transparent;">
+
+    <VBox spacing="20.0" style="-fx-padding: 24px;">
+
+        <!-- Header -->
+        <VBox spacing="2.0">
+            <Label text="Édition Documentaire PDF" styleClass="font-display-lg" style="-fx-font-size: 24px;" />
+            <Label text="Génération et prévisualisation des fiches et lettres officielles de l'Église des Assemblées de Dieu du Togo." styleClass="font-body-muted" />
+        </VBox>
+
+        <!-- Main 2-Column Layout -->
+        <GridPane hgap="20.0" vgap="16.0">
+            <columnConstraints>
+                <ColumnConstraints percentWidth="35.0" />
+                <ColumnConstraints percentWidth="65.0" />
+            </columnConstraints>
+
+            <!-- Left: Document Generation Controls -->
+            <VBox spacing="16.0" GridPane.columnIndex="0">
+                
+                <!-- Card 1: Fiche d'inscription -->
+                <VBox styleClass="card-accent-navy" spacing="12.0">
+                    <HBox alignment="CENTER_LEFT" spacing="8.0">
+                        <Label text="📄" style="-fx-font-size: 18px;" />
+                        <Label text="Fiche d'Inscription Individuelle" styleClass="font-title-lg" style="-fx-font-size: 15px;" />
+                    </HBox>
+                    <Label text="Renseignements préliminaires complets sur le fidèle." styleClass="font-body-muted" />
+                    
+                    <VBox spacing="4.0">
+                        <Label text="Sélectionner le fidèle *" styleClass="font-label-sm" />
+                        <ComboBox fx:id="comboFideleFiche" promptText="Choisir un fidèle..." maxWidth="Infinity" />
+                    </VBox>
+
+                    <Button fx:id="btnPreviewFiche" text="📥 Générer &amp; Télécharger Fiche PDF" onAction="#handlePreviewFiche" maxWidth="Infinity" styleClass="btn-primary" />
+                </VBox>
+
+                <!-- Card 2: Lettre de recommandation -->
+                <VBox styleClass="card-accent-gold" spacing="12.0">
+                    <HBox alignment="CENTER_LEFT" spacing="8.0">
+                        <Label text="✉️" style="-fx-font-size: 18px;" />
+                        <Label text="Lettre de Recommandation" styleClass="font-title-lg" style="-fx-font-size: 15px; -fx-text-fill: #904d00;" />
+                    </HBox>
+                    
+                    <VBox spacing="4.0">
+                        <Label text="Fidèle concerné *" styleClass="font-label-sm" />
+                        <ComboBox fx:id="comboFideleLettre" promptText="Choisir le fidèle..." maxWidth="Infinity" />
+                    </VBox>
+
+                    <VBox spacing="4.0">
+                        <Label text="Objet / Motif" styleClass="font-label-sm" />
+                        <HBox spacing="16.0">
+                            <RadioButton fx:id="radioTransfert" text="Transfert" selected="true" />
+                            <RadioButton fx:id="radioVoyage" text="Voyage" />
+                            <RadioButton fx:id="radioTravail" text="Emploi" />
+                        </HBox>
+                    </VBox>
+
+                    <VBox spacing="4.0">
+                        <Label text="Église / Paroisse de destination" styleClass="font-label-sm" />
+                        <TextField fx:id="txtEgliseDestination" promptText="ex: Temple de Kpalimé" styleClass="text-input" text="Temple de Kpalimé" />
+                    </VBox>
+
+                    <VBox spacing="4.0">
+                        <Label text="Pasteur Signataire" styleClass="font-label-sm" />
+                        <ComboBox fx:id="comboPasteurSignataire" maxWidth="Infinity" />
+                    </VBox>
+
+                    <Button fx:id="btnGenerateLettre" text="📥 Générer &amp; Télécharger Lettre PDF" onAction="#handleGenerateLettre" maxWidth="Infinity" styleClass="btn-secondary" />
+                </VBox>
+
+            </VBox>
+
+            <!-- Right: Official Paper Preview Tabs -->
+            <VBox styleClass="card" spacing="10.0" GridPane.columnIndex="1" minHeight="720.0" style="-fx-padding: 16px;">
+                
+                <HBox alignment="CENTER_LEFT" spacing="10.0">
+                    <Label text="Aperçu des Documents Officiels (Format A4)" styleClass="font-title-lg" />
+                    <Region HBox.hgrow="ALWAYS" />
+                    <ProgressIndicator fx:id="loadingIndicator" maxHeight="20.0" maxWidth="20.0" visible="false" />
+                    <Button text="🖨️ Ouvrir dans le Lecteur PDF" onAction="#handleDownloadPdf" styleClass="btn-outline" />
+                </HBox>
+
+                <!-- Tabs: Lettre vs Fiche -->
+                <TabPane fx:id="docTabPane" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
+                    
+                    <!-- TAB 1 : LETTRE DE RECOMMANDATION -->
+                    <Tab text="✉️ Lettre de Recommandation">
+                        <ScrollPane fitToWidth="true" style="-fx-background-color: #cbd5e1; -fx-background: #cbd5e1; -fx-padding: 16px;">
+                            <VBox maxWidth="650.0" style="-fx-background-color: #ffffff; -fx-background-radius: 2px; -fx-padding: 24px 30px; -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.25), 10, 0, 0, 3);" spacing="10.0">
+                                
+                                <!-- Official Header with AD Logo -->
+                                <HBox alignment="CENTER_LEFT" spacing="12.0">
+                                    <ImageView fitHeight="44.0" fitWidth="44.0" pickOnBounds="true" preserveRatio="true">
+                                        <image>
+                                            <Image url="@../../images/logo_ad.png" />
+                                        </image>
+                                    </ImageView>
+                                    <VBox alignment="CENTER" HBox.hgrow="ALWAYS" spacing="1.0">
+                                        <Label text="EGLISE DES ASSEMBLEES DE DIEU DU TOGO" style="-fx-font-weight: bold; -fx-font-size: 12.5px; -fx-text-fill: #000000;" />
+                                        <Label text="TEMPLE DIEU NE CHANGE PAS" style="-fx-font-weight: bold; -fx-font-size: 10.5px; -fx-text-fill: #000000;" />
+                                        <Label text="04 BP: 27 Lomé 04-Togo Tél: 0028 90 14 68 87" style="-fx-font-size: 9px; -fx-text-fill: #000000;" />
+                                    </VBox>
+                                    <ImageView fitHeight="44.0" fitWidth="44.0" pickOnBounds="true" preserveRatio="true">
+                                        <image>
+                                            <Image url="@../../images/logo_ad.png" />
+                                        </image>
+                                    </ImageView>
+                                </HBox>
+
+                                <!-- Official Double Bar (fine en haut, épaisse en bas) -->
+                                <VBox spacing="1.0" style="-fx-padding: 2px 0 6px 0;">
+                                    <Separator style="-fx-border-color: #000000; -fx-border-width: 0.5px;" />
+                                    <Separator style="-fx-border-color: #000000; -fx-border-width: 2.5px;" />
+                                </VBox>
+
+                                <!-- Title -->
+                                <VBox alignment="CENTER" style="-fx-padding: 2px 0 6px 0;">
+                                    <Label text="LETTRE DE RECOMMANDATION" style="-fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #000000; -fx-underline: true;" />
+                                </VBox>
+
+                                <!-- Objet -->
+                                <HBox spacing="10.0" alignment="CENTER_LEFT">
+                                    <Label text="Objet :" style="-fx-font-weight: bold; -fx-font-size: 11px;" />
+                                    <Label fx:id="docObjetLabel" text="Transfert [ X ]   Voyage [   ]   Emploi [   ]" style="-fx-font-size: 11px;" />
+                                </HBox>
+
+                                <!-- Body -->
+                                <Label fx:id="docBodyLabel" wrapText="true" style="-fx-font-size: 11px; -fx-line-spacing: 3px; -fx-text-alignment: justify;"
+                                       text="Je soussigné : Pasteur AD Pasteur de l'Église des Assemblées de Dieu Temple : « DIEU NE CHANGE PAS », atteste que le ou la nommé(e) : KOFFI Jean-Baptiste est membre actif de notre assemblée depuis : 15/01/2018." />
+
+                                <!-- Details List -->
+                                <GridPane vgap="4.0" hgap="6.0" style="-fx-font-size: 10.5px;">
+                                    <Label text="Date et lieu de naissance :" style="-fx-font-weight: bold;" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+                                    <Label fx:id="docNaissanceLabel" text="12/05/1995 à Lomé" GridPane.rowIndex="0" GridPane.columnIndex="1" />
+
+                                    <Label text="Baptisé d'eau le :" style="-fx-font-weight: bold;" GridPane.rowIndex="1" GridPane.columnIndex="0" />
+                                    <Label fx:id="docBaptemeLabel" text="10/04/2016" GridPane.rowIndex="1" GridPane.columnIndex="1" />
+
+                                    <Label text="Baptisé du Saint-Esprit le :" style="-fx-font-weight: bold;" GridPane.rowIndex="2" GridPane.columnIndex="0" />
+                                    <Label fx:id="docEspritLabel" text="04/06/2017" GridPane.rowIndex="2" GridPane.columnIndex="1" />
+
+                                    <Label text="Profession :" style="-fx-font-weight: bold;" GridPane.rowIndex="3" GridPane.columnIndex="0" />
+                                    <Label fx:id="docProfessionLabel" text="Informaticien" GridPane.rowIndex="3" GridPane.columnIndex="1" />
+
+                                    <Label text="Situation matrimoniale :" style="-fx-font-weight: bold;" GridPane.rowIndex="4" GridPane.columnIndex="0" />
+                                    <Label fx:id="docMatrimonialLabel" text="Célibataire [ ]   Fiancé(e) [ ]   Marié(e) [ X ]   Nombre d'enfant : 3" GridPane.rowIndex="4" GridPane.columnIndex="1" />
+
+                                    <Label text="Sexe :" style="-fx-font-weight: bold;" GridPane.rowIndex="5" GridPane.columnIndex="0" />
+                                    <Label fx:id="docSexeLabel" text="Masculin [ X ]   Féminin [ ]" GridPane.rowIndex="5" GridPane.columnIndex="1" />
+
+                                    <Label text="Sous-discipline :" style="-fx-font-weight: bold;" GridPane.rowIndex="6" GridPane.columnIndex="0" />
+                                    <Label text="oui [ ]   non [ X ]" GridPane.rowIndex="6" GridPane.columnIndex="1" />
+                                </GridPane>
+
+                                <!-- Activity Header -->
+                                <VBox alignment="CENTER" style="-fx-padding: 6px 0 2px 0;">
+                                    <Label text="ACTIVITÉ AU SEIN DE L'ÉGLISE LOCALE" style="-fx-font-weight: bold; -fx-font-size: 10.5px; -fx-underline: true;" />
+                                    <Label text="Diacre/Diaconesse [ ]  Conseil des hommes [ ]  Ministère des femmes [ ]" style="-fx-font-size: 10px;" />
+                                    <Label text="Jeunesse [ ]  Interprète [ ]  Groupe musical [ ]  Choriste [ ]  Évangéliste [ ]" style="-fx-font-size: 10px;" />
+                                </VBox>
+
+                                <!-- Other info -->
+                                <VBox alignment="CENTER" style="-fx-padding: 4px 0 2px 0;">
+                                    <Label text="AUTRE RENSEIGNEMENT" style="-fx-font-weight: bold; -fx-font-size: 10.5px; -fx-underline: true;" />
+                                </VBox>
+                                <Label fx:id="docMotifLabel" text="Motif / Église de destination : Transfert pour raison professionnelle - Église : Temple de Kpalimé" style="-fx-font-size: 10.5px; -fx-font-weight: bold;" />
+                                <Label text="En foi de quoi, nous lui délivrons la présente lettre de recommandation pour servir et valoir ce que de droit." style="-fx-font-size: 10px;" />
+
+                                <!-- Verset -->
+                                <VBox alignment="CENTER" style="-fx-padding: 6px 0;">
+                                    <Label text="« Recevez-le en notre seigneur d'une manière digne des saints et que vous l'assistiez dans les choses dont il aurait besoin...... » Romain 16 :1-2."
+                                           style="-fx-font-style: italic; -fx-font-size: 9.5px; -fx-text-alignment: center;" wrapText="true" />
+                                </VBox>
+
+                                <!-- Signature -->
+                                <HBox alignment="CENTER_RIGHT" style="-fx-padding: 10px 0 0 0;">
+                                    <VBox alignment="CENTER_LEFT" spacing="2.0" prefWidth="230.0">
+                                        <Label fx:id="docDateLabel" text="Fait à Lomé, le 23/08/2026" style="-fx-font-weight: bold; -fx-font-size: 11px;" />
+                                        <Label text="Le Pasteur" style="-fx-font-weight: bold; -fx-font-size: 11px; -fx-padding: 4px 0 24px 0;" />
+                                        <Label fx:id="docSignataireLabel" text="Pasteur AD" style="-fx-font-size: 11px;" />
+                                    </VBox>
+                                </HBox>
+
+                            </VBox>
+                        </ScrollPane>
+                    </Tab>
+
+                    <!-- TAB 2 : FICHE D'INSCRIPTION INDIVIDUELLE -->
+                    <Tab text="📄 Fiche d'Inscription">
+                        <ScrollPane fitToWidth="true" style="-fx-background-color: #cbd5e1; -fx-background: #cbd5e1; -fx-padding: 16px;">
+                            <VBox maxWidth="650.0" style="-fx-background-color: #ffffff; -fx-background-radius: 2px; -fx-padding: 24px 30px; -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.25), 10, 0, 0, 3);" spacing="8.0">
+                                
+                                <!-- Official Header with AD Logo -->
+                                <HBox alignment="CENTER_LEFT" spacing="12.0">
+                                    <ImageView fitHeight="44.0" fitWidth="44.0" pickOnBounds="true" preserveRatio="true">
+                                        <image>
+                                            <Image url="@../../images/logo_ad.png" />
+                                        </image>
+                                    </ImageView>
+                                    <VBox alignment="CENTER" HBox.hgrow="ALWAYS" spacing="1.0">
+                                        <Label text="EGLISE DES ASSEMBLEES DE DIEU DU TOGO" style="-fx-font-weight: bold; -fx-font-size: 12.5px; -fx-text-fill: #000000;" />
+                                        <Label text="TEMPLE DIEU NE CHANGE PAS" style="-fx-font-weight: bold; -fx-font-size: 10.5px; -fx-text-fill: #000000;" />
+                                        <Label text="04 BP: 27 Lomé 04-Togo Tél: 0028 90 14 68 87" style="-fx-font-size: 9px; -fx-text-fill: #000000;" />
+                                    </VBox>
+                                    <ImageView fitHeight="44.0" fitWidth="44.0" pickOnBounds="true" preserveRatio="true">
+                                        <image>
+                                            <Image url="@../../images/logo_ad.png" />
+                                        </image>
+                                    </ImageView>
+                                </HBox>
+
+                                <!-- Official Double Bar -->
+                                <VBox spacing="1.0" style="-fx-padding: 2px 0 6px 0;">
+                                    <Separator style="-fx-border-color: #000000; -fx-border-width: 0.5px;" />
+                                    <Separator style="-fx-border-color: #000000; -fx-border-width: 2.5px;" />
+                                </VBox>
+
+                                <!-- Title -->
+                                <VBox alignment="CENTER" style="-fx-padding: 2px 0 6px 0;">
+                                    <Label text="RENSEIGNEMENTS PRELIMINAIRES SUR LES FIDELES" style="-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #000000; -fx-underline: true;" />
+                                </VBox>
+
+                                <!-- Fiche Lines -->
+                                <GridPane vgap="4.0" hgap="6.0" style="-fx-font-size: 10px;">
+                                    <Label text="Nom et prénoms :" style="-fx-font-weight: bold;" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+                                    <Label fx:id="ficheNomLabel" text="KOFFI Jean-Baptiste" GridPane.rowIndex="0" GridPane.columnIndex="1" />
+
+                                    <Label text="Date &amp; lieu de naissance :" style="-fx-font-weight: bold;" GridPane.rowIndex="1" GridPane.columnIndex="0" />
+                                    <Label fx:id="ficheNaissanceLabel" text="12/05/1995 à Lomé  .Ethnie Ewé" GridPane.rowIndex="1" GridPane.columnIndex="1" />
+
+                                    <Label text="Domicile &amp; Maison :" style="-fx-font-weight: bold;" GridPane.rowIndex="2" GridPane.columnIndex="0" />
+                                    <Label fx:id="ficheDomicileLabel" text="Hedzranawoé  Maison Maison Koffi" GridPane.rowIndex="2" GridPane.columnIndex="1" />
+
+                                    <Label text="Nom &amp; prénom du père :" style="-fx-font-weight: bold;" GridPane.rowIndex="3" GridPane.columnIndex="0" />
+                                    <Label fx:id="fichePereLabel" text="KOFFI Paul" GridPane.rowIndex="3" GridPane.columnIndex="1" />
+
+                                    <Label text="Nom &amp; prénom de la mère :" style="-fx-font-weight: bold;" GridPane.rowIndex="4" GridPane.columnIndex="0" />
+                                    <Label fx:id="ficheMereLabel" text="DOSSEH Marie" GridPane.rowIndex="4" GridPane.columnIndex="1" />
+
+                                    <Label text="Sexe &amp; Situation matrimonial :" style="-fx-font-weight: bold;" GridPane.rowIndex="5" GridPane.columnIndex="0" />
+                                    <Label fx:id="ficheMatrimonialLabel" text="MASCULIN   Marié(e)   Enfants : 2 garçons" GridPane.rowIndex="5" GridPane.columnIndex="1" />
+
+                                    <Label text="Mariage célébré le :" style="-fx-font-weight: bold;" GridPane.rowIndex="6" GridPane.columnIndex="0" />
+                                    <Label fx:id="ficheMariageLabel" text="20/08/2021 à l'Église AD Adidogomé Par Pasteur KOUVI" GridPane.rowIndex="6" GridPane.columnIndex="1" />
+
+                                    <Label text="Baptisé d'eau le :" style="-fx-font-weight: bold;" GridPane.rowIndex="7" GridPane.columnIndex="0" />
+                                    <Label fx:id="ficheBaptemeLabel" text="10/04/2016 à l'Église AD Adidogomé" GridPane.rowIndex="7" GridPane.columnIndex="1" />
+
+                                    <Label text="Baptisé du Saint-Esprit le :" style="-fx-font-weight: bold;" GridPane.rowIndex="8" GridPane.columnIndex="0" />
+                                    <Label fx:id="ficheEspritLabel" text="04/06/2017" GridPane.rowIndex="8" GridPane.columnIndex="1" />
+
+                                    <Label text="Carte &amp; Carnet de dîme :" style="-fx-font-weight: bold;" GridPane.rowIndex="9" GridPane.columnIndex="0" />
+                                    <Label text="Carte valide : Oui   Carnet dîme : Oui (Régulièrement)" GridPane.rowIndex="9" GridPane.columnIndex="1" />
+
+                                    <Label text="Profession :" style="-fx-font-weight: bold;" GridPane.rowIndex="10" GridPane.columnIndex="0" />
+                                    <Label fx:id="ficheProfessionLabel" text="Informaticien" GridPane.rowIndex="10" GridPane.columnIndex="1" />
+
+                                    <Label text="Contacts &amp; E-mail :" style="-fx-font-weight: bold;" GridPane.rowIndex="11" GridPane.columnIndex="0" />
+                                    <Label fx:id="ficheContactLabel" text="Togocel: 90 12 34 56   Moov: 98 12 34 56" GridPane.rowIndex="11" GridPane.columnIndex="1" />
+                                </GridPane>
+
+                                <Label text="Je certifie sur l'honneur que les renseignements ci-dessus sont exacts. Ci-joint deux (02) photos passeport." style="-fx-font-weight: bold; -fx-font-size: 9.5px; -fx-padding: 8px 0 0 0;" wrapText="true" />
+
+                                <!-- Signature -->
+                                <HBox alignment="CENTER_RIGHT" style="-fx-padding: 8px 0 0 0;">
+                                    <VBox alignment="CENTER_LEFT" spacing="2.0" prefWidth="230.0">
+                                        <Label fx:id="ficheDateLabel" text="Fait à Lomé, le 23/08/2026" style="-fx-font-weight: bold; -fx-font-size: 10.5px;" />
+                                        <Label text="Signature" style="-fx-font-weight: bold; -fx-font-size: 10.5px; -fx-padding: 4px 0 16px 0;" />
+                                        <Label text="Nom et Prénoms" style="-fx-font-weight: bold; -fx-font-size: 10.5px;" />
+                                    </VBox>
+                                </HBox>
+
+                            </VBox>
+                        </ScrollPane>
+                    </Tab>
+
+                </TabPane>
+
+            </VBox>
+
+        </GridPane>
+
+    </VBox>
+
+</ScrollPane>

@@ -1,0 +1,489 @@
+/* ==========================================================================
+   ECCLESIA ADMIN - DESIGN SYSTEM & THEME
+   Corporate Modern - Church Secretariat Management
+   ========================================================================== */
+
+* {
+    -fx-font-family: 'Segoe UI', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.root {
+    -fx-base: #f7f9fb;
+    -fx-background-color: #f7f9fb;
+    -fx-text-fill: #191c1e;
+    
+    /* Color Palette */
+    -color-primary: #00236f;
+    -color-primary-container: #1e3a8a;
+    -color-primary-light: #dce1ff;
+    -color-primary-hover: #264191;
+    
+    -color-secondary: #D97706;
+    -color-secondary-container: #fe932c;
+    -color-secondary-light: #ffdcc3;
+    -color-secondary-dark: #904d00;
+    
+    -color-bg: #f7f9fb;
+    -color-surface: #ffffff;
+    -color-surface-low: #f2f4f6;
+    -color-surface-high: #e6e8ea;
+    -color-outline: #757682;
+    -color-outline-variant: #e0e3e5;
+    
+    -color-text-main: #191c1e;
+    -color-text-muted: #64748b;
+    -color-text-dim: #94a3b8;
+    
+    -color-success: #10B981;
+    -color-success-bg: #dcfce7;
+    -color-success-text: #166534;
+    
+    -color-warning: #F59E0B;
+    -color-warning-bg: #fef3c7;
+    -color-warning-text: #92400e;
+    
+    -color-error: #ba1a1a;
+    -color-error-bg: #fee2e2;
+    -color-error-text: #991b1b;
+}
+
+/* ==========================================================================
+   TYPOGRAPHY
+   ========================================================================== */
+.font-display-lg {
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -color-primary;
+}
+
+.font-headline-lg {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -color-text-main;
+}
+
+.font-title-lg {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -color-text-main;
+}
+
+.font-body-md {
+    -fx-font-size: 13px;
+    -fx-text-fill: -color-text-main;
+}
+
+.font-body-muted {
+    -fx-font-size: 13px;
+    -fx-text-fill: -color-text-muted;
+}
+
+.font-label-sm {
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -color-text-muted;
+}
+
+/* ==========================================================================
+   BUTTONS
+   ========================================================================== */
+.btn-primary {
+    -fx-background-color: -color-primary;
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 6px;
+    -fx-padding: 8px 16px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 35, 111, 0.15), 4, 0, 0, 2);
+}
+.btn-primary:hover {
+    -fx-background-color: -color-primary-hover;
+}
+.btn-primary:pressed {
+    -fx-background-color: #00164e;
+}
+
+.btn-secondary {
+    -fx-background-color: -color-secondary;
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 6px;
+    -fx-padding: 8px 16px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(three-pass-box, rgba(217, 119, 6, 0.2), 4, 0, 0, 2);
+}
+.btn-secondary:hover {
+    -fx-background-color: #b45309;
+}
+
+.btn-outline {
+    -fx-background-color: #ffffff;
+    -fx-text-fill: -color-text-main;
+    -fx-border-color: -color-outline-variant;
+    -fx-border-width: 1px;
+    -fx-border-radius: 6px;
+    -fx-background-radius: 6px;
+    -fx-font-size: 13px;
+    -fx-font-weight: 500;
+    -fx-padding: 7px 15px;
+    -fx-cursor: hand;
+}
+.btn-outline:hover {
+    -fx-background-color: -color-surface-low;
+    -fx-border-color: -color-outline;
+}
+
+.btn-ghost {
+    -fx-background-color: transparent;
+    -fx-text-fill: -color-primary;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-padding: 6px 12px;
+    -fx-cursor: hand;
+    -fx-background-radius: 6px;
+}
+.btn-ghost:hover {
+    -fx-background-color: rgba(0, 35, 111, 0.08);
+}
+
+.btn-danger {
+    -fx-background-color: -color-error;
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 6px;
+    -fx-padding: 8px 16px;
+    -fx-cursor: hand;
+}
+.btn-danger:hover {
+    -fx-background-color: -color-error-text;
+}
+
+.btn-icon {
+    -fx-background-color: transparent;
+    -fx-text-fill: -color-text-muted;
+    -fx-background-radius: 50%;
+    -fx-padding: 6px;
+    -fx-cursor: hand;
+}
+.btn-icon:hover {
+    -fx-background-color: -color-surface-high;
+    -fx-text-fill: -color-primary;
+}
+
+/* ==========================================================================
+   INPUTS & FORMS
+   ========================================================================== */
+.text-input, .text-field, .password-field, .combo-box, .date-picker {
+    -fx-background-color: #ffffff;
+    -fx-border-color: -color-outline-variant;
+    -fx-border-width: 1px;
+    -fx-border-radius: 6px;
+    -fx-background-radius: 6px;
+    -fx-padding: 8px 12px;
+    -fx-font-size: 13px;
+    -fx-text-fill: -color-text-main;
+}
+
+.text-input:focused, .combo-box:focused, .date-picker:focused {
+    -fx-border-color: -color-primary;
+    -fx-border-width: 1.5px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 35, 111, 0.15), 3, 0, 0, 0);
+}
+
+.dropzone-hover {
+    -fx-border-color: #00236f;
+    -fx-background-color: #eff6ff;
+    -fx-effect: dropshadow(gaussian, rgba(0, 35, 111, 0.15), 10, 0, 0, 4);
+}
+
+/* Scanner Laser Line Animation Styles */
+.scan-laser-line {
+    -fx-fill: linear-gradient(to right, transparent, rgba(56, 189, 248, 0.4), #0284c7, #38bdf8, #0284c7, rgba(56, 189, 248, 0.4), transparent);
+    -fx-effect: dropshadow(gaussian, #38bdf8, 14, 0.85, 0, 0);
+}
+
+.scan-pulse-badge {
+    -fx-background-color: rgba(0, 35, 111, 0.92);
+    -fx-background-radius: 20px;
+    -fx-padding: 6px 16px;
+    -fx-text-fill: #ffffff;
+    -fx-font-weight: bold;
+    -fx-font-size: 11px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.35), 8, 0, 0, 2);
+}
+
+.search-field {
+    -fx-background-color: #ffffff;
+    -fx-border-color: -color-outline-variant;
+    -fx-border-width: 1px;
+    -fx-border-radius: 20px;
+    -fx-background-radius: 20px;
+    -fx-padding: 7px 14px 7px 32px;
+    -fx-font-size: 13px;
+}
+
+/* ==========================================================================
+   CARDS & CONTAINERS
+   ========================================================================== */
+.card {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 8px;
+    -fx-border-color: -color-outline-variant;
+    -fx-border-width: 1px;
+    -fx-border-radius: 8px;
+    -fx-padding: 16px;
+    -fx-effect: dropshadow(three-pass-box, rgba(30, 58, 138, 0.04), 8, 0, 0, 2);
+}
+
+.card-accent-navy {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 8px;
+    -fx-border-color: -color-primary -color-outline-variant -color-outline-variant -color-outline-variant;
+    -fx-border-width: 4px 1px 1px 1px;
+    -fx-border-radius: 8px;
+    -fx-padding: 18px;
+    -fx-effect: dropshadow(three-pass-box, rgba(30, 58, 138, 0.05), 10, 0, 0, 3);
+}
+
+.card-accent-gold {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 8px;
+    -fx-border-color: -color-secondary -color-outline-variant -color-outline-variant -color-outline-variant;
+    -fx-border-width: 4px 1px 1px 1px;
+    -fx-border-radius: 8px;
+    -fx-padding: 18px;
+    -fx-effect: dropshadow(three-pass-box, rgba(30, 58, 138, 0.05), 10, 0, 0, 3);
+}
+
+/* ==========================================================================
+   SIDEBAR & NAVIGATION
+   ========================================================================== */
+.sidebar {
+    -fx-background-color: -color-primary;
+    -fx-pref-width: 260px;
+    -fx-min-width: 260px;
+}
+
+.nav-item {
+    -fx-background-color: transparent;
+    -fx-text-fill: #b6c4ff;
+    -fx-font-size: 13px;
+    -fx-font-weight: 500;
+    -fx-padding: 12px 20px;
+    -fx-alignment: CENTER_LEFT;
+    -fx-graphic-text-gap: 12px;
+    -fx-cursor: hand;
+    -fx-border-width: 0 0 0 4px;
+    -fx-border-color: transparent;
+}
+.nav-item:hover {
+    -fx-background-color: #1e3a8a;
+    -fx-text-fill: #ffffff;
+}
+.nav-item-active {
+    -fx-background-color: #264191;
+    -fx-text-fill: #ffffff;
+    -fx-border-color: #ffdcc3;
+    -fx-font-weight: bold;
+}
+
+/* ==========================================================================
+   TOP BAR / HEADER
+   ========================================================================== */
+.topbar {
+    -fx-background-color: #ffffff;
+    -fx-border-color: transparent transparent -color-outline-variant transparent;
+    -fx-border-width: 1px;
+    -fx-padding: 12px 24px;
+    -fx-alignment: CENTER_LEFT;
+}
+
+/* ==========================================================================
+   BADGES & STATUS CHIPS
+   ========================================================================== */
+.badge-success {
+    -fx-background-color: -color-success-bg;
+    -fx-text-fill: -color-success-text;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 12px;
+    -fx-padding: 3px 10px;
+    -fx-alignment: CENTER;
+}
+
+.badge-warning {
+    -fx-background-color: -color-warning-bg;
+    -fx-text-fill: -color-warning-text;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 12px;
+    -fx-padding: 3px 10px;
+    -fx-alignment: CENTER;
+}
+
+.badge-error {
+    -fx-background-color: -color-error-bg;
+    -fx-text-fill: -color-error-text;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 12px;
+    -fx-padding: 3px 10px;
+    -fx-alignment: CENTER;
+}
+
+.badge-neutral {
+    -fx-background-color: -color-surface-high;
+    -fx-text-fill: -color-text-muted;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 12px;
+    -fx-padding: 3px 10px;
+    -fx-alignment: CENTER;
+}
+
+/* ==========================================================================
+   TABLE VIEW STYLING
+   ========================================================================== */
+.table-view {
+    -fx-background-color: transparent;
+    -fx-border-color: -color-outline-variant;
+    -fx-border-width: 1px;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+}
+
+.table-view .column-header-background {
+    -fx-background-color: #F1F5F9;
+    -fx-border-color: transparent transparent -color-outline-variant transparent;
+    -fx-border-width: 1px;
+}
+
+.table-view .column-header {
+    -fx-background-color: transparent;
+    -fx-size: 40px;
+    -fx-border-color: transparent;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: -color-text-muted;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-alignment: CENTER_LEFT;
+}
+
+.table-row-cell {
+    -fx-background-color: #ffffff;
+    -fx-border-color: transparent transparent #f1f5f9 transparent;
+    -fx-border-width: 1px;
+    -fx-cell-size: 48px;
+}
+.table-row-cell:odd {
+    -fx-background-color: #fafbfc;
+}
+.table-row-cell:hover {
+    -fx-background-color: #f0f4f9;
+}
+.table-row-cell:selected {
+    -fx-background-color: #e2e8f0;
+    -fx-text-fill: -color-text-main;
+}
+
+/* ==========================================================================
+   TAB PANE STYLING
+   ========================================================================== */
+.tab-pane .tab-header-area .tab-header-background {
+    -fx-background-color: transparent;
+}
+
+.tab-pane .tab {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent transparent -color-outline-variant transparent;
+    -fx-border-width: 0 0 2px 0;
+    -fx-padding: 10px 20px;
+}
+
+.tab-pane .tab:selected {
+    -fx-border-color: transparent transparent -color-primary transparent;
+    -fx-border-width: 0 0 3px 0;
+}
+
+.tab-pane .tab .tab-label {
+    -fx-text-fill: -color-text-muted;
+    -fx-font-size: 13px;
+    -fx-font-weight: 500;
+}
+
+.tab-pane .tab:selected .tab-label {
+    -fx-text-fill: -color-primary;
+    -fx-font-weight: bold;
+}
+
+/* ==========================================================================
+   STEPPER WIZARD
+   ========================================================================== */
+.step-circle {
+    -fx-background-color: #e2e8f0;
+    -fx-text-fill: -color-text-muted;
+    -fx-background-radius: 50%;
+    -fx-min-width: 32px;
+    -fx-min-height: 32px;
+    -fx-max-width: 32px;
+    -fx-max-height: 32px;
+    -fx-alignment: CENTER;
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+}
+
+.step-circle-active {
+    -fx-background-color: -color-primary;
+    -fx-text-fill: #ffffff;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 35, 111, 0.3), 6, 0, 0, 0);
+}
+
+.step-circle-done {
+    -fx-background-color: -color-success;
+    -fx-text-fill: #ffffff;
+}
+
+/* ==========================================================================
+   DRAG & DROP OCR ZONE
+   ========================================================================== */
+.dropzone {
+    -fx-background-color: #f8fafc;
+    -fx-border-color: -color-outline-variant;
+    -fx-border-style: dashed;
+    -fx-border-width: 2px;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-padding: 24px;
+    -fx-cursor: hand;
+}
+.dropzone:hover, .dropzone-hover {
+    -fx-background-color: #edf2f7;
+    -fx-border-color: -color-primary;
+}
+
+/* ==========================================================================
+   MODALS & DIALOGS
+   ========================================================================== */
+.custom-dialog {
+    -fx-background-color: #ffffff;
+}
+.custom-dialog .header-panel {
+    -fx-background-color: #f8fafc;
+    -fx-border-color: transparent transparent -color-outline-variant transparent;
+    -fx-border-width: 1px;
+}
+
+/* Scrollbar refinement */
+.scroll-bar:vertical .thumb, .scroll-bar:horizontal .thumb {
+    -fx-background-color: #cbd5e1;
+    -fx-background-radius: 4px;
+}
+.scroll-bar:vertical .track, .scroll-bar:horizontal .track {
+    -fx-background-color: transparent;
+}
+

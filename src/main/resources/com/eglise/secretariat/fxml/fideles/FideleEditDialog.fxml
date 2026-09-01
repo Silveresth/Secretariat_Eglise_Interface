@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<ScrollPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.eglise.secretariat.controllers.fideles.FideleEditController"
+            fitToWidth="true" style="-fx-background-color: transparent; -fx-background: transparent;">
+
+    <VBox spacing="20.0" style="-fx-padding: 24px;" alignment="TOP_CENTER">
+
+        <VBox maxWidth="880.0" styleClass="card-accent-navy" spacing="20.0">
+
+            <!-- Header -->
+            <HBox alignment="CENTER_LEFT" spacing="12.0">
+                <Label text="✏️" style="-fx-font-size: 24px;" />
+                <VBox spacing="2.0">
+                    <Label text="Modifier la Fiche Fidèle" styleClass="font-headline-lg" style="-fx-font-size: 20px;" />
+                    <Label text="Mettez à jour les informations administratives, personnelles ou d'engagement." styleClass="font-body-muted" />
+                </VBox>
+            </HBox>
+
+            <Separator />
+
+            <!-- Form Body -->
+            <GridPane hgap="16.0" vgap="14.0">
+                <columnConstraints>
+                    <ColumnConstraints percentWidth="50.0" />
+                    <ColumnConstraints percentWidth="50.0" />
+                </columnConstraints>
+
+                <!-- Section 1 : Identité -->
+                <Label text="Identité" styleClass="font-title-lg" style="-fx-text-fill: #00236f;" GridPane.columnSpan="2" GridPane.rowIndex="0" />
+
+                <VBox spacing="4.0" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                    <Label text="Nom *" styleClass="font-label-sm" />
+                    <TextField fx:id="txtNom" styleClass="text-input" />
+                </VBox>
+
+                <VBox spacing="4.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                    <Label text="Prénom(s) *" styleClass="font-label-sm" />
+                    <TextField fx:id="txtPrenoms" styleClass="text-input" />
+                </VBox>
+
+                <VBox spacing="4.0" GridPane.columnIndex="0" GridPane.rowIndex="2">
+                    <Label text="Sexe" styleClass="font-label-sm" />
+                    <ComboBox fx:id="comboSexe" maxWidth="Infinity" />
+                </VBox>
+
+                <VBox spacing="4.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                    <Label text="Date de Naissance" styleClass="font-label-sm" />
+                    <DatePicker fx:id="dpDateNaissance" maxWidth="Infinity" />
+                </VBox>
+
+                <VBox spacing="4.0" GridPane.columnIndex="0" GridPane.rowIndex="3">
+                    <Label text="Lieu de Naissance" styleClass="font-label-sm" />
+                    <TextField fx:id="txtLieuNaissance" styleClass="text-input" />
+                </VBox>
+
+                <VBox spacing="4.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                    <Label text="Profession" styleClass="font-label-sm" />
+                    <TextField fx:id="txtProfession" styleClass="text-input" />
+                </VBox>
+
+                <!-- Section 2 : Contact -->
+                <Label text="Coordonnées" styleClass="font-title-lg" style="-fx-text-fill: #00236f;" GridPane.columnSpan="2" GridPane.rowIndex="4" />
+
+                <VBox spacing="4.0" GridPane.columnIndex="0" GridPane.rowIndex="5">
+                    <Label text="Téléphone" styleClass="font-label-sm" />
+                    <TextField fx:id="txtTelephone" styleClass="text-input" />
+                </VBox>
+
+                <VBox spacing="4.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                    <Label text="Contact Moov" styleClass="font-label-sm" />
+                    <TextField fx:id="txtContactMoov" styleClass="text-input" />
+                </VBox>
+
+                <VBox spacing="4.0" GridPane.columnIndex="0" GridPane.rowIndex="6">
+                    <Label text="Email" styleClass="font-label-sm" />
+                    <TextField fx:id="txtEmail" styleClass="text-input" />
+                </VBox>
+
+                <VBox spacing="4.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                    <Label text="Quartier" styleClass="font-label-sm" />
+                    <TextField fx:id="txtQuartier" styleClass="text-input" />
+                </VBox>
+
+                <VBox spacing="4.0" GridPane.columnSpan="2" GridPane.rowIndex="7">
+                    <Label text="Adresse Complète" styleClass="font-label-sm" />
+                    <TextField fx:id="txtAdresse" styleClass="text-input" />
+                </VBox>
+
+                <!-- Section 3 : Famille & Spirituel -->
+                <Label text="Matrimoniale &amp; Spirituel" styleClass="font-title-lg" style="-fx-text-fill: #00236f;" GridPane.columnSpan="2" GridPane.rowIndex="8" />
+
+                <VBox spacing="4.0" GridPane.columnIndex="0" GridPane.rowIndex="9">
+                    <Label text="Statut Matrimonial" styleClass="font-label-sm" />
+                    <ComboBox fx:id="comboStatutMatrimonial" maxWidth="Infinity" />
+                </VBox>
+
+                <VBox spacing="4.0" GridPane.columnIndex="1" GridPane.rowIndex="9">
+                    <Label text="Nom Conjoint(e)" styleClass="font-label-sm" />
+                    <TextField fx:id="txtNomConjoint" styleClass="text-input" />
+                </VBox>
+
+                <HBox spacing="16.0" GridPane.columnSpan="2" GridPane.rowIndex="10">
+                    <VBox spacing="4.0" HBox.hgrow="ALWAYS">
+                        <Label text="Nombre de Garçons" styleClass="font-label-sm" />
+                        <Spinner fx:id="spinGarcons" editable="true" maxWidth="Infinity" />
+                    </VBox>
+                    <VBox spacing="4.0" HBox.hgrow="ALWAYS">
+                        <Label text="Nombre de Filles" styleClass="font-label-sm" />
+                        <Spinner fx:id="spinFilles" editable="true" maxWidth="Infinity" />
+                    </VBox>
+                </HBox>
+
+                <VBox spacing="8.0" GridPane.columnSpan="2" GridPane.rowIndex="11" styleClass="card" style="-fx-padding: 14px; -fx-background-color: #f8fafc;">
+                    <Label text="Conformité &amp; Dîme" styleClass="font-title-lg" style="-fx-font-size: 14px;" />
+                    <HBox spacing="20.0">
+                        <CheckBox fx:id="chkBaptise" text="Baptisé(e)" />
+                        <CheckBox fx:id="chkCarteMembre" text="Carte de membre valide" />
+                        <CheckBox fx:id="chkCarnetDime" text="Carnet de dîme valide" />
+                        <CheckBox fx:id="chkPayeDimes" text="Paye la dîme" />
+                    </HBox>
+                    <HBox spacing="10.0" alignment="CENTER_LEFT" style="-fx-padding: 6px 0 0 0;">
+                        <Label text="Fréquence de Dîme :" styleClass="font-label-sm" />
+                        <ComboBox fx:id="comboFrequenceDime" prefWidth="200.0" />
+                    </HBox>
+                </VBox>
+
+            </GridPane>
+
+            <!-- Actions -->
+            <HBox alignment="CENTER_RIGHT" spacing="12.0" style="-fx-padding: 12px 0 0 0;">
+                <Button text="Annuler" onAction="#handleCancel" styleClass="btn-outline" />
+                <ProgressIndicator fx:id="loadingIndicator" maxHeight="20.0" maxWidth="20.0" visible="false" />
+                <Button fx:id="saveBtn" text="💾 Enregistrer les modifications" onAction="#handleSave" styleClass="btn-primary" />
+            </HBox>
+
+        </VBox>
+
+    </VBox>
+
+</ScrollPane>
