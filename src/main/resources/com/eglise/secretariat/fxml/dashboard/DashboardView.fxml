@@ -9,23 +9,23 @@
             fx:controller="com.eglise.secretariat.controllers.dashboard.DashboardController"
             fitToWidth="true" style="-fx-background-color: transparent; -fx-background: transparent;">
 
-    <VBox spacing="20.0" style="-fx-padding: 24px;">
+    <VBox spacing="16.0" style="-fx-padding: 20px;">
 
         <!-- Header -->
         <HBox alignment="CENTER_LEFT">
             <VBox spacing="2.0">
-                <Label text="Tableau de Bord" styleClass="font-display-lg" style="-fx-font-size: 24px;" />
-                <Label text="Aperçu général des activités paroissiales, statistiques et flux récents." styleClass="font-body-muted" />
+                <Label text="Tableau de Bord Administration" styleClass="font-display-lg" style="-fx-font-size: 22px;" />
+                <Label text="Vue d'ensemble des fidèles, réceptions de lettres, statistiques et raccourcis administratifs." styleClass="font-body-muted" />
             </VBox>
             <Region HBox.hgrow="ALWAYS" />
             <HBox alignment="CENTER" spacing="10.0">
-                <ProgressIndicator fx:id="loadingIndicator" maxHeight="20.0" maxWidth="20.0" />
-                <Button fx:id="refreshBtn" text="🔄 Actualiser" onAction="#handleRefresh" styleClass="btn-outline" />
+                <ProgressIndicator fx:id="loadingIndicator" maxHeight="18.0" maxWidth="18.0" visible="false" />
+                <Button fx:id="refreshBtn" text="🔄 Actualiser les données" onAction="#handleRefresh" styleClass="btn-outline" style="-fx-font-size: 12px; -fx-padding: 6px 14px;" />
             </HBox>
         </HBox>
 
-        <!-- KPI Cards Grid -->
-        <GridPane hgap="16.0" vgap="16.0">
+        <!-- KPI Cards Grid (4 Columns) -->
+        <GridPane hgap="14.0" vgap="14.0">
             <columnConstraints>
                 <ColumnConstraints percentWidth="25.0" />
                 <ColumnConstraints percentWidth="25.0" />
@@ -34,67 +34,73 @@
             </columnConstraints>
 
             <!-- Card 1: Total Fidèles Actifs -->
-            <VBox styleClass="card-accent-navy" GridPane.columnIndex="0">
+            <VBox styleClass="kpi-card" GridPane.columnIndex="0">
                 <HBox alignment="CENTER_LEFT">
-                    <Label text="TOTAL FIDÈLES ACTIFS" styleClass="font-label-sm" />
-                    <Region HBox.hgrow="ALWAYS" />
-                    <Label text="👥" style="-fx-font-size: 16px;" />
-                </HBox>
-                <HBox alignment="BASELINE_LEFT" spacing="8.0" style="-fx-padding: 10px 0 0 0;">
-                    <Label fx:id="totalInscritsLabel" text="1,240" styleClass="font-display-lg" style="-fx-font-size: 26px; -fx-text-fill: #191c1e;" />
-                    <Label text="+5%" styleClass="badge-success" />
+                    <VBox spacing="2.0" HBox.hgrow="ALWAYS">
+                        <Label text="TOTAL FIDÈLES ACTIFS" styleClass="font-label-sm" />
+                        <HBox alignment="BASELINE_LEFT" spacing="8.0" style="-fx-padding: 4px 0 0 0;">
+                            <Label fx:id="totalInscritsLabel" text="1,240" styleClass="font-display-lg" style="-fx-font-size: 24px; -fx-text-fill: #00236f;" />
+                            <Label text="+5%" styleClass="badge-success" />
+                        </HBox>
+                    </VBox>
+                    <Label text="👥" styleClass="kpi-icon-badge" />
                 </HBox>
             </VBox>
 
             <!-- Card 2: Membres Baptisés -->
-            <VBox styleClass="card-accent-navy" GridPane.columnIndex="1">
+            <VBox styleClass="kpi-card" GridPane.columnIndex="1">
                 <HBox alignment="CENTER_LEFT">
-                    <Label text="MEMBRES BAPTISÉS" styleClass="font-label-sm" />
-                    <Region HBox.hgrow="ALWAYS" />
-                    <Label text="💧" style="-fx-font-size: 16px;" />
-                </HBox>
-                <HBox alignment="BASELINE_LEFT" spacing="8.0" style="-fx-padding: 10px 0 0 0;">
-                    <Label fx:id="membresBaptisesLabel" text="850" styleClass="font-display-lg" style="-fx-font-size: 26px; -fx-text-fill: #191c1e;" />
+                    <VBox spacing="2.0" HBox.hgrow="ALWAYS">
+                        <Label text="MEMBRES BAPTISÉS D'EAU" styleClass="font-label-sm" />
+                        <HBox alignment="BASELINE_LEFT" spacing="8.0" style="-fx-padding: 4px 0 0 0;">
+                            <Label fx:id="membresBaptisesLabel" text="850" styleClass="font-display-lg" style="-fx-font-size: 24px; -fx-text-fill: #00236f;" />
+                        </HBox>
+                    </VBox>
+                    <Label text="💧" styleClass="kpi-icon-badge" />
                 </HBox>
             </VBox>
 
-            <!-- Card 3: Nouveaux Inscrits -->
-            <VBox styleClass="card-accent-gold" GridPane.columnIndex="2">
+            <!-- Card 3: Arrivées / Recommandations -->
+            <VBox styleClass="kpi-card" GridPane.columnIndex="2">
                 <HBox alignment="CENTER_LEFT">
-                    <Label text="NOUVEAUX INSCRITS (MOIS)" styleClass="font-label-sm" />
-                    <Region HBox.hgrow="ALWAYS" />
-                    <Label text="✨" style="-fx-font-size: 16px;" />
-                </HBox>
-                <HBox alignment="BASELINE_LEFT" spacing="8.0" style="-fx-padding: 10px 0 0 0;">
-                    <Label fx:id="nouveauxInscritsLabel" text="12" styleClass="font-display-lg" style="-fx-font-size: 26px; -fx-text-fill: #191c1e;" />
+                    <VBox spacing="2.0" HBox.hgrow="ALWAYS">
+                        <Label text="ARRIVÉES (CE MOIS)" styleClass="font-label-sm" />
+                        <HBox alignment="BASELINE_LEFT" spacing="8.0" style="-fx-padding: 4px 0 0 0;">
+                            <Label fx:id="nouveauxInscritsLabel" text="14" styleClass="font-display-lg" style="-fx-font-size: 24px; -fx-text-fill: #904d00;" />
+                        </HBox>
+                    </VBox>
+                    <Label text="📩" styleClass="kpi-icon-badge-gold" />
                 </HBox>
             </VBox>
 
-            <!-- Card 4: Taux Dîme -->
-            <VBox styleClass="card-accent-gold" GridPane.columnIndex="3">
+            <!-- Card 4: Cartes de Membre -->
+            <VBox styleClass="kpi-card" GridPane.columnIndex="3">
                 <HBox alignment="CENTER_LEFT">
-                    <Label text="TAUX DE DÎMES À JOUR" styleClass="font-label-sm" />
-                    <Region HBox.hgrow="ALWAYS" />
-                    <Label text="💳" style="-fx-font-size: 16px;" />
-                </HBox>
-                <HBox alignment="BASELINE_LEFT" spacing="8.0" style="-fx-padding: 10px 0 0 0;">
-                    <Label fx:id="tauxDimesLabel" text="85%" styleClass="font-display-lg" style="-fx-font-size: 26px; -fx-text-fill: #191c1e;" />
+                    <VBox spacing="2.0" HBox.hgrow="ALWAYS">
+                        <Label text="CARTES DE MEMBRE VALIDES" styleClass="font-label-sm" />
+                        <HBox alignment="BASELINE_LEFT" spacing="8.0" style="-fx-padding: 4px 0 0 0;">
+                            <Label fx:id="tauxDimesLabel" text="92%" styleClass="font-display-lg" style="-fx-font-size: 24px; -fx-text-fill: #904d00;" />
+                        </HBox>
+                    </VBox>
+                    <Label text="📋" styleClass="kpi-icon-badge-gold" />
                 </HBox>
             </VBox>
 
         </GridPane>
 
         <!-- Charts Grid (Flux Mensuels & Répartition Quartier) -->
-        <GridPane hgap="16.0" vgap="16.0">
+        <GridPane hgap="14.0" vgap="14.0">
             <columnConstraints>
-                <ColumnConstraints percentWidth="60.0" />
-                <ColumnConstraints percentWidth="40.0" />
+                <ColumnConstraints percentWidth="55.0" />
+                <ColumnConstraints percentWidth="45.0" />
             </columnConstraints>
 
             <!-- Flux Mensuel Bar Chart Card -->
-            <VBox styleClass="card-accent-navy" GridPane.columnIndex="0" prefHeight="320.0">
-                <Label text="Flux Mensuels d'Inscriptions" styleClass="font-title-lg" />
-                <BarChart fx:id="fluxMensuelChart" legendVisible="false" animated="false" VBox.vgrow="ALWAYS" prefHeight="260.0">
+            <VBox styleClass="card" GridPane.columnIndex="0" minHeight="260.0" prefHeight="260.0" spacing="8.0">
+                <HBox alignment="CENTER_LEFT">
+                    <Label text="📊 Flux Mensuel des Inscriptions &amp; Arrivées" styleClass="font-title-lg" style="-fx-font-size: 14px;" />
+                </HBox>
+                <BarChart fx:id="fluxMensuelChart" legendVisible="false" animated="false" VBox.vgrow="ALWAYS" prefHeight="220.0" minHeight="220.0">
                     <xAxis>
                         <CategoryAxis fx:id="fluxXAxis" />
                     </xAxis>
@@ -105,33 +111,106 @@
             </VBox>
 
             <!-- Répartition par Quartier Pie Chart Card -->
-            <VBox styleClass="card-accent-navy" GridPane.columnIndex="1" prefHeight="320.0">
-                <Label text="Répartition par Quartier" styleClass="font-title-lg" />
-                <PieChart fx:id="repartitionQuartierChart" legendVisible="true" animated="false" VBox.vgrow="ALWAYS" prefHeight="260.0" />
+            <VBox styleClass="card" GridPane.columnIndex="1" minHeight="260.0" prefHeight="260.0" spacing="8.0">
+                <HBox alignment="CENTER_LEFT">
+                    <Label text="📍 Répartition Géographique par Quartier" styleClass="font-title-lg" style="-fx-font-size: 14px;" />
+                </HBox>
+                <PieChart fx:id="repartitionQuartierChart" legendVisible="true" legendSide="RIGHT" labelsVisible="false" animated="false" VBox.vgrow="ALWAYS" prefHeight="220.0" minHeight="220.0" />
             </VBox>
 
         </GridPane>
 
-        <!-- Recent Activities Card -->
-        <VBox styleClass="card-accent-navy" spacing="12.0">
-            <HBox alignment="CENTER_LEFT">
-                <Label text="Derniers Fidèles Enregistrés" styleClass="font-title-lg" />
-                <Region HBox.hgrow="ALWAYS" />
-                <Button text="Voir tout l'annuaire →" onAction="#handleViewAllFideles" styleClass="btn-ghost" />
-            </HBox>
+        <!-- Bottom Grid: Recent Fidèles (55%) & Actions Rapides (45%) -->
+        <GridPane hgap="14.0" vgap="14.0">
+            <columnConstraints>
+                <ColumnConstraints percentWidth="55.0" />
+                <ColumnConstraints percentWidth="45.0" />
+            </columnConstraints>
 
-            <TableView fx:id="recentFidelesTable" prefHeight="220.0">
-                <columns>
-                    <TableColumn fx:id="colNom" text="NOM DU FIDÈLE" prefWidth="300.0" />
-                    <TableColumn fx:id="colDate" text="DATE D'INSCRIPTION" prefWidth="180.0" />
-                    <TableColumn fx:id="colStatut" text="STATUT DÎME" prefWidth="150.0" />
-                    <TableColumn fx:id="colAction" text="ACTION" prefWidth="120.0" />
-                </columns>
-                <columnResizePolicy>
-                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                </columnResizePolicy>
-            </TableView>
-        </VBox>
+            <!-- Left: Derniers Fidèles Enregistrés (Tableau à 3 colonnes) -->
+            <VBox styleClass="card" spacing="10.0" GridPane.columnIndex="0">
+                <HBox alignment="CENTER_LEFT">
+                    <VBox spacing="1.0">
+                        <Label text="📋 Derniers Fidèles Enregistrés" styleClass="font-title-lg" style="-fx-font-size: 14px;" />
+                        <Label text="Les 5 enregistrements les plus récents dans le registre de l'église." styleClass="font-body-muted" style="-fx-font-size: 11px;" />
+                    </VBox>
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Button text="Voir l'annuaire →" onAction="#handleViewAllFideles" styleClass="btn-ghost" style="-fx-font-size: 11px;" />
+                </HBox>
+
+                <TableView fx:id="recentFidelesTable" prefHeight="190.0" minHeight="190.0">
+                    <columns>
+                        <TableColumn fx:id="colNom" text="NOM &amp; PRÉNOM(S) DU FIDÈLE" prefWidth="280.0" style="-fx-alignment: center;" />
+                        <TableColumn fx:id="colDate" text="DATE D'INSCRIPTION" prefWidth="150.0" style="-fx-alignment: center;" />
+                        <TableColumn fx:id="colAction" text="ACTION" prefWidth="120.0" style="-fx-alignment: center;" />
+                    </columns>
+                    <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                    </columnResizePolicy>
+                </TableView>
+            </VBox>
+
+            <!-- Right: Actions Rapides (Grid 2x2 des raccourcis du Secrétariat) -->
+            <VBox styleClass="card" spacing="12.0" GridPane.columnIndex="1">
+                <VBox spacing="2.0">
+                    <Label text="⚡ Actions Rapides du Secrétariat" styleClass="font-title-lg" style="-fx-font-size: 14px;" />
+                    <Label text="Raccourcis directs vers les opérations administratives principales." styleClass="font-body-muted" style="-fx-font-size: 11px;" />
+                </VBox>
+
+                <GridPane hgap="10.0" vgap="10.0" VBox.vgrow="ALWAYS">
+                    <columnConstraints>
+                        <ColumnConstraints percentWidth="50.0" />
+                        <ColumnConstraints percentWidth="50.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints percentHeight="50.0" />
+                        <RowConstraints percentHeight="50.0" />
+                    </rowConstraints>
+
+                    <!-- Shortcut 1: Inscrire un Fidèle -->
+                    <Button onAction="#handleQuickRegisterFidele" maxWidth="Infinity" maxHeight="Infinity" styleClass="quick-action-tile" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                        <graphic>
+                            <VBox spacing="4.0">
+                                <Label text="➕ Inscrire un Fidèle" style="-fx-font-weight: bold; -fx-font-size: 12.5px; -fx-text-fill: #00236f;" />
+                                <Label text="Nouvelle fiche individuelle" styleClass="font-body-muted" style="-fx-font-size: 10.5px;" />
+                            </VBox>
+                        </graphic>
+                    </Button>
+
+                    <!-- Shortcut 2: Lettre d'Arrivée -->
+                    <Button onAction="#handleQuickArrivee" maxWidth="Infinity" maxHeight="Infinity" styleClass="quick-action-tile" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                        <graphic>
+                            <VBox spacing="4.0">
+                                <Label text="📩 Recommandation Arrivée" style="-fx-font-weight: bold; -fx-font-size: 12.5px; -fx-text-fill: #904d00;" />
+                                <Label text="Numériser lettre &amp; intégrer" styleClass="font-body-muted" style="-fx-font-size: 10.5px;" />
+                            </VBox>
+                        </graphic>
+                    </Button>
+
+                    <!-- Shortcut 3: Documents & Attestations -->
+                    <Button onAction="#handleQuickDocuments" maxWidth="Infinity" maxHeight="Infinity" styleClass="quick-action-tile" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                        <graphic>
+                            <VBox spacing="4.0">
+                                <Label text="📄 Documents PDF" style="-fx-font-weight: bold; -fx-font-size: 12.5px; -fx-text-fill: #00236f;" />
+                                <Label text="Générer lettres &amp; fiches" styleClass="font-body-muted" style="-fx-font-size: 10.5px;" />
+                            </VBox>
+                        </graphic>
+                    </Button>
+
+                    <!-- Shortcut 4: Annuaire des Fidèles -->
+                    <Button onAction="#handleViewAllFideles" maxWidth="Infinity" maxHeight="Infinity" styleClass="quick-action-tile" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <graphic>
+                            <VBox spacing="4.0">
+                                <Label text="👥 Annuaire &amp; Filtres" style="-fx-font-weight: bold; -fx-font-size: 12.5px; -fx-text-fill: #191c1e;" />
+                                <Label text="Consulter la base des membres" styleClass="font-body-muted" style="-fx-font-size: 10.5px;" />
+                            </VBox>
+                        </graphic>
+                    </Button>
+
+                </GridPane>
+            </VBox>
+
+        </GridPane>
 
     </VBox>
 

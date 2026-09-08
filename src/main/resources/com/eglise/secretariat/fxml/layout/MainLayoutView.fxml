@@ -8,6 +8,7 @@
 
 <BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.eglise.secretariat.controllers.layout.MainLayoutController"
+            prefWidth="1280.0" prefHeight="768.0"
             style="-fx-background-color: #f7f9fb;">
 
     <!-- Left Sidebar -->
@@ -28,18 +29,17 @@
             </HBox>
 
             <!-- Navigation Links -->
-            <VBox spacing="4.0" style="-fx-padding: 16px 0;" VBox.vgrow="ALWAYS">
+            <VBox spacing="6.0" style="-fx-padding: 16px 0;" VBox.vgrow="ALWAYS">
                 <Button fx:id="navDashboardBtn" text="📊   Tableau de Bord" onAction="#handleNavDashboard" maxWidth="Infinity" styleClass="nav-item, nav-item-active" />
                 <Button fx:id="navFidelesBtn" text="👥   Annuaire des Fidèles" onAction="#handleNavFideles" maxWidth="Infinity" styleClass="nav-item" />
-                <Button fx:id="navDocumentsBtn" text="📄   Édition Documentaire PDF" onAction="#handleNavDocuments" maxWidth="Infinity" styleClass="nav-item" />
-                <Button fx:id="navMouvementsBtn" text="🔍   Mouvements &amp; OCR" onAction="#handleNavMouvements" maxWidth="Infinity" styleClass="nav-item" />
-                <Button fx:id="navDimesBtn" text="💳   Registre des Dîmes" onAction="#handleNavDimes" maxWidth="Infinity" styleClass="nav-item" />
-                <Button fx:id="navSettingsBtn" text="⚙️   Paramètres" onAction="#handleNavSettings" maxWidth="Infinity" styleClass="nav-item" />
+                <Button fx:id="navMouvementsBtn" text="📩   Arrivées &amp; Recommandations" onAction="#handleNavMouvements" maxWidth="Infinity" styleClass="nav-item" />
+                <Button fx:id="navDocumentsBtn" text="📄   Documents &amp; Attestations" onAction="#handleNavDocuments" maxWidth="Infinity" styleClass="nav-item" />
+                <Button fx:id="navSettingsBtn" text="👤   Mon Profil &amp; Paramètres" onAction="#handleNavSettings" maxWidth="Infinity" styleClass="nav-item" />
             </VBox>
 
-            <!-- Quick Action Bottom CTA -->
-            <VBox style="-fx-padding: 20px;">
-                <Button text="+ Inscrire un Fidèle" onAction="#handleQuickRegisterFidele" maxWidth="Infinity" styleClass="btn-secondary" style="-fx-padding: 10px;" />
+            <!-- Bottom Logout Section -->
+            <VBox spacing="10.0" style="-fx-padding: 16px 20px 20px 20px; -fx-border-color: #1e3a8a transparent transparent transparent; -fx-border-width: 1px;">
+                <Button text="🚪   Déconnexion" onAction="#handleLogout" maxWidth="Infinity" styleClass="sidebar-logout-btn" />
             </VBox>
 
         </VBox>
@@ -60,14 +60,14 @@
 
                     <Region HBox.hgrow="ALWAYS" />
 
-                    <!-- Trailing Buttons & Profile Menu -->
+                    <!-- Trailing Buttons & Profile Badge -->
                     <HBox alignment="CENTER_RIGHT" spacing="12.0">
                         
                         <Button text="+ Nouveau Fidèle" onAction="#handleQuickRegisterFidele" styleClass="btn-primary" style="-fx-font-size: 12px; -fx-padding: 6px 14px;" />
 
                         <Separator orientation="VERTICAL" maxHeight="24.0" />
 
-                        <!-- User Profile Info -->
+                        <!-- User Profile Info Badge -->
                         <HBox alignment="CENTER" spacing="10.0">
                             <Label text="👤" style="-fx-background-color: #dce1ff; -fx-background-radius: 50%; -fx-min-width: 32px; -fx-min-height: 32px; -fx-alignment: center;" />
                             <VBox spacing="1.0">
@@ -75,8 +75,6 @@
                                 <Label fx:id="userRoleLabel" text="Admin" style="-fx-font-size: 10px; -fx-text-fill: #64748b;" />
                             </VBox>
                         </HBox>
-
-                        <Button text="Déconnexion" onAction="#handleLogout" styleClass="btn-outline" style="-fx-font-size: 11px; -fx-padding: 5px 10px;" />
 
                     </HBox>
 

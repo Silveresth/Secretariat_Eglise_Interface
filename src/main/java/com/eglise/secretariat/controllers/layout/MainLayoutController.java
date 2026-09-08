@@ -24,7 +24,6 @@ public class MainLayoutController extends BaseController {
     @FXML private Button navFidelesBtn;
     @FXML private Button navDocumentsBtn;
     @FXML private Button navMouvementsBtn;
-    @FXML private Button navDimesBtn;
     @FXML private Button navSettingsBtn;
     
     @FXML private Label userFullNameLabel;
@@ -122,14 +121,6 @@ public class MainLayoutController extends BaseController {
     @FXML
     private void handleNavMouvements(ActionEvent event) {
         loadView(NavigationService.View.MOUVEMENTS_OCR);
-    }
-
-    @FXML
-    private void handleNavDimes(ActionEvent event) {
-        // Can open fideles filtered or dedicated view
-        Map<String, Object> params = new HashMap<>();
-        params.put("filterDimes", true);
-        navigationService.navigateToContent(NavigationService.View.FIDELES_LIST, params);
     }
 
     @FXML

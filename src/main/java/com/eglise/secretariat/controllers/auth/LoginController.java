@@ -15,7 +15,6 @@ public class LoginController extends BaseController {
     @FXML private PasswordField passwordField;
     @FXML private TextField passwordTextField;
     @FXML private Button togglePasswordBtn;
-    @FXML private CheckBox rememberMeCheck;
     @FXML private Button loginBtn;
     @FXML private ProgressIndicator loadingIndicator;
     @FXML private Label errorLabel;
@@ -50,13 +49,13 @@ public class LoginController extends BaseController {
             passwordField.setManaged(false);
             passwordTextField.setVisible(true);
             passwordTextField.setManaged(true);
-            togglePasswordBtn.setText("Masquer");
+            togglePasswordBtn.setText("🙈");
         } else {
             passwordTextField.setVisible(false);
             passwordTextField.setManaged(false);
             passwordField.setVisible(true);
             passwordField.setManaged(true);
-            togglePasswordBtn.setText("Afficher");
+            togglePasswordBtn.setText("👁");
         }
     }
 
@@ -85,14 +84,29 @@ public class LoginController extends BaseController {
                     Platform.runLater(() -> {
                         setLoading(false);
                         if (throwable != null) {
-                            Throwable cause = throwable.getCause() != null ? throwable.getCause() : throwable;
-                            showError(cause.getMessage() != null ? cause.getMessage() : "Échec de connexion au serveur.");
+                            showError(extractCleanErrorMessage(throwable));
                         } else {
                             NotificationUtil.showSuccess("Connexion réussie", "Bienvenue sur le secrétariat de l'église.");
                             navigationService.navigateToMain();
                         }
                     });
                 });
+    }
+
+    private String extractCleanErrorMessage(Throwable throwable) {
+        if (throwable == null) return "Échec de connexion au serveur.";
+        Throwable current = throwable;
+        while (current.getCause() != null && current.getCause() != current) {
+            current = current.getCause();
+        }
+        String msg = current.getMessage();
+        if (msg == null || msg.isBlank()) {
+            return "Identifiant ou mot de passe incorrect.";
+        }
+        if (msg.contains(": ")) {
+            msg = msg.substring(msg.lastIndexOf(": ") + 2).trim();
+        }
+        return msg;
     }
 
     private void setLoading(boolean loading) {

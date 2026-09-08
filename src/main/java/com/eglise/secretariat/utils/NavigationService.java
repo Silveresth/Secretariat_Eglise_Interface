@@ -38,6 +38,9 @@ public class NavigationService {
         }
     }
 
+    public static final double FIXED_WIDTH = 1280;
+    public static final double FIXED_HEIGHT = 768;
+
     private static NavigationService instance;
     private Stage primaryStage;
     private Scene mainScene;
@@ -55,8 +58,7 @@ public class NavigationService {
 
     public void setPrimaryStage(Stage stage) {
         this.primaryStage = stage;
-        this.primaryStage.setMinWidth(960);
-        this.primaryStage.setMinHeight(600);
+        this.primaryStage.setResizable(false);
     }
 
     public Stage getPrimaryStage() {
@@ -72,25 +74,18 @@ public class NavigationService {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(View.LOGIN.getFxmlPath()));
             Parent root = loader.load();
 
-            Rectangle2D visualBounds = Screen.getPrimary().getVisualBounds();
-            double targetWidth = Math.min(960, visualBounds.getWidth() * 0.85);
-            double targetHeight = Math.min(650, visualBounds.getHeight() * 0.85);
-
             if (mainScene == null) {
-                mainScene = new Scene(root, targetWidth, targetHeight);
+                mainScene = new Scene(root, FIXED_WIDTH, FIXED_HEIGHT);
                 mainScene.getStylesheets().add(getClass().getResource("/com/eglise/secretariat/css/main.css").toExternalForm());
                 primaryStage.setScene(mainScene);
+                primaryStage.setResizable(false);
+                primaryStage.setTitle("Connexion - " + AppConfig.APP_TITLE);
+                primaryStage.centerOnScreen();
+                primaryStage.show();
             } else {
                 mainScene.setRoot(root);
-                if (!primaryStage.isMaximized()) {
-                    primaryStage.setWidth(targetWidth);
-                    primaryStage.setHeight(targetHeight);
-                    primaryStage.centerOnScreen();
-                }
+                primaryStage.setTitle("Connexion - " + AppConfig.APP_TITLE);
             }
-
-            primaryStage.setTitle("Connexion - " + AppConfig.APP_TITLE);
-            primaryStage.show();
         } catch (IOException e) {
             e.printStackTrace();
             NotificationUtil.showError("Erreur de navigation", "Impossible de charger la page de connexion: " + e.getMessage());
@@ -103,25 +98,18 @@ public class NavigationService {
             Parent root = loader.load();
             this.mainLayoutController = loader.getController();
 
-            Rectangle2D visualBounds = Screen.getPrimary().getVisualBounds();
-            double targetWidth = Math.min(1240, visualBounds.getWidth() * 0.95);
-            double targetHeight = Math.min(740, visualBounds.getHeight() * 0.95);
-
             if (mainScene == null) {
-                mainScene = new Scene(root, targetWidth, targetHeight);
+                mainScene = new Scene(root, FIXED_WIDTH, FIXED_HEIGHT);
                 mainScene.getStylesheets().add(getClass().getResource("/com/eglise/secretariat/css/main.css").toExternalForm());
                 primaryStage.setScene(mainScene);
+                primaryStage.setResizable(false);
+                primaryStage.setTitle(AppConfig.APP_TITLE);
+                primaryStage.centerOnScreen();
+                primaryStage.show();
             } else {
                 mainScene.setRoot(root);
-                if (!primaryStage.isMaximized()) {
-                    primaryStage.setWidth(targetWidth);
-                    primaryStage.setHeight(targetHeight);
-                    primaryStage.centerOnScreen();
-                }
+                primaryStage.setTitle(AppConfig.APP_TITLE);
             }
-
-            primaryStage.setTitle(AppConfig.APP_TITLE);
-            primaryStage.show();
 
             // Default view inside MainLayout: Dashboard
             navigateToContent(View.DASHBOARD);

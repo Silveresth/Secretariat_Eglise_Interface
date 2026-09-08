@@ -13,6 +13,7 @@ public class App extends Application {
     @Override
     public void start(Stage primaryStage) {
         primaryStage.setTitle(AppConfig.APP_TITLE);
+        primaryStage.setResizable(false);
         
         // Load Application Icon
         try (InputStream iconStream = getClass().getResourceAsStream("/com/eglise/secretariat/images/logo.png")) {

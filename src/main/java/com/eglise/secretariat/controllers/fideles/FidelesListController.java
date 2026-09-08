@@ -2,8 +2,6 @@ package com.eglise.secretariat.controllers.fideles;
 
 import com.eglise.secretariat.controllers.BaseController;
 import com.eglise.secretariat.dto.FideleDto;
-import com.eglise.secretariat.dto.PageResponseDto;
-import com.eglise.secretariat.models.enums.Statut;
 import com.eglise.secretariat.services.DocumentService;
 import com.eglise.secretariat.services.FideleService;
 import com.eglise.secretariat.utils.DialogUtil;
@@ -18,6 +16,7 @@ import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
+import javafx.scene.text.TextAlignment;
 
 import java.io.File;
 import java.util.HashMap;
@@ -28,7 +27,6 @@ public class FidelesListController extends BaseController {
     @FXML private TextField searchField;
     @FXML private ComboBox<String> quartierCombo;
     @FXML private ComboBox<String> baptiseCombo;
-    @FXML private ComboBox<String> dimeCombo;
     @FXML private ProgressIndicator loadingIndicator;
     @FXML private Label paginationLabel;
     @FXML private Button prevPageBtn;
@@ -39,9 +37,6 @@ public class FidelesListController extends BaseController {
     @FXML private TableColumn<FideleDto, String> colNomPrenom;
     @FXML private TableColumn<FideleDto, String> colTelephone;
     @FXML private TableColumn<FideleDto, String> colQuartier;
-    @FXML private TableColumn<FideleDto, String> colMatrimonial;
-    @FXML private TableColumn<FideleDto, Void> colCarte;
-    @FXML private TableColumn<FideleDto, Void> colDime;
     @FXML private TableColumn<FideleDto, Void> colActions;
 
     private final FideleService fideleService = new FideleService();
@@ -75,14 +70,9 @@ public class FidelesListController extends BaseController {
             quartierCombo.setOnAction(e -> applyFilter());
         }
         if (baptiseCombo != null) {
-            baptiseCombo.setItems(FXCollections.observableArrayList("Tous", "Baptisé(e)", "Non Baptisé(e)"));
-            baptiseCombo.setValue("Tous");
+            baptiseCombo.setItems(FXCollections.observableArrayList("Tous les baptêmes", "Baptisé(e)", "Non Baptisé(e)"));
+            baptiseCombo.setValue("Tous les baptêmes");
             baptiseCombo.setOnAction(e -> applyFilter());
-        }
-        if (dimeCombo != null) {
-            dimeCombo.setItems(FXCollections.observableArrayList("Tous", "À jour", "En retard"));
-            dimeCombo.setValue("Tous");
-            dimeCombo.setOnAction(e -> applyFilter());
         }
         if (searchField != null) {
             searchField.setOnAction(e -> applyFilter());
@@ -104,6 +94,7 @@ public class FidelesListController extends BaseController {
                         avatar.setStyle("-fx-background-color: #dce1ff; -fx-text-fill: #00236f; -fx-font-weight: bold; -fx-background-radius: 50%; -fx-min-width: 32px; -fx-min-height: 32px; -fx-max-width: 32px; -fx-max-height: 32px; -fx-alignment: center;");
                         HBox box = new HBox(avatar);
                         box.setAlignment(Pos.CENTER);
+                        setAlignment(Pos.CENTER);
                         setGraphic(box);
                     }
                 }
@@ -112,71 +103,57 @@ public class FidelesListController extends BaseController {
 
         if (colNomPrenom != null) {
             colNomPrenom.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getNomComplet()));
+            colNomPrenom.setCellFactory(param -> new TableCell<>() {
+                @Override
+                protected void updateItem(String item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty || item == null) {
+                        setText(null);
+                        setGraphic(null);
+                    } else {
+                        setText(item);
+                        setAlignment(Pos.CENTER);
+                        setTextAlignment(TextAlignment.CENTER);
+                    }
+                }
+            });
         }
 
         if (colTelephone != null) {
             colTelephone.setCellValueFactory(cell -> new SimpleStringProperty(
                     cell.getValue().getTelephone() != null ? cell.getValue().getTelephone() : "-"
             ));
+            colTelephone.setCellFactory(param -> new TableCell<>() {
+                @Override
+                protected void updateItem(String item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty || item == null) {
+                        setText(null);
+                        setGraphic(null);
+                    } else {
+                        setText(item);
+                        setAlignment(Pos.CENTER);
+                        setTextAlignment(TextAlignment.CENTER);
+                    }
+                }
+            });
         }
 
         if (colQuartier != null) {
             colQuartier.setCellValueFactory(cell -> new SimpleStringProperty(
                     cell.getValue().getQuartier() != null ? cell.getValue().getQuartier() : "-"
             ));
-        }
-
-        if (colMatrimonial != null) {
-            colMatrimonial.setCellValueFactory(cell -> new SimpleStringProperty(
-                    cell.getValue().getStatutMatrimonial() != null ? cell.getValue().getStatutMatrimonial().getLabel() : "-"
-            ));
-        }
-
-        if (colCarte != null) {
-            colCarte.setCellFactory(param -> new TableCell<>() {
+            colQuartier.setCellFactory(param -> new TableCell<>() {
                 @Override
-                protected void updateItem(Void item, boolean empty) {
+                protected void updateItem(String item, boolean empty) {
                     super.updateItem(item, empty);
-                    if (empty || getTableRow() == null || getTableRow().getItem() == null) {
+                    if (empty || item == null) {
+                        setText(null);
                         setGraphic(null);
                     } else {
-                        FideleDto f = getTableRow().getItem();
-                        Label badge = new Label();
-                        if (Boolean.TRUE.equals(f.getCarteMembreValide())) {
-                            badge.setText("VALIDE");
-                            badge.getStyleClass().addAll("badge-success");
-                        } else {
-                            badge.setText("EXPIRÉ");
-                            badge.getStyleClass().addAll("badge-error");
-                        }
-                        HBox box = new HBox(badge);
-                        box.setAlignment(Pos.CENTER);
-                        setGraphic(box);
-                    }
-                }
-            });
-        }
-
-        if (colDime != null) {
-            colDime.setCellFactory(param -> new TableCell<>() {
-                @Override
-                protected void updateItem(Void item, boolean empty) {
-                    super.updateItem(item, empty);
-                    if (empty || getTableRow() == null || getTableRow().getItem() == null) {
-                        setGraphic(null);
-                    } else {
-                        FideleDto f = getTableRow().getItem();
-                        Label badge = new Label();
-                        if (Boolean.TRUE.equals(f.getPayeDimes()) || Boolean.TRUE.equals(f.getCarnetDimeValide())) {
-                            badge.setText("À JOUR");
-                            badge.getStyleClass().addAll("badge-success");
-                        } else {
-                            badge.setText("EN RETARD");
-                            badge.getStyleClass().addAll("badge-warning");
-                        }
-                        HBox box = new HBox(badge);
-                        box.setAlignment(Pos.CENTER);
-                        setGraphic(box);
+                        setText(item);
+                        setAlignment(Pos.CENTER);
+                        setTextAlignment(TextAlignment.CENTER);
                     }
                 }
             });
@@ -184,22 +161,25 @@ public class FidelesListController extends BaseController {
 
         if (colActions != null) {
             colActions.setCellFactory(param -> new TableCell<>() {
-                private final Button viewBtn = new Button("Voir");
-                private final Button editBtn = new Button("Modifier");
-                private final Button pdfBtn = new Button("PDF");
-                private final Button delBtn = new Button("Supprimer");
+                private final Button viewBtn = new Button("👁");
+                private final Button editBtn = new Button("✎");
+                private final Button pdfBtn = new Button("📄");
+                private final Button delBtn = new Button("🗑");
                 private final HBox container = new HBox(6, viewBtn, editBtn, pdfBtn, delBtn);
 
                 {
-                    container.setAlignment(Pos.CENTER_RIGHT);
-                    viewBtn.getStyleClass().addAll("btn-outline");
-                    viewBtn.setStyle("-fx-font-size: 11px; -fx-padding: 4px 8px;");
-                    editBtn.getStyleClass().addAll("btn-outline");
-                    editBtn.setStyle("-fx-font-size: 11px; -fx-padding: 4px 8px;");
-                    pdfBtn.getStyleClass().addAll("btn-outline");
-                    pdfBtn.setStyle("-fx-font-size: 11px; -fx-padding: 4px 8px;");
-                    delBtn.getStyleClass().addAll("btn-danger");
-                    delBtn.setStyle("-fx-font-size: 11px; -fx-padding: 4px 8px;");
+                    container.setAlignment(Pos.CENTER);
+                    viewBtn.getStyleClass().addAll("btn-action-icon", "btn-action-view");
+                    viewBtn.setTooltip(new Tooltip("Voir la fiche du fidèle"));
+
+                    editBtn.getStyleClass().addAll("btn-action-icon", "btn-action-edit");
+                    editBtn.setTooltip(new Tooltip("Modifier les informations"));
+
+                    pdfBtn.getStyleClass().addAll("btn-action-icon", "btn-action-pdf");
+                    pdfBtn.setTooltip(new Tooltip("Exporter la fiche individuelle PDF"));
+
+                    delBtn.getStyleClass().addAll("btn-action-icon", "btn-action-delete");
+                    delBtn.setTooltip(new Tooltip("Supprimer le fidèle"));
 
                     viewBtn.setOnAction(e -> {
                         FideleDto f = getTableRow().getItem();
@@ -240,6 +220,7 @@ public class FidelesListController extends BaseController {
                     if (empty || getTableRow() == null || getTableRow().getItem() == null) {
                         setGraphic(null);
                     } else {
+                        setAlignment(Pos.CENTER);
                         setGraphic(container);
                     }
                 }
@@ -259,6 +240,15 @@ public class FidelesListController extends BaseController {
 
     @FXML
     private void handleSearch(ActionEvent event) {
+        currentPage = 0;
+        loadFideles();
+    }
+
+    @FXML
+    private void handleResetFilters(ActionEvent event) {
+        if (searchField != null) searchField.clear();
+        if (quartierCombo != null) quartierCombo.setValue("Tous les quartiers");
+        if (baptiseCombo != null) baptiseCombo.setValue("Tous les baptêmes");
         currentPage = 0;
         loadFideles();
     }
@@ -312,6 +302,10 @@ public class FidelesListController extends BaseController {
                         } else {
                             // Offline fallback sample data
                             applySampleFideles();
+                        }
+
+                        if (fidelesTable != null) {
+                            fidelesTable.refresh();
                         }
                     });
                 });
@@ -372,13 +366,10 @@ public class FidelesListController extends BaseController {
     private void applySampleFideles() {
         FideleDto f1 = new FideleDto();
         f1.setId(1L);
-        f1.setNom("DOE");
-        f1.setPrenoms("Jane Marie");
+        f1.setNom("KOUASSI");
+        f1.setPrenoms("Jean-Paul");
         f1.setTelephone("+228 90 12 34 56");
         f1.setQuartier("Adidogomé");
-        f1.setStatutMatrimonial(Statut.CELIBATAIRE);
-        f1.setCarteMembreValide(true);
-        f1.setPayeDimes(true);
 
         FideleDto f2 = new FideleDto();
         f2.setId(2L);
@@ -386,9 +377,6 @@ public class FidelesListController extends BaseController {
         f2.setPrenoms("Koffi Paul");
         f2.setTelephone("+228 99 88 77 66");
         f2.setQuartier("Bè");
-        f2.setStatutMatrimonial(Statut.MARIE);
-        f2.setCarteMembreValide(false);
-        f2.setPayeDimes(true);
 
         FideleDto f3 = new FideleDto();
         f3.setId(3L);
@@ -396,9 +384,6 @@ public class FidelesListController extends BaseController {
         f3.setPrenoms("Afi Sarah");
         f3.setTelephone("+228 92 33 44 55");
         f3.setQuartier("Agoè");
-        f3.setStatutMatrimonial(Statut.VEUF);
-        f3.setCarteMembreValide(true);
-        f3.setPayeDimes(false);
 
         fidelesList.setAll(f1, f2, f3);
         totalElements = 3;
