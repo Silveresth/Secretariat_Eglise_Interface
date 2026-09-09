@@ -88,6 +88,12 @@ public class FideleWizardController extends BaseController {
     @FXML private CheckBox chkPayeDimes;
     @FXML private ComboBox<FrequenceDime> comboFrequenceDime;
 
+    // Inline Error Labels
+    @FXML private Label lblErrNom;
+    @FXML private Label lblErrPrenoms;
+    @FXML private Label lblErrTelephone;
+    @FXML private Label lblErrQuartier;
+
     private int currentStep = 1;
     private final FideleService fideleService = new FideleService();
 
@@ -114,7 +120,57 @@ public class FideleWizardController extends BaseController {
         // Default integration date = today
         if (dpDateIntegration != null) dpDateIntegration.setValue(LocalDate.now());
 
+        // Setup real-time error clearing on typing
+        setupRealtimeValidation();
+
         updateStepView();
+    }
+
+    private void setupRealtimeValidation() {
+        if (txtNom != null) {
+            txtNom.textProperty().addListener((obs, oldVal, newVal) -> {
+                if (newVal != null && !newVal.trim().isEmpty()) {
+                    if (lblErrNom != null) { lblErrNom.setVisible(false); lblErrNom.setManaged(false); }
+                    txtNom.getStyleClass().remove("text-input-error");
+                }
+            });
+        }
+        if (txtPrenoms != null) {
+            txtPrenoms.textProperty().addListener((obs, oldVal, newVal) -> {
+                if (newVal != null && !newVal.trim().isEmpty()) {
+                    if (lblErrPrenoms != null) { lblErrPrenoms.setVisible(false); lblErrPrenoms.setManaged(false); }
+                    txtPrenoms.getStyleClass().remove("text-input-error");
+                }
+            });
+        }
+        if (txtTelephone != null) {
+            txtTelephone.textProperty().addListener((obs, oldVal, newVal) -> {
+                if (newVal != null && !newVal.trim().isEmpty()) {
+                    if (lblErrTelephone != null) { lblErrTelephone.setVisible(false); lblErrTelephone.setManaged(false); }
+                    txtTelephone.getStyleClass().remove("text-input-error");
+                }
+            });
+        }
+        if (txtQuartier != null) {
+            txtQuartier.textProperty().addListener((obs, oldVal, newVal) -> {
+                if (newVal != null && !newVal.trim().isEmpty()) {
+                    if (lblErrQuartier != null) { lblErrQuartier.setVisible(false); lblErrQuartier.setManaged(false); }
+                    txtQuartier.getStyleClass().remove("text-input-error");
+                }
+            });
+        }
+    }
+
+    private void clearInlineErrors() {
+        if (lblErrNom != null) { lblErrNom.setVisible(false); lblErrNom.setManaged(false); }
+        if (lblErrPrenoms != null) { lblErrPrenoms.setVisible(false); lblErrPrenoms.setManaged(false); }
+        if (lblErrTelephone != null) { lblErrTelephone.setVisible(false); lblErrTelephone.setManaged(false); }
+        if (lblErrQuartier != null) { lblErrQuartier.setVisible(false); lblErrQuartier.setManaged(false); }
+
+        if (txtNom != null) txtNom.getStyleClass().remove("text-input-error");
+        if (txtPrenoms != null) txtPrenoms.getStyleClass().remove("text-input-error");
+        if (txtTelephone != null) txtTelephone.getStyleClass().remove("text-input-error");
+        if (txtQuartier != null) txtQuartier.getStyleClass().remove("text-input-error");
     }
 
     @FXML
@@ -165,6 +221,7 @@ public class FideleWizardController extends BaseController {
                             NotificationUtil.showSuccess("Inscription réussie", "Le fidèle " + dto.getNomComplet() + " a été enregistré avec succès.");
                             Map<String, Object> params = new HashMap<>();
                             params.put("fideleId", created.getId());
+                            params.put("showSuccessBanner", true);
                             navigationService.navigateToContent(NavigationService.View.FIDELE_DETAILS, params);
                         } else {
                             NotificationUtil.showSuccess("Inscription réussie", "Le fidèle a été enregistré avec succès.");
@@ -175,37 +232,51 @@ public class FideleWizardController extends BaseController {
     }
 
     private boolean validateStep(int step) {
+        clearInlineErrors();
+        boolean isValid = true;
+
         if (step == 1) {
             if (txtNom == null || txtNom.getText() == null || txtNom.getText().trim().isEmpty()) {
-                NotificationUtil.showWarning("Champ requis", "Le nom de famille est obligatoire.");
-                if (txtNom != null) txtNom.requestFocus();
-                return false;
+                if (lblErrNom != null) { lblErrNom.setVisible(true); lblErrNom.setManaged(true); }
+                if (txtNom != null) {
+                    if (!txtNom.getStyleClass().contains("text-input-error")) txtNom.getStyleClass().add("text-input-error");
+                    txtNom.requestFocus();
+                }
+                isValid = false;
             }
             if (txtPrenoms == null || txtPrenoms.getText() == null || txtPrenoms.getText().trim().isEmpty()) {
-                NotificationUtil.showWarning("Champ requis", "Le(s) prénom(s) sont obligatoires.");
-                if (txtPrenoms != null) txtPrenoms.requestFocus();
-                return false;
+                if (lblErrPrenoms != null) { lblErrPrenoms.setVisible(true); lblErrPrenoms.setManaged(true); }
+                if (txtPrenoms != null) {
+                    if (!txtPrenoms.getStyleClass().contains("text-input-error")) txtPrenoms.getStyleClass().add("text-input-error");
+                    if (isValid) txtPrenoms.requestFocus();
+                }
+                isValid = false;
             }
         }
-        return true;
+        return isValid;
     }
 
     private boolean validateAllSteps() {
+        clearInlineErrors();
+        boolean isValid = true;
+
         if (txtNom == null || txtNom.getText() == null || txtNom.getText().trim().isEmpty()) {
-            NotificationUtil.showWarning("Champ requis", "Le nom de famille est obligatoire (Étape 1).");
+            if (lblErrNom != null) { lblErrNom.setVisible(true); lblErrNom.setManaged(true); }
+            if (txtNom != null && !txtNom.getStyleClass().contains("text-input-error")) txtNom.getStyleClass().add("text-input-error");
+            isValid = false;
+        }
+        if (txtPrenoms == null || txtPrenoms.getText() == null || txtPrenoms.getText().trim().isEmpty()) {
+            if (lblErrPrenoms != null) { lblErrPrenoms.setVisible(true); lblErrPrenoms.setManaged(true); }
+            if (txtPrenoms != null && !txtPrenoms.getStyleClass().contains("text-input-error")) txtPrenoms.getStyleClass().add("text-input-error");
+            isValid = false;
+        }
+
+        if (!isValid) {
             currentStep = 1;
             updateStepView();
             if (txtNom != null) txtNom.requestFocus();
-            return false;
         }
-        if (txtPrenoms == null || txtPrenoms.getText() == null || txtPrenoms.getText().trim().isEmpty()) {
-            NotificationUtil.showWarning("Champ requis", "Le(s) prénom(s) sont obligatoires (Étape 1).");
-            currentStep = 1;
-            updateStepView();
-            if (txtPrenoms != null) txtPrenoms.requestFocus();
-            return false;
-        }
-        return true;
+        return isValid;
     }
 
     private FideleDto buildDtoFromForm() {

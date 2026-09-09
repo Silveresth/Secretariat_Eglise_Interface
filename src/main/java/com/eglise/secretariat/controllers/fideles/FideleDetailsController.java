@@ -12,6 +12,7 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import java.io.File;
@@ -66,6 +67,9 @@ public class FideleDetailsController extends BaseController {
     @FXML private Label lblReunionsStatus;
     @FXML private VBox engagementsListContainer;
 
+    @FXML private HBox successBannerBox;
+    @FXML private Label lblSuccessBannerTitle;
+    @FXML private Label lblSuccessBannerText;
     @FXML private ProgressIndicator loadingIndicator;
 
     private final FideleService fideleService = new FideleService();
@@ -76,6 +80,24 @@ public class FideleDetailsController extends BaseController {
     @FXML
     public void initialize() {
         Object param = navigationService.getParameter("fideleId");
+        Object showBannerParam = navigationService.getParameter("showSuccessBanner");
+        Object isModifParam = navigationService.getParameter("isModification");
+
+        if (showBannerParam != null && Boolean.TRUE.equals(showBannerParam)) {
+            if (successBannerBox != null) {
+                successBannerBox.setVisible(true);
+                successBannerBox.setManaged(true);
+
+                if (Boolean.TRUE.equals(isModifParam)) {
+                    if (lblSuccessBannerTitle != null) lblSuccessBannerTitle.setText("Modification Enregistrée avec Succès !");
+                    if (lblSuccessBannerText != null) lblSuccessBannerText.setText("La fiche du fidèle a été mise à jour avec succès dans le registre de l'église.");
+                } else {
+                    if (lblSuccessBannerTitle != null) lblSuccessBannerTitle.setText("Inscription Enregistrée avec Succès !");
+                    if (lblSuccessBannerText != null) lblSuccessBannerText.setText("Le nouveau fidèle a été inscrit officiellement dans le registre du secrétariat paroissial.");
+                }
+            }
+        }
+
         if (param != null) {
             this.fideleId = Long.valueOf(String.valueOf(param));
             navigationService.clearParameters();
@@ -83,6 +105,14 @@ public class FideleDetailsController extends BaseController {
         } else {
             // Default demo fidele
             applyDemoFidele();
+        }
+    }
+
+    @FXML
+    private void handleCloseSuccessBanner(ActionEvent event) {
+        if (successBannerBox != null) {
+            successBannerBox.setVisible(false);
+            successBannerBox.setManaged(false);
         }
     }
 
@@ -227,6 +257,7 @@ public class FideleDetailsController extends BaseController {
     private void handleExportPdf(ActionEvent event) {
         if (currentFidele == null || currentFidele.getId() == null) return;
 
+        String filename = documentService.buildDocumentFilename(currentFidele, "Fiche");
         NotificationUtil.showInfo("Génération PDF", "Préparation de la fiche...");
         documentService.getFidelePdf(currentFidele.getId())
                 .whenComplete((bytes, throwable) -> {
@@ -235,9 +266,9 @@ public class FideleDetailsController extends BaseController {
                             NotificationUtil.showError("Erreur PDF", throwable.getMessage());
                         } else if (bytes != null) {
                             try {
-                                File file = documentService.savePdfToTemp(bytes, "fiche_" + currentFidele.getId());
+                                File file = documentService.savePdfToDownloads(bytes, filename);
                                 documentService.openPdf(file);
-                                NotificationUtil.showSuccess("PDF prêt", "Fiche ouverte avec succès.");
+                                NotificationUtil.showSuccess("PDF prêt", "Fiche enregistrée dans Téléchargements (" + file.getName() + ") et ouverte.");
                             } catch (Exception e) {
                                 NotificationUtil.showError("Erreur PDF", e.getMessage());
                             }

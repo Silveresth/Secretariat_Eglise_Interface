@@ -10,208 +10,246 @@
             fx:controller="com.eglise.secretariat.controllers.mouvements.MouvementsOcrController"
             fitToWidth="true" style="-fx-background-color: transparent; -fx-background: transparent;">
 
-    <VBox spacing="20.0" style="-fx-padding: 24px;">
+    <VBox spacing="24.0" style="-fx-padding: 28px 32px;" alignment="TOP_CENTER">
 
-        <!-- Header -->
-        <VBox spacing="2.0">
-            <Label text="Mouvements &amp; OCR Scanner Panel" styleClass="font-display-lg" style="-fx-font-size: 24px;" />
-            <Label text="Numérisation et extraction automatique complète des informations de la lettre de recommandation d'un fidèle arrivant." styleClass="font-body-muted" />
-        </VBox>
+        <VBox maxWidth="1280.0" spacing="22.0">
 
-        <!-- Drag & Drop Zone Card -->
-        <VBox styleClass="card-accent-navy" spacing="12.0">
-            <HBox alignment="CENTER_LEFT">
-                <Label text="Zone de Dépôt de la Lettre de Recommandation" styleClass="font-title-lg" />
-                <Region HBox.hgrow="ALWAYS" />
-                <Label text="Formats acceptés : PDF, PNG, JPG, JPEG" styleClass="font-label-sm" />
-            </HBox>
-            
-            <VBox fx:id="dropzoneBox" styleClass="dropzone" alignment="CENTER" spacing="10.0" minHeight="120.0">
-                <Label text="📄" style="-fx-font-size: 32px;" />
-                <Label text="Glissez-déposez la lettre de recommandation ou le PDF ici" styleClass="font-title-lg" style="-fx-font-size: 15px;" />
-                <Label text="Reconnaissance optique automatique : Nom, Prénoms, Sexe, Date de naissance, Baptêmes, Situation matrimoniale, Pasteur &amp; Église." styleClass="font-body-muted" />
-                <Button text="Parcourir les fichiers..." onAction="#handleBrowseFile" styleClass="btn-outline" />
-            </VBox>
-        </VBox>
-
-        <!-- OCR Split View (Preview on Left, Comprehensive Extracted Fields on Right) -->
-        <GridPane hgap="20.0" vgap="16.0">
-            <columnConstraints>
-                <ColumnConstraints percentWidth="38.0" />
-                <ColumnConstraints percentWidth="62.0" />
-            </columnConstraints>
-
-            <!-- Left: Document Preview & Animated Laser Scanner Card -->
-            <VBox styleClass="card-accent-navy" spacing="12.0" GridPane.columnIndex="0" minHeight="640.0">
-                <HBox alignment="CENTER_LEFT">
-                    <Label text="Aperçu du Document" styleClass="font-title-lg" />
-                    <Region HBox.hgrow="ALWAYS" />
-                    <ProgressIndicator fx:id="scanningIndicator" maxHeight="18.0" maxWidth="18.0" visible="false" />
-                </HBox>
-                <Separator />
-
-                <!-- Document Image Container with Laser Scan Animation Overlay -->
-                <StackPane fx:id="previewContainer" VBox.vgrow="ALWAYS" minHeight="380.0" style="-fx-background-color: #0f172a; -fx-background-radius: 8px; -fx-border-color: #334155; -fx-border-radius: 8px; -fx-border-width: 1px;" alignment="CENTER">
-                    <Label fx:id="previewPlaceholderLabel" text="Glissez une lettre scannée ou un PDF pour lancer l'analyse." styleClass="font-body-muted" wrapText="true" style="-fx-text-fill: #94a3b8; -fx-alignment: center; -fx-text-alignment: center; -fx-padding: 24px;" />
-                    <ImageView fx:id="documentPreviewImage" fitWidth="350.0" fitHeight="450.0" preserveRatio="true" visible="false" />
-
-                    <!-- Glowing Scanning Laser Line & Status Overlay (Centered & Full Width) -->
-                    <StackPane fx:id="scanOverlayPane" visible="false" mouseTransparent="true" alignment="TOP_CENTER" style="-fx-padding: 12px;">
-                        <VBox alignment="TOP_CENTER" spacing="10.0" maxWidth="Infinity">
-                            <Label text="⚡ Numérisation et analyse OCR en cours..." styleClass="scan-pulse-badge" />
-                        </VBox>
-                        <Rectangle fx:id="scanLaserLine" height="4.0" styleClass="scan-laser-line" />
-                    </StackPane>
-                </StackPane>
-
-                <!-- Raw Text Recognized by OCR -->
-                <VBox spacing="4.0">
-                    <Label text="Texte Brut Reconnu par l'OCR :" styleClass="font-label-sm" />
-                    <TextArea fx:id="txtRawOcr" editable="false" wrapText="true" prefRowCount="5" style="-fx-font-family: monospace; -fx-font-size: 11px;" promptText="Le texte détecté par l'OCR apparaîtra ici..." />
+            <!-- Modern En-tête de section -->
+            <HBox alignment="CENTER_LEFT" spacing="16.0">
+                <VBox spacing="4.0" HBox.hgrow="ALWAYS">
+                    <HBox alignment="CENTER_LEFT" spacing="10.0">
+                        <Label text="📩 Arrivées &amp; Lettres de Recommandation" styleClass="font-display-lg" style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #00236f;" />
+                    </HBox>
+                    <Label text="Numérisation, extraction automatique et intégration officielle des fidèles arrivant avec une lettre de recommandation." styleClass="font-body-muted" style="-fx-font-size: 13.5px; -fx-text-fill: #64748b;" />
                 </VBox>
-            </VBox>
+            </HBox>
 
-            <!-- Right: All Extracted Fields Organized -->
-            <VBox styleClass="card-accent-gold" spacing="14.0" GridPane.columnIndex="1">
-                <HBox alignment="CENTER_LEFT" spacing="8.0">
-                    <Label text="✨ Données Extraites du Document (Fidèle Arrivant)" styleClass="font-title-lg" style="-fx-text-fill: #904d00;" />
-                    <Region HBox.hgrow="ALWAYS" />
-                    <Label text="Vérifiez &amp; enregistrez" styleClass="font-label-sm" />
+            <!-- Card Zone de Dépôt / Drag & Drop -->
+            <VBox styleClass="card-modern" spacing="14.0" style="-fx-padding: 22px;">
+                <HBox alignment="CENTER_LEFT" spacing="10.0">
+                    <VBox spacing="2.0" HBox.hgrow="ALWAYS">
+                        <Label text="Zone de Scan &amp; Dépôt de la Lettre d'Origine" styleClass="font-title-lg" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #0f172a;" />
+                        <Label text="Glissez votre document ou cliquez sur le bouton pour sélectionner le fichier." styleClass="font-body-muted" style="-fx-font-size: 12.5px;" />
+                    </VBox>
+                    <Label text="Formats acceptés : PDF, PNG, JPG, JPEG" styleClass="pill-badge-blue" />
                 </HBox>
-                <Separator />
 
-                <!-- Section 1 : Identité Civile -->
-                <Label text="1. Identité Civile &amp; Profession" styleClass="font-title-lg" style="-fx-font-size: 13px; -fx-text-fill: #00236f;" />
-                <GridPane hgap="12.0" vgap="10.0">
-                    <columnConstraints>
-                        <ColumnConstraints percentWidth="35.0" />
-                        <ColumnConstraints percentWidth="40.0" />
-                        <ColumnConstraints percentWidth="25.0" />
-                    </columnConstraints>
-
-                    <VBox spacing="3.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
-                        <Label text="Nom de famille *" styleClass="font-label-sm" />
-                        <TextField fx:id="txtNomArrivant" promptText="ex: KOFFI" styleClass="text-input" />
-                    </VBox>
-
-                    <VBox spacing="3.0" GridPane.columnIndex="1" GridPane.rowIndex="0">
-                        <Label text="Prénom(s) *" styleClass="font-label-sm" />
-                        <TextField fx:id="txtPrenomsArrivant" promptText="ex: Jean-Baptiste" styleClass="text-input" />
-                    </VBox>
-
-                    <VBox spacing="3.0" GridPane.columnIndex="2" GridPane.rowIndex="0">
-                        <Label text="Sexe" styleClass="font-label-sm" />
-                        <ComboBox fx:id="comboSexe" maxWidth="Infinity" />
-                    </VBox>
-
-                    <VBox spacing="3.0" GridPane.columnIndex="0" GridPane.rowIndex="1">
-                        <Label text="Date de Naissance" styleClass="font-label-sm" />
-                        <DatePicker fx:id="dpDateNaissance" maxWidth="Infinity" />
-                    </VBox>
-
-                    <VBox spacing="3.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                        <Label text="Lieu de Naissance" styleClass="font-label-sm" />
-                        <TextField fx:id="txtLieuNaissance" promptText="ex: Lomé" styleClass="text-input" />
-                    </VBox>
-
-                    <VBox spacing="3.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
-                        <Label text="Profession" styleClass="font-label-sm" />
-                        <TextField fx:id="txtProfession" promptText="ex: Informaticien" styleClass="text-input" />
-                    </VBox>
-                </GridPane>
-
-                <Separator />
-
-                <!-- Section 2 : Parcours Spirituel & Provenance -->
-                <Label text="2. Parcours Spirituel &amp; Provenance de la Lettre" styleClass="font-title-lg" style="-fx-font-size: 13px; -fx-text-fill: #00236f;" />
-                <GridPane hgap="12.0" vgap="10.0">
-                    <columnConstraints>
-                        <ColumnConstraints percentWidth="50.0" />
-                        <ColumnConstraints percentWidth="50.0" />
-                    </columnConstraints>
-
-                    <VBox spacing="3.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
-                        <Label text="Baptisé d'eau le" styleClass="font-label-sm" />
-                        <DatePicker fx:id="dpDateBapteme" maxWidth="Infinity" />
-                    </VBox>
-
-                    <VBox spacing="3.0" GridPane.columnIndex="1" GridPane.rowIndex="0">
-                        <Label text="Baptisé du Saint-Esprit le" styleClass="font-label-sm" />
-                        <DatePicker fx:id="dpDateBaptemeEsprit" maxWidth="Infinity" />
-                    </VBox>
-
-                    <VBox spacing="3.0" GridPane.columnIndex="0" GridPane.rowIndex="1">
-                        <Label text="Pasteur Signataire de la Lettre" styleClass="font-label-sm" />
-                        <TextField fx:id="txtPasteurSignataire" promptText="ex: Pasteur AD" styleClass="text-input" />
-                    </VBox>
-
-                    <VBox spacing="3.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                        <Label text="Église / Paroisse d'Origine" styleClass="font-label-sm" />
-                        <TextField fx:id="txtEgliseOrigine" promptText="ex: Temple de Kpalimé" styleClass="text-input" />
-                    </VBox>
-
-                    <VBox spacing="3.0" GridPane.columnIndex="0" GridPane.rowIndex="2">
-                        <Label text="Date d'émission de la Lettre" styleClass="font-label-sm" />
-                        <DatePicker fx:id="dpDatePresentation" maxWidth="Infinity" />
-                    </VBox>
-
-                    <VBox spacing="3.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                        <Label text="Objet / Motif du départ" styleClass="font-label-sm" />
-                        <TextField fx:id="txtMotifDepart" promptText="ex: Transfert pour raison professionnelle" styleClass="text-input" />
-                    </VBox>
-                </GridPane>
-
-                <Separator />
-
-                <!-- Section 3 : Famille, Domicile & Contacts -->
-                <Label text="3. Famille &amp; Coordonnées d'Accueil" styleClass="font-title-lg" style="-fx-font-size: 13px; -fx-text-fill: #00236f;" />
-                <GridPane hgap="12.0" vgap="10.0">
-                    <columnConstraints>
-                        <ColumnConstraints percentWidth="35.0" />
-                        <ColumnConstraints percentWidth="35.0" />
-                        <ColumnConstraints percentWidth="30.0" />
-                    </columnConstraints>
-
-                    <VBox spacing="3.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
-                        <Label text="Situation Matrimoniale" styleClass="font-label-sm" />
-                        <ComboBox fx:id="comboStatutMatrimonial" maxWidth="Infinity" />
-                    </VBox>
-
-                    <VBox spacing="3.0" GridPane.columnIndex="1" GridPane.rowIndex="0">
-                        <Label text="Nombre d'enfants" styleClass="font-label-sm" />
-                        <Spinner fx:id="spinEnfants" editable="true" maxWidth="Infinity" />
-                    </VBox>
-
-                    <VBox spacing="3.0" GridPane.columnIndex="2" GridPane.rowIndex="0">
-                        <Label text="Téléphone" styleClass="font-label-sm" />
-                        <TextField fx:id="txtTelephone" promptText="+228..." styleClass="text-input" />
-                    </VBox>
-
-                    <VBox spacing="3.0" GridPane.columnSpan="3" GridPane.rowIndex="1">
-                        <Label text="Quartier d'Accueil à Lomé" styleClass="font-label-sm" />
-                        <TextField fx:id="txtQuartier" promptText="ex: Adidogomé" styleClass="text-input" />
-                    </VBox>
-                </GridPane>
-
-                <!-- Administrative Verifications Box -->
-                <VBox styleClass="card" spacing="8.0" style="-fx-background-color: #f8fafc; -fx-padding: 10px;">
-                    <Label text="Conformité Administrative au Temple DIEU NE CHANGE PAS" styleClass="font-title-lg" style="-fx-font-size: 12px;" />
-                    <HBox spacing="20.0">
-                        <CheckBox fx:id="chkCarteMembre" text="Carte de membre vérifiée &amp; valide" selected="true" />
-                        <CheckBox fx:id="chkCarnetDime" text="Carnet de dîme attribué" selected="true" />
+                <!-- Dynamic Dropzone Box -->
+                <VBox fx:id="dropzoneBox" styleClass="dropzone-pro" alignment="CENTER" spacing="12.0" minHeight="145.0">
+                    <HBox alignment="CENTER" spacing="16.0">
+                        <VBox styleClass="dropzone-icon-circle">
+                            <Label text="📄" style="-fx-font-size: 26px;" />
+                        </VBox>
+                        <VBox alignment="CENTER_LEFT" spacing="3.0">
+                            <Label text="Glissez-déposez la lettre de recommandation ou le PDF ici" styleClass="font-title-lg" style="-fx-font-size: 15px; -fx-text-fill: #0f172a;" />
+                            <Label text="Analyse optique automatisée : Identité, Provenance, Pasteur, Sexe, Baptêmes et Situation matrimoniale." styleClass="font-body-muted" style="-fx-font-size: 12.5px; -fx-text-fill: #64748b;" />
+                        </VBox>
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Button text="📁 Parcourir les fichiers..." onAction="#handleBrowseFile" styleClass="btn-outline" style="-fx-font-weight: bold; -fx-padding: 9px 18px; -fx-font-size: 13px;" />
                     </HBox>
                 </VBox>
-
-                <!-- Actions -->
-                <HBox alignment="CENTER_RIGHT" spacing="12.0" style="-fx-padding: 6px 0 0 0;">
-                    <Button text="Réinitialiser" onAction="#handleReset" styleClass="btn-outline" />
-                    <ProgressIndicator fx:id="saveIndicator" maxHeight="20.0" maxWidth="20.0" visible="false" />
-                    <Button fx:id="saveMovementBtn" text="💾 Enregistrer &amp; Intégrer le Fidèle" onAction="#handleSaveMovement" styleClass="btn-primary" style="-fx-font-size: 13px; -fx-padding: 8px 18px;" />
-                </HBox>
-
             </VBox>
 
-        </GridPane>
+            <!-- Split View: Document Preview (Left) vs Structured Extracted Form (Right) -->
+            <GridPane hgap="22.0" vgap="20.0">
+                <columnConstraints>
+                    <ColumnConstraints percentWidth="38.0" />
+                    <ColumnConstraints percentWidth="62.0" />
+                </columnConstraints>
+
+                <!-- COLONNE GAUCHE: Aperçu Document & Laser Scan -->
+                <VBox styleClass="card-modern" spacing="16.0" GridPane.columnIndex="0" minHeight="660.0">
+                    <HBox alignment="CENTER_LEFT" spacing="8.0">
+                        <Label text="🔍 Aperçu du Document Scanné" styleClass="font-title-lg" style="-fx-font-size: 15px; -fx-font-weight: bold; -fx-text-fill: #0f172a;" />
+                        <Region HBox.hgrow="ALWAYS" />
+                        <ProgressIndicator fx:id="scanningIndicator" maxHeight="18.0" maxWidth="18.0" visible="false" />
+                    </HBox>
+
+                    <Separator style="-fx-opacity: 0.5;" />
+
+                    <!-- Document Image Container with Light Gray Background -->
+                    <StackPane fx:id="previewContainer" VBox.vgrow="ALWAYS" minHeight="380.0" style="-fx-background-color: #f1f5f9; -fx-background-radius: 10px; -fx-border-color: #cbd5e1; -fx-border-radius: 10px; -fx-border-width: 1px;" alignment="CENTER">
+                        <Label fx:id="previewPlaceholderLabel" text="Déposez une lettre scannée ou un document PDF pour lancer la numérisation OCR." styleClass="font-body-muted" wrapText="true" style="-fx-text-fill: #64748b; -fx-alignment: center; -fx-text-alignment: center; -fx-padding: 24px; -fx-font-size: 13px;" />
+                        <ImageView fx:id="documentPreviewImage" fitWidth="350.0" fitHeight="450.0" preserveRatio="true" visible="false" />
+
+                        <!-- Laser Scan Overlay -->
+                        <StackPane fx:id="scanOverlayPane" visible="false" mouseTransparent="true" alignment="TOP_CENTER" style="-fx-padding: 14px;">
+                            <VBox alignment="TOP_CENTER" spacing="10.0" maxWidth="Infinity">
+                                <Label text="⚡ Numérisation et analyse OCR en cours..." styleClass="scan-pulse-badge" />
+                            </VBox>
+                            <Rectangle fx:id="scanLaserLine" height="4.0" styleClass="scan-laser-line" />
+                        </StackPane>
+                    </StackPane>
+
+                    <!-- Raw Text Recognized by OCR -->
+                    <VBox spacing="6.0">
+                        <HBox alignment="CENTER_LEFT">
+                            <Label text="💻 Texte Brut Détecté par l'OCR :" styleClass="field-label-pro" />
+                            <Region HBox.hgrow="ALWAYS" />
+                            <Label text="Consolas 11px" style="-fx-font-size: 10.5px; -fx-text-fill: #94a3b8;" />
+                        </HBox>
+                        <TextArea fx:id="txtRawOcr" editable="false" wrapText="true" prefRowCount="5" styleClass="ocr-raw-box" promptText="Le texte extrait apparaîtra ici..." />
+                    </VBox>
+                </VBox>
+
+                <!-- COLONNE DROITE: Formulaire Organisé & Design Professionnel -->
+                <VBox styleClass="card-modern" spacing="18.0" GridPane.columnIndex="1">
+                    
+                    <HBox alignment="CENTER_LEFT" spacing="10.0">
+                        <VBox spacing="2.0" HBox.hgrow="ALWAYS">
+                            <Label text="✨ Données Extraites &amp; Fiche du Fidèle Arrivant" styleClass="font-title-lg" style="-fx-font-size: 17px; -fx-font-weight: bold; -fx-text-fill: #00236f;" />
+                            <Label text="Vérifiez les données extraites par le scanner avant validation finale." styleClass="font-body-muted" style="-fx-font-size: 12.5px;" />
+                        </VBox>
+                        <Label text="Prêt pour Intégration" styleClass="pill-badge-green" />
+                    </HBox>
+
+                    <Separator style="-fx-opacity: 0.5;" />
+
+                    <!-- Section 1 : Identité Civile -->
+                    <VBox styleClass="section-block-card" spacing="12.0">
+                        <HBox alignment="CENTER_LEFT" spacing="8.0">
+                            <Label text="👤 1. Identité Civile &amp; État" styleClass="section-header-title" />
+                        </HBox>
+
+                        <GridPane hgap="14.0" vgap="14.0">
+                            <columnConstraints>
+                                <ColumnConstraints percentWidth="35.0" />
+                                <ColumnConstraints percentWidth="40.0" />
+                                <ColumnConstraints percentWidth="25.0" />
+                            </columnConstraints>
+
+                            <VBox spacing="5.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                                <Label text="Nom de famille *" styleClass="field-label-required" />
+                                <TextField fx:id="txtNomArrivant" promptText="ex: KOFFI" styleClass="text-input" style="-fx-font-weight: bold;" />
+                            </VBox>
+
+                            <VBox spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                                <Label text="Prénom(s) *" styleClass="field-label-required" />
+                                <TextField fx:id="txtPrenomsArrivant" promptText="ex: Jean-Baptiste" styleClass="text-input" style="-fx-font-weight: bold;" />
+                            </VBox>
+
+                            <VBox spacing="5.0" GridPane.columnIndex="2" GridPane.rowIndex="0">
+                                <Label text="Sexe" styleClass="field-label-pro" />
+                                <ComboBox fx:id="comboSexe" maxWidth="Infinity" />
+                            </VBox>
+
+                            <VBox spacing="5.0" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                                <Label text="📅 Date de Naissance" styleClass="field-label-pro" />
+                                <DatePicker fx:id="dpDateNaissance" promptText="JJ/MM/AAAA" maxWidth="Infinity" />
+                            </VBox>
+
+                            <VBox spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                <Label text="📍 Lieu de Naissance" styleClass="field-label-pro" />
+                                <TextField fx:id="txtLieuNaissance" promptText="ex: Lomé" styleClass="text-input" />
+                            </VBox>
+
+                            <VBox spacing="5.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                                <Label text="💼 Profession" styleClass="field-label-pro" />
+                                <TextField fx:id="txtProfession" promptText="ex: Informaticien" styleClass="text-input" />
+                            </VBox>
+                        </GridPane>
+                    </VBox>
+
+                    <!-- Section 2 : Parcours Spirituel & Provenance -->
+                    <VBox styleClass="section-block-card" spacing="12.0">
+                        <HBox alignment="CENTER_LEFT" spacing="8.0">
+                            <Label text="📜 2. Lettre de Recommandation &amp; Provenance" styleClass="section-header-title" />
+                        </HBox>
+
+                        <GridPane hgap="14.0" vgap="14.0">
+                            <columnConstraints>
+                                <ColumnConstraints percentWidth="50.0" />
+                                <ColumnConstraints percentWidth="50.0" />
+                            </columnConstraints>
+
+                            <VBox spacing="5.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                                <Label text="✍️ Pasteur Signataire de la Lettre" styleClass="field-label-pro" />
+                                <TextField fx:id="txtPasteurSignataire" promptText="ex: Pasteur KOUAME" styleClass="text-input" />
+                            </VBox>
+
+                            <VBox spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                                <Label text="🏛️ Église / Paroisse d'Origine" styleClass="field-label-pro" />
+                                <TextField fx:id="txtEgliseOrigine" promptText="ex: Temple de Kpalimé" styleClass="text-input" />
+                            </VBox>
+
+                            <VBox spacing="5.0" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                                <Label text="📅 Date d'émission de la Lettre" styleClass="field-label-pro" />
+                                <DatePicker fx:id="dpDatePresentation" promptText="JJ/MM/AAAA" maxWidth="Infinity" />
+                            </VBox>
+
+                            <VBox spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                <Label text="📌 Objet / Motif officiel du départ" styleClass="field-label-pro" />
+                                <TextField fx:id="txtMotifDepart" promptText="ex: Transfert professionnel" styleClass="text-input" />
+                            </VBox>
+
+                            <VBox spacing="5.0" GridPane.columnIndex="0" GridPane.rowIndex="2">
+                                <Label text="🕊️ Baptisé d'eau le" styleClass="field-label-pro" />
+                                <DatePicker fx:id="dpDateBapteme" promptText="JJ/MM/AAAA" maxWidth="Infinity" />
+                            </VBox>
+
+                            <VBox spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                <Label text="🔥 Baptisé du Saint-Esprit le" styleClass="field-label-pro" />
+                                <DatePicker fx:id="dpDateBaptemeEsprit" promptText="JJ/MM/AAAA" maxWidth="Infinity" />
+                            </VBox>
+                        </GridPane>
+                    </VBox>
+
+                    <!-- Section 3 : Famille, Domicile & Contacts -->
+                    <VBox styleClass="section-block-card" spacing="12.0">
+                        <HBox alignment="CENTER_LEFT" spacing="8.0">
+                            <Label text="🏡 3. Famille &amp; Coordonnées d'Accueil à Lomé" styleClass="section-header-title" />
+                        </HBox>
+
+                        <GridPane hgap="14.0" vgap="14.0">
+                            <columnConstraints>
+                                <ColumnConstraints percentWidth="35.0" />
+                                <ColumnConstraints percentWidth="35.0" />
+                                <ColumnConstraints percentWidth="30.0" />
+                            </columnConstraints>
+
+                            <VBox spacing="5.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                                <Label text="💍 Situation Matrimoniale" styleClass="field-label-pro" />
+                                <ComboBox fx:id="comboStatutMatrimonial" maxWidth="Infinity" />
+                            </VBox>
+
+                            <VBox spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                                <Label text="👶 Nombre d'enfants" styleClass="field-label-pro" />
+                                <Spinner fx:id="spinEnfants" editable="true" maxWidth="Infinity" />
+                            </VBox>
+
+                            <VBox spacing="5.0" GridPane.columnIndex="2" GridPane.rowIndex="0">
+                                <Label text="📞 Téléphone Mobile" styleClass="field-label-pro" />
+                                <TextField fx:id="txtTelephone" promptText="+228 90 00 00 00" styleClass="text-input" />
+                            </VBox>
+
+                            <VBox spacing="5.0" GridPane.columnSpan="3" GridPane.rowIndex="1">
+                                <Label text="🏠 Quartier / Domicile d'Accueil à Lomé" styleClass="field-label-pro" />
+                                <TextField fx:id="txtQuartier" promptText="ex: Adidogomé Amadahomé" styleClass="text-input" />
+                            </VBox>
+                        </GridPane>
+                    </VBox>
+
+                    <!-- Administrative Verifications Box -->
+                    <VBox styleClass="checkbox-card" spacing="8.0">
+                        <Label text="🛡️ Validation Administrative au Temple DIEU NE CHANGE PAS" styleClass="field-label-pro" style="-fx-font-size: 12.5px; -fx-text-fill: #00236f;" />
+                        <HBox spacing="24.0" alignment="CENTER_LEFT">
+                            <CheckBox fx:id="chkCarteMembre" text="Carte de membre vérifiée &amp; valide" selected="true" style="-fx-font-weight: 600; -fx-font-size: 12.5px; -fx-text-fill: #0f172a; -fx-cursor: hand;" />
+                            <CheckBox fx:id="chkCarnetDime" text="Carnet de dîme attribué" selected="true" style="-fx-font-weight: 600; -fx-font-size: 12.5px; -fx-text-fill: #0f172a; -fx-cursor: hand;" />
+                        </HBox>
+                    </VBox>
+
+                    <!-- Actions Toolbar -->
+                    <HBox alignment="CENTER_RIGHT" spacing="14.0" style="-fx-padding: 8px 0 0 0;">
+                        <Button text="🔄 Réinitialiser" onAction="#handleReset" styleClass="btn-outline" style="-fx-font-size: 13px; -fx-padding: 9px 18px;" />
+                        <ProgressIndicator fx:id="saveIndicator" maxHeight="22.0" maxWidth="22.0" visible="false" />
+                        <Button fx:id="saveMovementBtn" text="💾 Enregistrer &amp; Intégrer le Fidèle" onAction="#handleSaveMovement" styleClass="btn-pro-primary" />
+                    </HBox>
+
+                </VBox>
+
+            </GridPane>
+
+        </VBox>
 
     </VBox>
 

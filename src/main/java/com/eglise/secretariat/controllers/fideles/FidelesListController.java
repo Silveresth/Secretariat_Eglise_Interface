@@ -322,6 +322,7 @@ public class FidelesListController extends BaseController {
     }
 
     private void exportFidelePdf(FideleDto f) {
+        String filename = documentService.buildDocumentFilename(f, "Fiche");
         NotificationUtil.showInfo("Export PDF", "Génération de la fiche PDF en cours...");
         documentService.getFidelePdf(f.getId())
                 .whenComplete((bytes, throwable) -> {
@@ -330,9 +331,9 @@ public class FidelesListController extends BaseController {
                             NotificationUtil.showError("Erreur PDF", throwable.getMessage());
                         } else if (bytes != null) {
                             try {
-                                File file = documentService.savePdfToTemp(bytes, "fiche_" + f.getId());
+                                File file = documentService.savePdfToDownloads(bytes, filename);
                                 documentService.openPdf(file);
-                                NotificationUtil.showSuccess("PDF prêt", "Fiche du fidèle générée avec succès.");
+                                NotificationUtil.showSuccess("PDF prêt", "Fiche du fidèle enregistrée dans Téléchargements (" + file.getName() + ") et ouverte.");
                             } catch (Exception e) {
                                 NotificationUtil.showError("Erreur ouverture PDF", e.getMessage());
                             }
@@ -342,10 +343,10 @@ public class FidelesListController extends BaseController {
     }
 
     private void confirmDeleteFidele(FideleDto f) {
-        boolean confirmed = DialogUtil.showConfirmation(
+        boolean confirmed = DialogUtil.showDeleteConfirmation(
                 "Confirmation de suppression",
-                "Supprimer le fidèle " + f.getNomComplet() + " ?",
-                "Cette action retirera le fidèle de l'annuaire actif."
+                "Supprimer la fiche de " + f.getNomComplet() + " ?",
+                "Êtes-vous sûr de vouloir supprimer définitivement ce fidèle du registre de l'église ? Cette action est irréversible."
         );
 
         if (confirmed) {
@@ -353,9 +354,8 @@ public class FidelesListController extends BaseController {
                     .whenComplete((res, throwable) -> {
                         Platform.runLater(() -> {
                             if (throwable != null) {
-                                NotificationUtil.showError("Erreur suppression", throwable.getMessage());
+                                DialogUtil.showAlert(Alert.AlertType.ERROR, "Erreur", "Suppression impossible", throwable.getMessage());
                             } else {
-                                NotificationUtil.showSuccess("Suppression", "Le fidèle a été supprimé.");
                                 loadFideles();
                             }
                         });

@@ -8,260 +8,348 @@
             fx:controller="com.eglise.secretariat.controllers.fideles.FideleWizardController"
             fitToWidth="true" style="-fx-background-color: transparent; -fx-background: transparent;">
 
-    <VBox spacing="20.0" style="-fx-padding: 24px;" alignment="TOP_CENTER">
+    <VBox spacing="24.0" style="-fx-padding: 28px 32px;" alignment="TOP_CENTER">
         
-        <!-- Wizard Card Container -->
-        <VBox maxWidth="920.0" styleClass="card-accent-navy" spacing="20.0" style="-fx-padding: 0;">
+        <!-- Main Wizard Card Container - Extended Width -->
+        <VBox maxWidth="1280.0" styleClass="card-modern" spacing="0.0" style="-fx-padding: 0;">
             
-            <!-- Wizard Header -->
-            <HBox alignment="CENTER_LEFT" spacing="12.0" style="-fx-padding: 20px 24px; -fx-background-color: #f8fafc; -fx-border-color: #e0e3e5 transparent transparent transparent; -fx-border-width: 1px;">
-                <Label text="👤" style="-fx-font-size: 24px;" />
-                <VBox spacing="2.0">
-                    <Label text="Formulaire d'Inscription - Nouveau Fidèle" styleClass="font-title-lg" style="-fx-font-size: 18px;" />
-                    <Label text="Remplissez les étapes pour enregistrer un nouveau membre dans le registre de l'église." styleClass="font-body-muted" />
+            <!-- Wizard Header Banner -->
+            <HBox alignment="CENTER_LEFT" spacing="16.0" style="-fx-padding: 22px 28px; -fx-background-color: #f8fafc; -fx-border-color: #e2e8f0; -fx-border-width: 0 0 1px 0; -fx-background-radius: 12px 12px 0 0;">
+                <VBox styleClass="dropzone-icon-circle" style="-fx-min-width: 48px; -fx-min-height: 48px; -fx-max-width: 48px; -fx-max-height: 48px;">
+                    <Label text="👤" style="-fx-font-size: 22px;" />
+                </VBox>
+                <VBox spacing="3.0" HBox.hgrow="ALWAYS">
+                    <HBox alignment="CENTER_LEFT" spacing="10.0">
+                        <Label text="Formulaire d'Inscription - Nouveau Fidèle" styleClass="font-display-lg" style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #00236f;" />
+                        <Label text="Étape par Étape" styleClass="pill-badge-blue" />
+                    </HBox>
+                    <Label text="Remplissez les informations du membre pour l'enregistrer officiellement dans l'annuaire du secrétariat." styleClass="font-body-muted" style="-fx-font-size: 13px;" />
                 </VBox>
             </HBox>
 
-            <!-- Stepper Indicators -->
-            <HBox alignment="CENTER" spacing="32.0" style="-fx-padding: 12px 24px; -fx-background-color: #ffffff; -fx-border-color: transparent transparent #e0e3e5 transparent; -fx-border-width: 1px;">
-                <HBox alignment="CENTER" spacing="8.0">
+            <!-- Modern Stepper Indicators Bar -->
+            <HBox alignment="CENTER" spacing="24.0" style="-fx-padding: 16px 28px; -fx-background-color: #ffffff; -fx-border-color: #e2e8f0; -fx-border-width: 0 0 1px 0;">
+                <HBox alignment="CENTER" spacing="10.0">
                     <Label fx:id="step1Circle" text="1" styleClass="step-circle, step-circle-active" />
-                    <Label text="Identité" styleClass="font-label-sm" />
+                    <VBox spacing="1.0">
+                        <Label text="Étape 1" style="-fx-font-size: 10.5px; -fx-text-fill: #94a3b8; -fx-font-weight: bold;" />
+                        <Label text="Identité Civile" styleClass="field-label-pro" style="-fx-font-size: 12.5px;" />
+                    </VBox>
                 </HBox>
-                <Label text="──" style="-fx-text-fill: #cbd5e1;" />
-                <HBox alignment="CENTER" spacing="8.0">
+                
+                <Label text="────────" style="-fx-text-fill: #cbd5e1; -fx-font-size: 12px;" />
+                
+                <HBox alignment="CENTER" spacing="10.0">
                     <Label fx:id="step2Circle" text="2" styleClass="step-circle" />
-                    <Label text="Contacts &amp; Parents" styleClass="font-label-sm" />
+                    <VBox spacing="1.0">
+                        <Label text="Étape 2" style="-fx-font-size: 10.5px; -fx-text-fill: #94a3b8; -fx-font-weight: bold;" />
+                        <Label text="Contacts &amp; Parents" styleClass="field-label-pro" style="-fx-font-size: 12.5px;" />
+                    </VBox>
                 </HBox>
-                <Label text="──" style="-fx-text-fill: #cbd5e1;" />
-                <HBox alignment="CENTER" spacing="8.0">
+                
+                <Label text="────────" style="-fx-text-fill: #cbd5e1; -fx-font-size: 12px;" />
+                
+                <HBox alignment="CENTER" spacing="10.0">
                     <Label fx:id="step3Circle" text="3" styleClass="step-circle" />
-                    <Label text="Matrimoniale" styleClass="font-label-sm" />
+                    <VBox spacing="1.0">
+                        <Label text="Étape 3" style="-fx-font-size: 10.5px; -fx-text-fill: #94a3b8; -fx-font-weight: bold;" />
+                        <Label text="Matrimoniale &amp; Famille" styleClass="field-label-pro" style="-fx-font-size: 12.5px;" />
+                    </VBox>
                 </HBox>
-                <Label text="──" style="-fx-text-fill: #cbd5e1;" />
-                <HBox alignment="CENTER" spacing="8.0">
+                
+                <Label text="────────" style="-fx-text-fill: #cbd5e1; -fx-font-size: 12px;" />
+                
+                <HBox alignment="CENTER" spacing="10.0">
                     <Label fx:id="step4Circle" text="4" styleClass="step-circle" />
-                    <Label text="Spirituel &amp; Dîme" styleClass="font-label-sm" />
+                    <VBox spacing="1.0">
+                        <Label text="Étape 4" style="-fx-font-size: 10.5px; -fx-text-fill: #94a3b8; -fx-font-weight: bold;" />
+                        <Label text="Parcours Spirituel &amp; Dîme" styleClass="field-label-pro" style="-fx-font-size: 12.5px;" />
+                    </VBox>
                 </HBox>
             </HBox>
 
-            <!-- STEP 1 PANEL -->
-            <VBox fx:id="step1Panel" spacing="16.0" style="-fx-padding: 24px;">
-                <Label text="Étape 1 : Identité Civile &amp; Informations Générales" styleClass="font-title-lg" style="-fx-text-fill: #00236f;" />
-                <GridPane hgap="16.0" vgap="14.0">
+            <!-- STEP 1 PANEL : IDENTITÉ CIVILE -->
+            <VBox fx:id="step1Panel" spacing="18.0" style="-fx-padding: 28px;">
+                <VBox spacing="2.0">
+                    <Label text="👤 Étape 1 : Identité Civile &amp; Informations Générales" styleClass="font-title-lg" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #00236f;" />
+                    <Label text="Renseignez le nom, prénom et les détails d'état civil du fidèle." styleClass="font-body-muted" style="-fx-font-size: 12.5px;" />
+                </VBox>
+                <Separator style="-fx-opacity: 0.5;" />
+
+                <GridPane hgap="20.0" vgap="16.0">
                     <columnConstraints>
-                        <ColumnConstraints percentWidth="50.0" />
-                        <ColumnConstraints percentWidth="50.0" />
+                        <ColumnConstraints percentWidth="33.33" />
+                        <ColumnConstraints percentWidth="33.33" />
+                        <ColumnConstraints percentWidth="33.34" />
                     </columnConstraints>
 
+                    <!-- Nom de famille -->
                     <VBox spacing="4.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
-                        <Label text="Nom de famille *" styleClass="font-label-sm" />
-                        <TextField fx:id="txtNom" promptText="ex: KOUASSI" styleClass="text-input" />
+                        <Label text="Nom de famille *" styleClass="field-label-required" />
+                        <TextField fx:id="txtNom" promptText="ex: KOUASSI" styleClass="text-input" style="-fx-font-weight: bold;" />
+                        <Label fx:id="lblErrNom" text="⚠️ Le nom de famille est obligatoire." styleClass="field-error-text" visible="false" managed="false" />
                     </VBox>
 
+                    <!-- Prénoms -->
                     <VBox spacing="4.0" GridPane.columnIndex="1" GridPane.rowIndex="0">
-                        <Label text="Prénom(s) *" styleClass="font-label-sm" />
-                        <TextField fx:id="txtPrenoms" promptText="ex: Jean-Paul" styleClass="text-input" />
+                        <Label text="Prénom(s) *" styleClass="field-label-required" />
+                        <TextField fx:id="txtPrenoms" promptText="ex: Jean-Paul" styleClass="text-input" style="-fx-font-weight: bold;" />
+                        <Label fx:id="lblErrPrenoms" text="⚠️ Le(s) prénom(s) sont obligatoires." styleClass="field-error-text" visible="false" managed="false" />
                     </VBox>
 
-                    <VBox spacing="4.0" GridPane.columnIndex="0" GridPane.rowIndex="1">
-                        <Label text="Sexe *" styleClass="font-label-sm" />
+                    <!-- Sexe -->
+                    <VBox spacing="4.0" GridPane.columnIndex="2" GridPane.rowIndex="0">
+                        <Label text="Sexe *" styleClass="field-label-required" />
                         <ComboBox fx:id="comboSexe" maxWidth="Infinity" />
                     </VBox>
 
-                    <VBox spacing="4.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                        <Label text="Date de Naissance" styleClass="font-label-sm" />
-                        <DatePicker fx:id="dpDateNaissance" maxWidth="Infinity" />
+                    <!-- Date de Naissance -->
+                    <VBox spacing="4.0" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                        <Label text="📅 Date de Naissance" styleClass="field-label-pro" />
+                        <DatePicker fx:id="dpDateNaissance" promptText="JJ/MM/AAAA" maxWidth="Infinity" />
                     </VBox>
 
-                    <VBox spacing="4.0" GridPane.columnIndex="0" GridPane.rowIndex="2">
-                        <Label text="Lieu de Naissance" styleClass="font-label-sm" />
+                    <!-- Lieu de Naissance -->
+                    <VBox spacing="4.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <Label text="📍 Lieu de Naissance" styleClass="field-label-pro" />
                         <TextField fx:id="txtLieuNaissance" promptText="ex: Lomé" styleClass="text-input" />
                     </VBox>
 
-                    <VBox spacing="4.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                        <Label text="Ethnie" styleClass="font-label-sm" />
+                    <!-- Ethnie -->
+                    <VBox spacing="4.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                        <Label text="🌍 Ethnie / Origine" styleClass="field-label-pro" />
                         <TextField fx:id="txtEthnie" promptText="ex: Éwé, Mina, Kabyè..." styleClass="text-input" />
                     </VBox>
 
-                    <VBox spacing="4.0" GridPane.columnIndex="0" GridPane.rowIndex="3">
-                        <Label text="Profession / Métier" styleClass="font-label-sm" />
-                        <TextField fx:id="txtProfession" promptText="ex: Comptable, Enseignant..." styleClass="text-input" />
+                    <!-- Profession -->
+                    <VBox spacing="4.0" GridPane.columnIndex="0" GridPane.rowIndex="2">
+                        <Label text="💼 Profession / Métier" styleClass="field-label-pro" />
+                        <TextField fx:id="txtProfession" promptText="ex: Enseignant, Comptable..." styleClass="text-input" />
                     </VBox>
 
-                    <VBox spacing="4.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
-                        <Label text="Niveau d'étude" styleClass="font-label-sm" />
+                    <!-- Niveau d'étude -->
+                    <VBox spacing="4.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                        <Label text="🎓 Niveau d'étude" styleClass="field-label-pro" />
                         <TextField fx:id="txtNiveauEtude" promptText="ex: BAC+3, Master, Secondaire..." styleClass="text-input" />
                     </VBox>
                 </GridPane>
             </VBox>
 
-            <!-- STEP 2 PANEL -->
-            <VBox fx:id="step2Panel" spacing="16.0" style="-fx-padding: 24px;">
-                <Label text="Étape 2 : Coordonnées, Domicile &amp; Filiation" styleClass="font-title-lg" style="-fx-text-fill: #00236f;" />
-                <GridPane hgap="16.0" vgap="14.0">
+            <!-- STEP 2 PANEL : CONTACTS, DOMICILE & FILIATION -->
+            <VBox fx:id="step2Panel" spacing="18.0" style="-fx-padding: 28px;" visible="false" managed="false">
+                <VBox spacing="2.0">
+                    <Label text="📞 Étape 2 : Coordonnées, Domicile &amp; Filiation Parentale" styleClass="font-title-lg" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #00236f;" />
+                    <Label text="Saisissez les numéros de contact, l'adresse du fidèle et les noms de ses parents." styleClass="font-body-muted" style="-fx-font-size: 12.5px;" />
+                </VBox>
+                <Separator style="-fx-opacity: 0.5;" />
+
+                <GridPane hgap="20.0" vgap="16.0">
                     <columnConstraints>
                         <ColumnConstraints percentWidth="50.0" />
                         <ColumnConstraints percentWidth="50.0" />
                     </columnConstraints>
 
+                    <!-- Téléphone Mobile -->
                     <VBox spacing="4.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
-                        <Label text="Téléphone Mobile *" styleClass="font-label-sm" />
+                        <Label text="📱 Téléphone Mobile (Togocel) *" styleClass="field-label-required" />
                         <TextField fx:id="txtTelephone" promptText="+228 90 00 00 00" styleClass="text-input" />
+                        <Label fx:id="lblErrTelephone" text="⚠️ Le numéro de téléphone principal est recommandé." styleClass="field-error-text" visible="false" managed="false" />
                     </VBox>
 
+                    <!-- Contact Moov -->
                     <VBox spacing="4.0" GridPane.columnIndex="1" GridPane.rowIndex="0">
-                        <Label text="Contact Moov / Secondaire" styleClass="font-label-sm" />
+                        <Label text="📱 Contact Secondaire (Moov)" styleClass="field-label-pro" />
                         <TextField fx:id="txtContactMoov" promptText="+228 98 00 00 00" styleClass="text-input" />
                     </VBox>
 
+                    <!-- Adresse Email -->
                     <VBox spacing="4.0" GridPane.columnIndex="0" GridPane.rowIndex="1">
-                        <Label text="Adresse Email" styleClass="font-label-sm" />
+                        <Label text="✉️ Adresse Email" styleClass="field-label-pro" />
                         <TextField fx:id="txtEmail" promptText="membre@email.com" styleClass="text-input" />
                     </VBox>
 
+                    <!-- Quartier -->
                     <VBox spacing="4.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                        <Label text="Quartier de Résidence" styleClass="font-label-sm" />
-                        <TextField fx:id="txtQuartier" promptText="ex: Adidogomé" styleClass="text-input" />
+                        <Label text="🏠 Quartier de Résidence *" styleClass="field-label-required" />
+                        <TextField fx:id="txtQuartier" promptText="ex: Adidogomé Amadahomé" styleClass="text-input" />
+                        <Label fx:id="lblErrQuartier" text="⚠️ Le quartier de résidence est requis." styleClass="field-error-text" visible="false" managed="false" />
                     </VBox>
 
-                    <VBox spacing="4.0" GridPane.columnSpan="2" GridPane.rowIndex="2">
-                        <Label text="Adresse Complète" styleClass="font-label-sm" />
-                        <TextField fx:id="txtAdresse" promptText="Rue, numéro de maison, repères..." styleClass="text-input" />
+                    <!-- Préfecture / Région -->
+                    <VBox spacing="4.0" GridPane.columnIndex="0" GridPane.rowIndex="2">
+                        <Label text="🏛️ Préfecture / Région" styleClass="field-label-pro" />
+                        <TextField fx:id="txtPrefectureRegion" promptText="ex: Golfe / Maritime" styleClass="text-input" />
                     </VBox>
 
+                    <!-- Adresse Complète -->
+                    <VBox spacing="4.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                        <Label text="📍 Adresse Complète / Repères" styleClass="field-label-pro" />
+                        <TextField fx:id="txtAdresse" promptText="Rue, numéro, près de l'école..." styleClass="text-input" />
+                    </VBox>
+
+                    <!-- Nom du Père -->
                     <VBox spacing="4.0" GridPane.columnIndex="0" GridPane.rowIndex="3">
-                        <Label text="Nom &amp; Prénom du Père" styleClass="font-label-sm" />
-                        <HBox spacing="6.0">
-                            <TextField fx:id="txtNomPere" promptText="Nom" HBox.hgrow="ALWAYS" styleClass="text-input" />
-                            <TextField fx:id="txtPrenomPere" promptText="Prénom" HBox.hgrow="ALWAYS" styleClass="text-input" />
-                        </HBox>
+                        <Label text="👨 Nom du Père" styleClass="field-label-pro" />
+                        <TextField fx:id="txtNomPere" promptText="ex: KOUASSI" styleClass="text-input" />
                     </VBox>
 
+                    <!-- Prénom du Père -->
                     <VBox spacing="4.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
-                        <Label text="Nom &amp; Prénom de la Mère" styleClass="font-label-sm" />
-                        <HBox spacing="6.0">
-                            <TextField fx:id="txtNomMere" promptText="Nom" HBox.hgrow="ALWAYS" styleClass="text-input" />
-                            <TextField fx:id="txtPrenomMere" promptText="Prénom" HBox.hgrow="ALWAYS" styleClass="text-input" />
-                        </HBox>
+                        <Label text="👨 Prénom du Père" styleClass="field-label-pro" />
+                        <TextField fx:id="txtPrenomPere" promptText="ex: Yao Michel" styleClass="text-input" />
+                    </VBox>
+
+                    <!-- Nom de la Mère -->
+                    <VBox spacing="4.0" GridPane.columnIndex="0" GridPane.rowIndex="4">
+                        <Label text="👩 Nom de la Mère" styleClass="field-label-pro" />
+                        <TextField fx:id="txtNomMere" promptText="ex: ADJOVI" styleClass="text-input" />
+                    </VBox>
+
+                    <!-- Prénom de la Mère -->
+                    <VBox spacing="4.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                        <Label text="👩 Prénom de la Mère" styleClass="field-label-pro" />
+                        <TextField fx:id="txtPrenomMere" promptText="ex: Afiwa Elisabeth" styleClass="text-input" />
                     </VBox>
                 </GridPane>
             </VBox>
 
-            <!-- STEP 3 PANEL -->
-            <VBox fx:id="step3Panel" spacing="16.0" style="-fx-padding: 24px;">
-                <Label text="Étape 3 : Situation Matrimoniale &amp; Famille" styleClass="font-title-lg" style="-fx-text-fill: #00236f;" />
-                <GridPane hgap="16.0" vgap="14.0">
+            <!-- STEP 3 PANEL : MATRIMONIALE & FAMILLE -->
+            <VBox fx:id="step3Panel" spacing="18.0" style="-fx-padding: 28px;" visible="false" managed="false">
+                <VBox spacing="2.0">
+                    <Label text="💍 Étape 3 : Situation Matrimoniale &amp; Famille" styleClass="font-title-lg" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #00236f;" />
+                    <Label text="Renseignez l'état matrimonial, les détails du conjoint et les enfants du fidèle." styleClass="font-body-muted" style="-fx-font-size: 12.5px;" />
+                </VBox>
+                <Separator style="-fx-opacity: 0.5;" />
+
+                <GridPane hgap="20.0" vgap="16.0">
                     <columnConstraints>
                         <ColumnConstraints percentWidth="50.0" />
                         <ColumnConstraints percentWidth="50.0" />
                     </columnConstraints>
 
                     <VBox spacing="4.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
-                        <Label text="Statut Matrimonial" styleClass="font-label-sm" />
+                        <Label text="Statut Matrimonial" styleClass="field-label-pro" />
                         <ComboBox fx:id="comboStatutMatrimonial" maxWidth="Infinity" />
                     </VBox>
 
                     <VBox spacing="4.0" GridPane.columnIndex="1" GridPane.rowIndex="0">
-                        <Label text="Date de Mariage" styleClass="font-label-sm" />
-                        <DatePicker fx:id="dpDateMariage" maxWidth="Infinity" />
+                        <Label text="📅 Date de Mariage" styleClass="field-label-pro" />
+                        <DatePicker fx:id="dpDateMariage" promptText="JJ/MM/AAAA" maxWidth="Infinity" />
                     </VBox>
 
                     <VBox spacing="4.0" GridPane.columnIndex="0" GridPane.rowIndex="1">
-                        <Label text="Nom &amp; Prénom du Conjoint" styleClass="font-label-sm" />
-                        <TextField fx:id="txtNomConjoint" promptText="Nom du conjoint" styleClass="text-input" />
+                        <Label text="👤 Nom &amp; Prénom du Conjoint" styleClass="field-label-pro" />
+                        <TextField fx:id="txtNomConjoint" promptText="Nom et prénom du conjoint(e)" styleClass="text-input" />
                     </VBox>
 
                     <VBox spacing="4.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                        <Label text="Confession de Foi du Conjoint" styleClass="font-label-sm" />
+                        <Label text="✝️ Confession de Foi du Conjoint" styleClass="field-label-pro" />
                         <TextField fx:id="txtConfessionConjoint" promptText="ex: Évangélique, Catholique..." styleClass="text-input" />
                     </VBox>
 
                     <VBox spacing="4.0" GridPane.columnIndex="0" GridPane.rowIndex="2">
-                        <Label text="Église de Célébration du Mariage" styleClass="font-label-sm" />
-                        <TextField fx:id="txtEgliseMariage" promptText="Église du mariage" styleClass="text-input" />
+                        <Label text="⛪ Église de Célébration du Mariage" styleClass="field-label-pro" />
+                        <TextField fx:id="txtEgliseMariage" promptText="Lieu / Église de mariage" styleClass="text-input" />
                     </VBox>
 
                     <VBox spacing="4.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                        <Label text="Pasteur Célébrant" styleClass="font-label-sm" />
-                        <TextField fx:id="txtPasteurMariage" promptText="Nom du pasteur" styleClass="text-input" />
+                        <Label text="✍️ Pasteur Célébrant" styleClass="field-label-pro" />
+                        <TextField fx:id="txtPasteurMariage" promptText="Nom du pasteur célébrant" styleClass="text-input" />
                     </VBox>
 
-                    <HBox spacing="16.0" GridPane.columnSpan="2" GridPane.rowIndex="3">
+                    <HBox spacing="20.0" GridPane.columnSpan="2" GridPane.rowIndex="3">
                         <VBox spacing="4.0" HBox.hgrow="ALWAYS">
-                            <Label text="Nombre de Garçons" styleClass="font-label-sm" />
+                            <Label text="👦 Nombre de Garçons" styleClass="field-label-pro" />
                             <Spinner fx:id="spinGarcons" editable="true" maxWidth="Infinity" />
                         </VBox>
                         <VBox spacing="4.0" HBox.hgrow="ALWAYS">
-                            <Label text="Nombre de Filles" styleClass="font-label-sm" />
+                            <Label text="👧 Nombre de Filles" styleClass="field-label-pro" />
                             <Spinner fx:id="spinFilles" editable="true" maxWidth="Infinity" />
                         </VBox>
                     </HBox>
                 </GridPane>
             </VBox>
 
-            <!-- STEP 4 PANEL -->
-            <VBox fx:id="step4Panel" spacing="16.0" style="-fx-padding: 24px;">
-                <Label text="Étape 4 : Parcours Spirituel &amp; Conformité Administrative" styleClass="font-title-lg" style="-fx-text-fill: #00236f;" />
-                <GridPane hgap="16.0" vgap="14.0">
+            <!-- STEP 4 PANEL : SPIRITUEL & DÎME -->
+            <VBox fx:id="step4Panel" spacing="18.0" style="-fx-padding: 28px;" visible="false" managed="false">
+                <VBox spacing="2.0">
+                    <Label text="✝️ Étape 4 : Parcours Spirituel &amp; Engagements Paroissiaux" styleClass="font-title-lg" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #00236f;" />
+                    <Label text="Spécifiez la date de conversion, les baptêmes et la conformité administrative." styleClass="font-body-muted" style="-fx-font-size: 12.5px;" />
+                </VBox>
+                <Separator style="-fx-opacity: 0.5;" />
+
+                <GridPane hgap="20.0" vgap="16.0">
                     <columnConstraints>
                         <ColumnConstraints percentWidth="50.0" />
                         <ColumnConstraints percentWidth="50.0" />
                     </columnConstraints>
 
                     <VBox spacing="4.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
-                        <Label text="Date de Conversion" styleClass="font-label-sm" />
-                        <DatePicker fx:id="dpDateConversion" maxWidth="Infinity" />
+                        <Label text="📅 Date de Conversion" styleClass="field-label-pro" />
+                        <DatePicker fx:id="dpDateConversion" promptText="JJ/MM/AAAA" maxWidth="Infinity" />
                     </VBox>
 
                     <VBox spacing="4.0" GridPane.columnIndex="1" GridPane.rowIndex="0">
-                        <Label text="Église de Conversion" styleClass="font-label-sm" />
-                        <TextField fx:id="txtEgliseConversion" promptText="Église" styleClass="text-input" />
+                        <Label text="🏛️ Église de Conversion" styleClass="field-label-pro" />
+                        <TextField fx:id="txtEgliseConversion" promptText="Nom de l'église" styleClass="text-input" />
                     </VBox>
 
-                    <VBox spacing="8.0" GridPane.columnIndex="0" GridPane.rowIndex="1">
-                        <CheckBox fx:id="chkBaptise" text="Baptisé(e) d'eau par immersion" selected="true" styleClass="font-body-md" />
-                        <DatePicker fx:id="dpDateBapteme" promptText="Date du baptême d'eau" maxWidth="Infinity" />
+                    <VBox spacing="6.0" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                        <CheckBox fx:id="chkBaptise" text="Baptisé(e) d'eau par immersion" selected="true" style="-fx-font-weight: bold; -fx-font-size: 12.5px; -fx-text-fill: #0f172a; -fx-cursor: hand;" />
+                        <DatePicker fx:id="dpDateBapteme" promptText="Date du baptême d'eau (JJ/MM/AAAA)" maxWidth="Infinity" />
                     </VBox>
 
                     <VBox spacing="4.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                        <Label text="Lieu &amp; Pasteur du Baptême" styleClass="font-label-sm" />
-                        <TextField fx:id="txtLieuBapteme" promptText="Lieu du baptême" styleClass="text-input" />
+                        <Label text="📍 Lieu du Baptême" styleClass="field-label-pro" />
+                        <TextField fx:id="txtLieuBapteme" promptText="Lieu / Ville du baptême" styleClass="text-input" />
                     </VBox>
 
                     <VBox spacing="4.0" GridPane.columnIndex="0" GridPane.rowIndex="2">
-                        <Label text="Baptême du Saint-Esprit" styleClass="font-label-sm" />
-                        <DatePicker fx:id="dpDateBaptemeEsprit" promptText="Date" maxWidth="Infinity" />
+                        <Label text="✍️ Pasteur du Baptême" styleClass="field-label-pro" />
+                        <TextField fx:id="txtPasteurBapteme" promptText="Nom du pasteur ayant baptisé" styleClass="text-input" />
                     </VBox>
 
                     <VBox spacing="4.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                        <Label text="Date d'intégration paroissiale" styleClass="font-label-sm" />
-                        <DatePicker fx:id="dpDateIntegration" maxWidth="Infinity" />
+                        <Label text="🔥 Baptême du Saint-Esprit le" styleClass="field-label-pro" />
+                        <DatePicker fx:id="dpDateBaptemeEsprit" promptText="JJ/MM/AAAA" maxWidth="Infinity" />
                     </VBox>
 
-                    <VBox spacing="8.0" GridPane.columnSpan="2" GridPane.rowIndex="3" styleClass="card" style="-fx-padding: 12px; -fx-background-color: #f8fafc;">
-                        <Label text="Engagements &amp; Cotisations" styleClass="font-title-lg" style="-fx-font-size: 14px;" />
-                        <HBox spacing="20.0">
-                            <CheckBox fx:id="chkCarteMembre" text="Carte de membre valide" selected="true" />
-                            <CheckBox fx:id="chkCarnetDime" text="Carnet de dîme valide" selected="true" />
-                            <CheckBox fx:id="chkPayeDimes" text="Paye les dîmes régulièrement" selected="true" />
+                    <VBox spacing="4.0" GridPane.columnSpan="2" GridPane.rowIndex="3">
+                        <Label text="📅 Date d'intégration au Temple DIEU NE CHANGE PAS" styleClass="field-label-pro" />
+                        <DatePicker fx:id="dpDateIntegration" promptText="JJ/MM/AAAA" maxWidth="Infinity" />
+                    </VBox>
+
+                    <!-- Card Engagements & Dîme -->
+                    <VBox spacing="12.0" GridPane.columnSpan="2" GridPane.rowIndex="4" styleClass="checkbox-card">
+                        <HBox alignment="CENTER_LEFT" spacing="10.0">
+                            <Label text="🛡️ Validation Administrative &amp; Cotisations" styleClass="field-label-pro" style="-fx-font-size: 13.5px; -fx-text-fill: #00236f; -fx-font-weight: bold;" />
+                            <Region HBox.hgrow="ALWAYS" />
+                            <CheckBox fx:id="chkLettreRecommandation" text="Lettre de recommandation présentée" style="-fx-font-size: 12.5px; -fx-font-weight: 600; -fx-text-fill: #0f172a;" />
                         </HBox>
-                        <HBox spacing="10.0" alignment="CENTER_LEFT" style="-fx-padding: 6px 0 0 0;">
-                            <Label text="Fréquence habituelle :" styleClass="font-label-sm" />
-                            <ComboBox fx:id="comboFrequenceDime" prefWidth="200.0" />
+                        <Separator style="-fx-opacity: 0.4;" />
+                        
+                        <HBox spacing="24.0" alignment="CENTER_LEFT">
+                            <CheckBox fx:id="chkCarteMembre" text="Carte de membre valide" selected="true" style="-fx-font-weight: 600; -fx-font-size: 12.5px; -fx-text-fill: #0f172a; -fx-cursor: hand;" />
+                            <CheckBox fx:id="chkCarnetDime" text="Carnet de dîme attribué" selected="true" style="-fx-font-weight: 600; -fx-font-size: 12.5px; -fx-text-fill: #0f172a; -fx-cursor: hand;" />
+                            <CheckBox fx:id="chkPayeDimes" text="Paye ses dîmes régulièrement" selected="true" style="-fx-font-weight: 600; -fx-font-size: 12.5px; -fx-text-fill: #0f172a; -fx-cursor: hand;" />
+                        </HBox>
+
+                        <HBox spacing="12.0" alignment="CENTER_LEFT" style="-fx-padding: 4px 0 0 0;">
+                            <Label text="Fréquence habituelle des dîmes :" styleClass="field-label-pro" style="-fx-text-fill: #0f172a;" />
+                            <ComboBox fx:id="comboFrequenceDime" prefWidth="220.0" />
                         </HBox>
                     </VBox>
                 </GridPane>
             </VBox>
 
-            <!-- Wizard Footer Buttons -->
-            <HBox alignment="CENTER_LEFT" spacing="12.0" style="-fx-padding: 16px 24px; -fx-background-color: #f8fafc; -fx-border-color: #e0e3e5 transparent transparent transparent; -fx-border-width: 1px;">
-                <Button text="Annuler" onAction="#handleCancel" styleClass="btn-outline" />
+            <!-- Wizard Footer Buttons Toolbar -->
+            <HBox alignment="CENTER_LEFT" spacing="14.0" style="-fx-padding: 20px 28px; -fx-background-color: #f8fafc; -fx-border-color: #e2e8f0; -fx-border-width: 1px 0 0 0; -fx-background-radius: 0 0 12px 12px;">
+                <Button text="❌ Annuler" onAction="#handleCancel" styleClass="btn-outline" style="-fx-font-size: 13px;" />
                 <Region HBox.hgrow="ALWAYS" />
-                <ProgressIndicator fx:id="loadingIndicator" maxHeight="20.0" maxWidth="20.0" visible="false" />
-                <Button fx:id="prevStepBtn" text="◀ Précédent" onAction="#handlePrevStep" styleClass="btn-outline" />
-                <Button fx:id="nextStepBtn" text="Suivant ▶" onAction="#handleNextStep" styleClass="btn-primary" />
-                <Button fx:id="submitBtn" text="💾 Enregistrer le Fidèle" onAction="#handleSubmit" styleClass="btn-secondary" visible="false" managed="false" />
+                <ProgressIndicator fx:id="loadingIndicator" maxHeight="22.0" maxWidth="22.0" visible="false" />
+                <Button fx:id="prevStepBtn" text="◀ Étape Précédente" onAction="#handlePrevStep" styleClass="btn-outline" style="-fx-font-size: 13px; -fx-font-weight: bold;" />
+                <Button fx:id="nextStepBtn" text="Étape Suivante ▶" onAction="#handleNextStep" styleClass="btn-pro-primary" />
+                <Button fx:id="submitBtn" text="💾 Valider &amp; Enregistrer le Fidèle" onAction="#handleSubmit" styleClass="btn-pro-primary" visible="false" managed="false" />
             </HBox>
 
         </VBox>

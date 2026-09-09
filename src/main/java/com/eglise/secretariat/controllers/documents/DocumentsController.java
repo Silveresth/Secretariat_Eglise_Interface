@@ -414,8 +414,9 @@ public class DocumentsController extends BaseController {
         if (loadingIndicator != null) loadingIndicator.setVisible(true);
 
         if (currentDocType == DocumentType.FICHE) {
+            String filename = documentService.buildDocumentFilename(selectedFidele, "Fiche");
             documentService.getFidelePdf(selectedFidele.getId())
-                    .whenComplete((bytes, throwable) -> handlePdfDownloadResponse(bytes, throwable, "fiche_inscription_" + selectedFidele.getId()));
+                    .whenComplete((bytes, throwable) -> handlePdfDownloadResponse(bytes, throwable, filename));
         } else {
             String motif = "transfert";
             if (radioVoyage != null && radioVoyage.isSelected()) motif = "voyage";
@@ -428,8 +429,9 @@ public class DocumentsController extends BaseController {
                     comboPasteurSignataire != null ? comboPasteurSignataire.getValue() : "Pasteur AD"
             );
 
+            String filename = documentService.buildDocumentFilename(selectedFidele, "Lettre");
             documentService.generateLettreRecommandationPdf(req)
-                    .whenComplete((bytes, throwable) -> handlePdfDownloadResponse(bytes, throwable, "lettre_recommandation_" + selectedFidele.getId()));
+                    .whenComplete((bytes, throwable) -> handlePdfDownloadResponse(bytes, throwable, filename));
         }
     }
 
@@ -441,9 +443,9 @@ public class DocumentsController extends BaseController {
                 NotificationUtil.showError("Erreur d'exportation", throwable.getMessage());
             } else if (bytes != null) {
                 try {
-                    File file = documentService.savePdfToTemp(bytes, prefix);
+                    File file = documentService.savePdfToDownloads(bytes, prefix);
                     documentService.openPdf(file);
-                    NotificationUtil.showSuccess("PDF Généré", "Le document PDF officiel a été généré et ouvert dans votre lecteur.");
+                    NotificationUtil.showSuccess("PDF Généré", "Le document PDF a été enregistré dans Téléchargements (" + file.getName() + ") et ouvert.");
                 } catch (Exception e) {
                     NotificationUtil.showError("Erreur", e.getMessage());
                 }
