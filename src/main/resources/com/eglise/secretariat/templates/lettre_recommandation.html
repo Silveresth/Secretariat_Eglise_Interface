@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Lettre de Recommandation</title>
+    <style>
+        @page {
+            size: A4 portrait;
+            margin: 8mm 12mm 8mm 12mm;
+        }
+        body {
+            font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+            font-size: 10.5pt;
+            line-height: 1.5;
+            color: #000;
+        }
+        .text-center { text-align: center; }
+        .bold { font-weight: bold; }
+        .underline { text-decoration: underline; }
+
+        /* Tableau d'en-tête */
+        .header-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 2px;
+        }
+        .header-table td {
+            vertical-align: middle;
+            border: none;
+            padding: 0;
+        }
+        .logo-img {
+            width: 55px;
+            height: auto;
+        }
+        .header-title { font-size: 13.5pt; font-weight: bold; }
+        .header-sub { font-size: 9.5pt; font-weight: bold; }
+        .header-contact { font-size: 8.5pt; font-weight: bold; }
+
+        /* Double barre officielle */
+        .double-line {
+            border-top: 1px solid #000;
+            border-bottom: 3.5px solid #000;
+            height: 2px;
+            margin-top: 3px;
+            margin-bottom: 15px;
+        }
+
+        .doc-title {
+            font-size: 12.5pt;
+            font-weight: bold;
+            text-decoration: underline;
+            text-align: center;
+            margin-bottom: 16px;
+        }
+
+        .box {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border: 1px solid #000;
+            text-align: center;
+            line-height: 10px;
+            font-size: 8pt;
+            font-weight: bold;
+            margin-left: 2px;
+            margin-right: 12px;
+        }
+
+        .section-title {
+            font-size: 10.5pt;
+            font-weight: bold;
+            text-decoration: underline;
+            text-align: center;
+            margin-top: 14px;
+            margin-bottom: 8px;
+        }
+
+        .line { margin-bottom: 8px; }
+        .dots {
+            border-bottom: 1px dotted #000;
+            display: inline-block;
+            min-width: 100px;
+            padding-left: 3px;
+        }
+
+        .verset {
+            font-style: italic;
+            text-align: center;
+            margin-top: 22px;
+            margin-bottom: 22px;
+        }
+
+        .content-body {
+            text-align: justify;
+            text-justify: inter-word;
+            line-height: 1.5;
+        }
+
+        .signature-block {
+            margin-top: 20px;
+            float: right;
+            text-align: left;
+            width: 250px;
+        }
+        .signature-space {
+            height: 60px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- En-tête avec Logos -->
+<table class="header-table">
+    <tr>
+        <td style="width: 12%; text-align: left;">
+            <img src="{{LOGO_AD_SRC}}" class="logo-img" alt="Logo AD"/>
+        </td>
+        <td style="width: 76%; text-align: center;">
+            <div class="header-title">EGLISE DES ASSEMBLEES DE DIEU DU TOGO</div>
+            <div class="header-sub">TEMPLE DIEU NE CHANGE PAS</div>
+            <div class="header-contact">04 BP: 27 Lomé 04-Togo Tél: 0028 90 14 68 87</div>
+        </td>
+        <td style="width: 12%; text-align: right;">
+            <img src="{{LOGO_AD_SRC}}" class="logo-img" alt="Logo AD"/>
+        </td>
+    </tr>
+</table>
+
+<div class="double-line"></div>
+
+<div class="doc-title">LETTRE DE RECOMMANDATION</div>
+
+<div class="content-body">
+<div style="margin-bottom: 15px;">
+    <span class="bold">Objet :</span>
+    Transfert <span class="box">{{MOTIF_TRANSFERT_X}}</span>
+    Voyage <span class="box">{{MOTIF_VOYAGE_X}}</span>
+    Emploi <span class="box">{{MOTIF_EMPLOI_X}}</span>
+</div>
+
+<div class="line">
+    Je soussigné : <span class="dots" style="width: 180px;">{{PASTEUR_SIGNATAIRE}}</span> Pasteur de l'Église des Assemblées de Dieu Temple : « DIEU NE CHANGE PAS », atteste
+    que le ou la nommé(e) : <span class="bold dots" style="width: 250px;">{{NOM_COMPLET}}</span> est membre
+    actif de notre assemblée depuis : <span class="dots" style="width: 100px;">{{DATE_INTEGRATION}}</span>.
+</div>
+
+<div class="line">
+    <span class="bold">Date et lieu de naissance :</span> <span class="dots" style="width: 65%;">{{DATE_LIEU_NAISSANCE}}</span>
+</div>
+<div class="line">
+    <span class="bold">Baptisé d'eau le :</span> <span class="dots" style="width: 75%;">{{DATE_BAPTEME_EAU}}</span>
+</div>
+<div class="line">
+    <span class="bold">Baptisé du Saint-Esprit le :</span> <span class="dots" style="width: 65%;">{{DATE_BAPTEME_ESPRIT}}</span>
+</div>
+<div class="line">
+    <span class="bold">Profession :</span> <span class="dots" style="width: 80%;">{{PROFESSION}}</span>
+</div>
+
+<div class="line">
+    <span class="bold">Situation matrimoniale :</span>
+    Célibataire <span class="box">{{CELIBATAIRE_X}}</span>
+    Fiancé(e) <span class="box">{{FIANCE_X}}</span>
+    Marié(e) <span class="box">{{MARIE_X}}</span>
+    Divorcé(e) <span class="box">{{DIVORCE_X}}</span>
+    Nombre d'enfant : <span class="dots" style="min-width:30px;">{{NB_ENFANTS}}</span>
+</div>
+
+<div class="line">
+    <span class="bold">Sexe :</span>
+    Masculin <span class="box">{{SEXE_MASCULIN_X}}</span>
+    Féminin <span class="box">{{SEXE_FEMININ_X}}</span>
+</div>
+
+<div class="line">
+    <span class="bold">Sous-discipline :</span>
+    oui <span class="box"></span>
+    non <span class="box"><b>X</b></span>
+    &nbsp;&nbsp;
+    <span class="bold">Date de levée de la discipline :</span> <span class="dots" style="width: 30%;"></span>
+</div>
+
+<div class="section-title">ACTIVITÉ AU SEIN DE L'ÉGLISE LOCALE</div>
+<div class="line text-center">
+    Diacre/Diaconesse <span class="box"></span>
+    Conseil des hommes <span class="box"></span>
+    Ministère des femmes <span class="box"></span>
+</div>
+<div class="line text-center">
+    Jeunesse <span class="box"></span>
+    Interprète <span class="box"></span>
+    Groupe musical <span class="box"></span>
+    Choriste <span class="box"></span>
+</div>
+<div class="line text-center">
+    Évangéliste <span class="box"></span>
+    Moniteur <span class="box"></span>
+    Accueil <span class="box"></span>
+</div>
+
+<div class="section-title">AUTRE RENSEIGNEMENT</div>
+<div class="line">
+    <span class="bold">Motif / Église de destination :</span> <span class="dots" style="width: 70%;">{{MOTIF_ET_EGLISE_DESTINATION}}</span>
+</div>
+<div class="line" style="margin-top: 10px;">
+    En foi de quoi, nous lui délivrons la présente lettre de recommandation pour servir et valoir ce que de droit.
+</div>
+
+<div class="verset">
+    « Recevez-le en notre seigneur d'une manière digne des saints et que vous l'assistiez dans les choses dont il aurait besoin...... » Romain 16 :1-2.
+</div>
+</div>
+
+<div class="signature-block">
+    <div class="bold">
+        Fait à Lomé, le <span>{{DATE_TODAY}}</span>
+    </div>
+    <div class="bold" style="margin-top: 15px;">Le Pasteur</div>
+    <div class="signature-space"></div>
+</div>
+<div style="clear: both;"></div>
+
+</body>
+</html>

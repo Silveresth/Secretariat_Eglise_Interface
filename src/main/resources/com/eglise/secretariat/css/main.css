@@ -515,6 +515,11 @@
     -fx-alignment: CENTER;
 }
 
+.table-view .column-header.col-header-left,
+.table-view .column-header.col-header-left .label {
+    -fx-alignment: CENTER-LEFT;
+}
+
 /* Chart Legend Styling */
 .chart-legend {
     -fx-background-color: transparent;

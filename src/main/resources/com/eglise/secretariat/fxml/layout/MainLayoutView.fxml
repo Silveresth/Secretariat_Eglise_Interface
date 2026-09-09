@@ -33,7 +33,7 @@
                 <Button fx:id="navDashboardBtn" text="📊   Tableau de Bord" onAction="#handleNavDashboard" maxWidth="Infinity" styleClass="nav-item, nav-item-active" />
                 <Button fx:id="navFidelesBtn" text="👥   Annuaire des Fidèles" onAction="#handleNavFideles" maxWidth="Infinity" styleClass="nav-item" />
                 <Button fx:id="navMouvementsBtn" text="📩   Arrivées &amp; Recommandations" onAction="#handleNavMouvements" maxWidth="Infinity" styleClass="nav-item" />
-                <Button fx:id="navDocumentsBtn" text="📄   Documents &amp; Attestations" onAction="#handleNavDocuments" maxWidth="Infinity" styleClass="nav-item" />
+                <Button fx:id="navDocumentsBtn" text="📄   Fiches &amp; Attestations" onAction="#handleNavDocuments" maxWidth="Infinity" styleClass="nav-item" />
                 <Button fx:id="navSettingsBtn" text="👤   Mon Profil &amp; Paramètres" onAction="#handleNavSettings" maxWidth="Infinity" styleClass="nav-item" />
             </VBox>
 

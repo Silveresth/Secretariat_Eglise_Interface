@@ -8,112 +8,147 @@
             fx:controller="com.eglise.secretariat.controllers.profile.ProfileSettingsController"
             fitToWidth="true" style="-fx-background-color: transparent; -fx-background: transparent;">
 
-    <VBox spacing="20.0" style="-fx-padding: 24px;" alignment="TOP_CENTER">
+    <VBox spacing="32.0" style="-fx-padding: 36px 48px;" alignment="TOP_CENTER">
 
-        <VBox maxWidth="880.0" spacing="16.0">
+        <VBox maxWidth="1100.0" spacing="28.0" VBox.vgrow="ALWAYS">
 
-            <!-- Header -->
-            <VBox spacing="2.0">
-                <Label text="Paramètres du Système" styleClass="font-display-lg" style="-fx-font-size: 24px;" />
-                <Label text="Gérez vos informations de compte administrateur et les paramètres de l'église / API." styleClass="font-body-muted" />
+            <!-- Card View: Mode Lecture (Informations & En-tête étendus et professionnels) -->
+            <VBox fx:id="cardProfileView" styleClass="card" spacing="24.0" style="-fx-padding: 36px 40px; -fx-background-color: white; -fx-background-radius: 16px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.06), 12, 0, 0, 4);">
+                
+                <!-- Bannière de succès de modification avec croix de fermeture -->
+                <HBox fx:id="successBanner" alignment="CENTER_LEFT" spacing="12.0" visible="false" managed="false" style="-fx-background-color: #dcfce7; -fx-border-color: #86efac; -fx-border-radius: 8px; -fx-background-radius: 8px; -fx-padding: 12px 16px;">
+                    <Label text="✓" style="-fx-text-fill: #166534; -fx-font-size: 16px; -fx-font-weight: bold;" />
+                    <Label fx:id="successBannerLabel" text="Vos informations de profil ont été modifiées avec succès." wrapText="true" style="-fx-text-fill: #14532d; -fx-font-size: 14px; -fx-font-weight: bold;" />
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Button text="✕" onAction="#handleCloseSuccessBanner" styleClass="btn-eye-toggle" focusTraversable="false" style="-fx-text-fill: #15803d; -fx-font-size: 14px; -fx-padding: 2px 6px; -fx-cursor: hand;" />
+                </HBox>
+
+                <!-- Grand Conteneur En-tête (Profil & Sécurité) -->
+                <VBox spacing="6.0">
+                    <Label text="Profil &amp; Sécurité" styleClass="font-display-lg" style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #0f172a;" />
+                    <Label text="Consultez et gérez les informations de votre compte d'administration du secrétariat." styleClass="font-body-muted" style="-fx-font-size: 15px; -fx-text-fill: #64748b;" />
+                </VBox>
+
+                <Separator style="-fx-opacity: 0.5;" />
+
+                <!-- Avatar & Header info -->
+                <HBox spacing="24.0" alignment="CENTER_LEFT">
+                    <StackPane style="-fx-background-color: #e0e7ff; -fx-background-radius: 50px; -fx-min-width: 80px; -fx-min-height: 80px; -fx-max-width: 80px; -fx-max-height: 80px;">
+                        <Label fx:id="lblAvatarInitials" text="SG" style="-fx-font-size: 30px; -fx-font-weight: bold; -fx-text-fill: #3730a3;" />
+                    </StackPane>
+                    <VBox spacing="6.0" HBox.hgrow="ALWAYS">
+                        <Label fx:id="lblDisplayUsername" text="Secrétaire Général" style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #0f172a;" />
+                        <HBox spacing="10.0" alignment="CENTER_LEFT">
+                            <Label fx:id="lblDisplayRole" text="Administrateur" style="-fx-background-color: #dbeafe; -fx-text-fill: #1e40af; -fx-padding: 5px 14px; -fx-background-radius: 16px; -fx-font-size: 13px; -fx-font-weight: bold;" />
+                            <Label text="• Compte Actif" style="-fx-text-fill: #166534; -fx-font-size: 13px; -fx-font-weight: bold;" />
+                        </HBox>
+                    </VBox>
+                    <Button fx:id="btnEditProfile" text="Modifier le profil" onAction="#handleShowEditForm" styleClass="btn-primary" style="-fx-cursor: hand; -fx-padding: 12px 24px; -fx-font-size: 14px; -fx-font-weight: bold;" />
+                </HBox>
+
+                <Separator style="-fx-opacity: 0.5;" />
+
+                <!-- Details Grid Spacieux -->
+                <GridPane hgap="40.0" vgap="24.0">
+                    <columnConstraints>
+                        <ColumnConstraints percentWidth="50.0" />
+                        <ColumnConstraints percentWidth="50.0" />
+                    </columnConstraints>
+
+                    <VBox spacing="8.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                        <Label text="Nom d'utilisateur" style="-fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #64748b; -fx-text-transform: uppercase; -fx-letter-spacing: 0.5px;" />
+                        <Label fx:id="valUsername" text="secretaire" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #1e293b;" />
+                    </VBox>
+
+                    <VBox spacing="8.0" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                        <Label text="Rôle d'accès" style="-fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #64748b; -fx-text-transform: uppercase; -fx-letter-spacing: 0.5px;" />
+                        <Label fx:id="valRole" text="ADMINISTRATEUR" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #1e293b;" />
+                    </VBox>
+
+                    <VBox spacing="8.0" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                        <Label text="Sécurité du compte" style="-fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #64748b; -fx-text-transform: uppercase; -fx-letter-spacing: 0.5px;" />
+                        <Label text="Mot de passe protégé (••••••••)" style="-fx-font-size: 16px; -fx-text-fill: #475569;" />
+                    </VBox>
+
+                    <VBox spacing="8.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <Label text="Statut de la session" style="-fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #64748b; -fx-text-transform: uppercase; -fx-letter-spacing: 0.5px;" />
+                        <Label text="Session active &amp; authentifiée" style="-fx-font-size: 16px; -fx-text-fill: #15803d; -fx-font-weight: bold;" />
+                    </VBox>
+                </GridPane>
+
             </VBox>
 
-            <!-- TabPane -->
-            <TabPane tabClosingPolicy="UNAVAILABLE" styleClass="card" style="-fx-padding: 0;">
+            <!-- Card Edit: Formulaire de modification étendu (Masqué par défaut) -->
+            <VBox fx:id="cardProfileEdit" styleClass="card" spacing="24.0" visible="false" managed="false" style="-fx-padding: 36px 40px; -fx-background-color: white; -fx-background-radius: 16px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.06), 12, 0, 0, 4);">
                 
-                <!-- Tab 1: Mon Profil Secrétaire -->
-                <Tab text="Mon Profil Secrétaire">
-                    <VBox spacing="20.0" style="-fx-padding: 24px;">
-                        <VBox styleClass="card-accent-navy" spacing="16.0">
-                            <Label text="Informations Personnelles" styleClass="font-title-lg" style="-fx-text-fill: #00236f;" />
-                            <Separator />
+                <VBox spacing="6.0">
+                    <Label text="Modification du Profil" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #0f172a;" />
+                    <Label text="Modifiez votre nom d'utilisateur ou changez votre mot de passe ci-dessous." style="-fx-font-size: 15px; -fx-text-fill: #64748b;" />
+                </VBox>
 
-                            <GridPane hgap="16.0" vgap="14.0">
-                                <columnConstraints>
-                                    <ColumnConstraints percentWidth="50.0" />
-                                    <ColumnConstraints percentWidth="50.0" />
-                                </columnConstraints>
+                <Separator style="-fx-opacity: 0.5;" />
 
-                                <VBox spacing="4.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
-                                    <Label text="Nom Complet" styleClass="font-label-sm" />
-                                    <TextField fx:id="txtNomComplet" styleClass="text-input" />
-                                </VBox>
-
-                                <VBox spacing="4.0" GridPane.columnIndex="1" GridPane.rowIndex="0">
-                                    <Label text="Adresse Email" styleClass="font-label-sm" />
-                                    <TextField fx:id="txtEmail" styleClass="text-input" />
-                                </VBox>
-
-                                <VBox spacing="4.0" GridPane.columnSpan="2" GridPane.rowIndex="1" style="-fx-padding: 8px 0 0 0;">
-                                    <Label text="Mot de passe actuel *" styleClass="font-label-sm" />
-                                    <PasswordField fx:id="txtMotDePasseActuel" promptText="••••••••" styleClass="text-input" maxWidth="350.0" text="secretaire123" />
-                                </VBox>
-
-                                <VBox spacing="4.0" GridPane.columnSpan="2" GridPane.rowIndex="2" style="-fx-padding: 8px 0 0 0;">
-                                    <Label text="Nouveau Mot de Passe (optionnel)" styleClass="font-label-sm" />
-                                    <PasswordField fx:id="txtNouveauMotDePasse" promptText="••••••••" styleClass="text-input" maxWidth="350.0" />
-                                </VBox>
-                            </GridPane>
-
-                            <HBox alignment="CENTER_RIGHT" spacing="12.0" style="-fx-padding: 8px 0 0 0;">
-                                <ProgressIndicator fx:id="loadingIndicator" maxHeight="20.0" maxWidth="20.0" visible="false" />
-                                <Button fx:id="btnSaveProfil" text="💾 Enregistrer les modifications" onAction="#handleSaveProfil" styleClass="btn-primary" />
-                            </HBox>
-                        </VBox>
+                <VBox spacing="20.0">
+                    
+                    <!-- Username -->
+                    <VBox spacing="6.0">
+                        <Label text="Nom d'utilisateur *" styleClass="font-label-sm" style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #334155;" />
+                        <TextField fx:id="txtNomComplet" promptText="Entrez votre nom d'utilisateur" styleClass="text-input" style="-fx-padding: 12px 14px; -fx-font-size: 14px;" />
+                        <Label fx:id="errUsername" text="" visible="false" managed="false" style="-fx-text-fill: #dc2626; -fx-font-size: 12px; -fx-font-weight: bold; -fx-padding: 2px 0 0 2px;" />
                     </VBox>
-                </Tab>
 
-                <!-- Tab 2: Informations de l'Église -->
-                <Tab text="Profil de l'Église &amp; API">
-                    <VBox spacing="20.0" style="-fx-padding: 24px;">
-                        <VBox styleClass="card-accent-gold" spacing="16.0">
-                            <Label text="Organisation &amp; Connexion Backend" styleClass="font-title-lg" style="-fx-text-fill: #904d00;" />
-                            <Separator />
+                    <!-- Passwords in 2-column grid for spacious visual balance -->
+                    <GridPane hgap="24.0" vgap="20.0">
+                        <columnConstraints>
+                            <ColumnConstraints percentWidth="50.0" />
+                            <ColumnConstraints percentWidth="50.0" />
+                        </columnConstraints>
 
-                            <GridPane hgap="16.0" vgap="14.0">
-                                <columnConstraints>
-                                    <ColumnConstraints percentWidth="50.0" />
-                                    <ColumnConstraints percentWidth="50.0" />
-                                </columnConstraints>
-
-                                <VBox spacing="4.0" GridPane.columnSpan="2" GridPane.rowIndex="0">
-                                    <Label text="Nom Officiel de l'Église" styleClass="font-label-sm" />
-                                    <TextField fx:id="txtNomEglise" styleClass="text-input" />
-                                </VBox>
-
-                                <VBox spacing="4.0" GridPane.columnSpan="2" GridPane.rowIndex="1">
-                                    <Label text="Adresse Physique" styleClass="font-label-sm" />
-                                    <TextField fx:id="txtAdresseEglise" styleClass="text-input" />
-                                </VBox>
-
-                                <VBox spacing="4.0" GridPane.columnIndex="0" GridPane.rowIndex="2">
-                                    <Label text="Téléphone Secrétariat" styleClass="font-label-sm" />
-                                    <TextField fx:id="txtTelephoneEglise" styleClass="text-input" />
-                                </VBox>
-
-                                <VBox spacing="4.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                                    <Label text="Numéro d'Enregistrement Légal" styleClass="font-label-sm" />
-                                    <TextField fx:id="txtNumeroEnregistrement" styleClass="text-input" />
-                                </VBox>
-
-                                <VBox spacing="4.0" GridPane.columnSpan="2" GridPane.rowIndex="3" style="-fx-padding: 8px 0 0 0;">
-                                    <Label text="URL du Serveur Backend (Spring Boot API)" styleClass="font-label-sm" />
-                                    <TextField fx:id="txtApiBaseUrl" promptText="http://localhost:8080" styleClass="text-input" />
-                                    <Label text="Point d'accès aux endpoints REST (ex: http://localhost:8080 ou https://api.eglise.org)" styleClass="font-body-muted" style="-fx-font-size: 11px;" />
-                                </VBox>
-                            </GridPane>
-
-                            <HBox alignment="CENTER_RIGHT" spacing="12.0" style="-fx-padding: 8px 0 0 0;">
-                                <Button fx:id="btnSaveEglise" text="☁️ Mettre à jour les informations" onAction="#handleSaveEglise" styleClass="btn-secondary" />
-                            </HBox>
+                        <!-- Mot de passe actuel -->
+                        <VBox spacing="6.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                            <Label text="Mot de passe actuel *" styleClass="font-label-sm" style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #334155;" />
+                            <StackPane alignment="CENTER_RIGHT">
+                                <PasswordField fx:id="txtMotDePasseActuel" promptText="Mot de passe actuel requis" styleClass="text-input" style="-fx-padding: 12px 42px 12px 14px; -fx-font-size: 14px;" />
+                                <TextField fx:id="txtMotDePasseActuelVisible" promptText="Mot de passe actuel requis" styleClass="text-input" style="-fx-padding: 12px 42px 12px 14px; -fx-font-size: 14px;" visible="false" managed="false" />
+                                <Button fx:id="toggleCurrentPasswordBtn" text="👁" onAction="#handleToggleCurrentPassword" styleClass="btn-eye-toggle" focusTraversable="false">
+                                    <StackPane.margin>
+                                        <Insets right="8.0" />
+                                    </StackPane.margin>
+                                </Button>
+                            </StackPane>
+                            <Label fx:id="errCurrentPassword" text="" visible="false" managed="false" style="-fx-text-fill: #dc2626; -fx-font-size: 12px; -fx-font-weight: bold; -fx-padding: 2px 0 0 2px;" />
                         </VBox>
-                    </VBox>
-                </Tab>
 
-            </TabPane>
+                        <!-- Nouveau mot de passe -->
+                        <VBox spacing="6.0" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                            <Label text="Nouveau Mot de Passe (optionnel)" styleClass="font-label-sm" style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #334155;" />
+                            <StackPane alignment="CENTER_RIGHT">
+                                <PasswordField fx:id="txtNouveauMotDePasse" promptText="Laisser vide si inchangé" styleClass="text-input" style="-fx-padding: 12px 42px 12px 14px; -fx-font-size: 14px;" />
+                                <TextField fx:id="txtNouveauMotDePasseVisible" promptText="Laisser vide si inchangé" styleClass="text-input" style="-fx-padding: 12px 42px 12px 14px; -fx-font-size: 14px;" visible="false" managed="false" />
+                                <Button fx:id="toggleNewPasswordBtn" text="👁" onAction="#handleToggleNewPassword" styleClass="btn-eye-toggle" focusTraversable="false">
+                                    <StackPane.margin>
+                                        <Insets right="8.0" />
+                                    </StackPane.margin>
+                                </Button>
+                            </StackPane>
+                            <Label fx:id="errNewPassword" text="" visible="false" managed="false" style="-fx-text-fill: #dc2626; -fx-font-size: 12px; -fx-font-weight: bold; -fx-padding: 2px 0 0 2px;" />
+                        </VBox>
+                    </GridPane>
+
+                </VBox>
+
+                <HBox alignment="CENTER_RIGHT" spacing="16.0" style="-fx-padding: 16px 0 0 0;">
+                    <Button fx:id="btnCancelEdit" text="Annuler" onAction="#handleCancelEdit" styleClass="btn-secondary" style="-fx-cursor: hand; -fx-padding: 12px 24px; -fx-font-size: 14px;" />
+                    <ProgressIndicator fx:id="loadingIndicator" maxHeight="28.0" maxWidth="28.0" visible="false" />
+                    <Button fx:id="btnSaveProfil" text="Enregistrer les modifications" onAction="#handleSaveProfil" styleClass="btn-primary" style="-fx-cursor: hand; -fx-padding: 12px 28px; -fx-font-weight: bold; -fx-font-size: 14px;" />
+                </HBox>
+
+            </VBox>
 
         </VBox>
 
     </VBox>
 
 </ScrollPane>
+
+
