@@ -233,12 +233,7 @@ Chaque package dispose de son propre `README.md` avec la description détaillée
 
 ---
 
-## 📜 Licence
 
-Projet développé pour l'**Église des Assemblées de Dieu du Togo — Temple « DIEU NE CHANGE PAS »**.  
-Adidogomé, Lomé — Tous droits réservés.
-
----
 
 <p align="center">
   <sub>Développé avec ☕ Java & 💙 JavaFX</sub>

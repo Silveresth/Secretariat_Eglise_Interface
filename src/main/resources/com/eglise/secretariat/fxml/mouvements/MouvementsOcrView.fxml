@@ -68,9 +68,9 @@
                     <Separator style="-fx-opacity: 0.5;" />
 
                     <!-- Document Image Container with Light Gray Background -->
-                    <StackPane fx:id="previewContainer" VBox.vgrow="ALWAYS" minHeight="380.0" style="-fx-background-color: #f1f5f9; -fx-background-radius: 10px; -fx-border-color: #cbd5e1; -fx-border-radius: 10px; -fx-border-width: 1px;" alignment="CENTER">
+                    <StackPane fx:id="previewContainer" VBox.vgrow="ALWAYS" minHeight="380.0" prefHeight="420.0" maxHeight="440.0" style="-fx-background-color: #f1f5f9; -fx-background-radius: 10px; -fx-border-color: #cbd5e1; -fx-border-radius: 10px; -fx-border-width: 1px;" alignment="CENTER">
                         <Label fx:id="previewPlaceholderLabel" text="Déposez une lettre scannée ou un document PDF pour lancer la numérisation OCR." styleClass="font-body-muted" wrapText="true" style="-fx-text-fill: #64748b; -fx-alignment: center; -fx-text-alignment: center; -fx-padding: 24px; -fx-font-size: 13px;" />
-                        <ImageView fx:id="documentPreviewImage" fitWidth="350.0" fitHeight="450.0" preserveRatio="true" visible="false" />
+                        <ImageView fx:id="documentPreviewImage" fitWidth="330.0" fitHeight="410.0" preserveRatio="true" visible="false" />
 
                         <!-- Laser Scan Overlay -->
                         <StackPane fx:id="scanOverlayPane" visible="false" mouseTransparent="true" alignment="TOP_CENTER" style="-fx-padding: 14px;">

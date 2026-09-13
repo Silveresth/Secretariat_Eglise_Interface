@@ -106,9 +106,32 @@ public class MouvementsOcrController extends BaseController {
         if (chkCarteMembre != null) chkCarteMembre.setSelected(true);
         if (chkCarnetDime != null) chkCarnetDime.setSelected(true);
 
-        // Dynamically bind centered laser scan line width to preview container
+        if (scanningIndicator != null) {
+            scanningIndicator.managedProperty().bind(scanningIndicator.visibleProperty());
+        }
+        if (saveIndicator != null) {
+            saveIndicator.managedProperty().bind(saveIndicator.visibleProperty());
+        }
+
+        // Prevent animated laser scan line from driving parent layout size (prevents automatic zooming/stretching)
         if (scanLaserLine != null && previewContainer != null) {
+            scanLaserLine.setManaged(false);
             scanLaserLine.widthProperty().bind(previewContainer.widthProperty().subtract(30));
+        }
+
+        if (scanOverlayPane != null && previewContainer != null) {
+            scanOverlayPane.setManaged(false);
+            scanOverlayPane.prefWidthProperty().bind(previewContainer.widthProperty());
+            scanOverlayPane.prefHeightProperty().bind(previewContainer.heightProperty());
+        }
+
+        if (previewContainer != null) {
+            Rectangle clip = new Rectangle();
+            clip.widthProperty().bind(previewContainer.widthProperty());
+            clip.heightProperty().bind(previewContainer.heightProperty());
+            clip.setArcWidth(10);
+            clip.setArcHeight(10);
+            previewContainer.setClip(clip);
         }
 
         setupDragAndDrop();
@@ -170,7 +193,8 @@ public class MouvementsOcrController extends BaseController {
             if (scanAnimation != null) {
                 scanAnimation.stop();
             }
-            double targetHeight = previewContainer.getHeight() > 100 ? previewContainer.getHeight() - 40 : 360;
+            double containerH = previewContainer.getHeight();
+            double targetHeight = containerH > 100 ? Math.min(containerH - 40, 400) : 360;
             scanAnimation = new TranslateTransition(Duration.millis(1400), scanLaserLine);
             scanAnimation.setFromY(20);
             scanAnimation.setToY(targetHeight);
@@ -210,22 +234,139 @@ public class MouvementsOcrController extends BaseController {
                         stopLaserScanAnimation();
                         if (scanningIndicator != null) scanningIndicator.setVisible(false);
 
-                        String textToParse = null;
-                        if (ocrResult != null && ocrResult.getRawText() != null && !ocrResult.getRawText().isBlank()) {
-                            textToParse = ocrResult.getRawText();
-                        } else if (localPdfText != null && !localPdfText.isBlank()) {
-                            textToParse = localPdfText;
+                        boolean backendExtracted = false;
+
+                        if (ocrResult != null) {
+                            if (ocrResult.getNomFidele() != null && !ocrResult.getNomFidele().isBlank()) {
+                                String[] parts = ocrResult.getNomFidele().trim().split("\\s+");
+                                if (parts.length >= 2) {
+                                    if (txtNomArrivant != null) txtNomArrivant.setText(parts[0].toUpperCase());
+                                    StringBuilder sb = new StringBuilder();
+                                    for (int i = 1; i < parts.length; i++) {
+                                        if (i > 1) sb.append(" ");
+                                        sb.append(parts[i]);
+                                    }
+                                    if (txtPrenomsArrivant != null) txtPrenomsArrivant.setText(sb.toString());
+                                } else if (parts.length == 1) {
+                                    if (txtNomArrivant != null) txtNomArrivant.setText(parts[0].toUpperCase());
+                                }
+                                backendExtracted = true;
+                            }
+                            if (ocrResult.getPasteurSignataire() != null && !ocrResult.getPasteurSignataire().isBlank() && txtPasteurSignataire != null) {
+                                txtPasteurSignataire.setText(ocrResult.getPasteurSignataire());
+                                backendExtracted = true;
+                            }
+                            if (ocrResult.getEgliseOrigine() != null && !ocrResult.getEgliseOrigine().isBlank() && txtEgliseOrigine != null) {
+                                txtEgliseOrigine.setText(ocrResult.getEgliseOrigine());
+                                backendExtracted = true;
+                            }
+                            if (ocrResult.getDatePresentation() != null && dpDatePresentation != null) {
+                                dpDatePresentation.setValue(ocrResult.getDatePresentation());
+                            }
+                            if (ocrResult.getDateNaissance() != null && dpDateNaissance != null) {
+                                dpDateNaissance.setValue(ocrResult.getDateNaissance());
+                            }
+                            if (ocrResult.getLieuNaissance() != null && !ocrResult.getLieuNaissance().isBlank() && txtLieuNaissance != null) {
+                                txtLieuNaissance.setText(ocrResult.getLieuNaissance());
+                            }
+                            if (ocrResult.getProfession() != null && !ocrResult.getProfession().isBlank() && txtProfession != null) {
+                                txtProfession.setText(ocrResult.getProfession());
+                            }
+                            if (ocrResult.getMotif() != null && !ocrResult.getMotif().isBlank() && txtMotifDepart != null) {
+                                txtMotifDepart.setText(ocrResult.getMotif());
+                            }
+                            if (ocrResult.getSexe() != null && comboSexe != null) {
+                                try {
+                                    comboSexe.setValue(Sexe.valueOf(ocrResult.getSexe().toUpperCase()));
+                                } catch (Exception ignored) {}
+                            }
+                            if (ocrResult.getStatutMatrimonial() != null && comboStatutMatrimonial != null) {
+                                try {
+                                    comboStatutMatrimonial.setValue(Statut.valueOf(ocrResult.getStatutMatrimonial().toUpperCase()));
+                                } catch (Exception ignored) {}
+                            }
+                            if (ocrResult.getDateBapteme() != null && dpDateBapteme != null) {
+                                dpDateBapteme.setValue(ocrResult.getDateBapteme());
+                            }
+                            if (ocrResult.getDateBaptemeEsprit() != null && dpDateBaptemeEsprit != null) {
+                                dpDateBaptemeEsprit.setValue(ocrResult.getDateBaptemeEsprit());
+                            }
                         }
 
-                        if (textToParse != null && !textToParse.isBlank()) {
-                            NotificationUtil.showSuccess("OCR Terminé", "Informations extraites de la lettre !");
-                            if (txtRawOcr != null) txtRawOcr.setText(textToParse);
-                            parseFullLetterText(textToParse);
+                        // Si le backend n'a pas extrait de champs, utiliser le parser local en fallback
+                        if (!backendExtracted && localPdfText != null && !localPdfText.isBlank()) {
+                            parseFullLetterText(localPdfText);
+                        }
+
+                        if (backendExtracted || (localPdfText != null && !localPdfText.isBlank())) {
+                            NotificationUtil.showSuccess("OCR Terminé", "Informations extraites avec succès !");
                         } else {
                             NotificationUtil.showWarning("OCR", "Le document n'a pas pu être lu automatiquement.");
                         }
+
+                        String cleanSummary = buildCleanSummaryText(
+                                txtNomArrivant != null ? txtNomArrivant.getText() : null,
+                                txtPrenomsArrivant != null ? txtPrenomsArrivant.getText() : null,
+                                txtPasteurSignataire != null ? txtPasteurSignataire.getText() : null,
+                                txtEgliseOrigine != null ? txtEgliseOrigine.getText() : null,
+                                dpDatePresentation != null ? dpDatePresentation.getValue() : null,
+                                dpDateNaissance != null ? dpDateNaissance.getValue() : null,
+                                txtLieuNaissance != null ? txtLieuNaissance.getText() : null,
+                                txtProfession != null ? txtProfession.getText() : null,
+                                txtMotifDepart != null ? txtMotifDepart.getText() : null
+                        );
+                        if (txtRawOcr != null) txtRawOcr.setText(cleanSummary);
                     });
                 });
+    }
+
+    private String buildCleanSummaryText(String nom, String prenoms, String pasteur, String eglise, LocalDate datePresentation, LocalDate dateNaiss, String lieuNaiss, String prof, String motif) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("📋 === SYNTHÈSE DES INFORMATIONS EXTRAITES ===\n\n");
+
+        boolean any = false;
+        if (nom != null && !nom.isBlank()) {
+            sb.append("• Nom du fidèle     : ").append(nom.toUpperCase()).append("\n");
+            any = true;
+        }
+        if (prenoms != null && !prenoms.isBlank()) {
+            sb.append("• Prénom(s) du fidèle: ").append(prenoms).append("\n");
+            any = true;
+        }
+        if (eglise != null && !eglise.isBlank()) {
+            sb.append("• Église / Temple   : ").append(eglise).append("\n");
+            any = true;
+        }
+        if (pasteur != null && !pasteur.isBlank()) {
+            sb.append("• Pasteur Signataire: ").append(pasteur).append("\n");
+            any = true;
+        }
+        if (datePresentation != null) {
+            sb.append("• Date recommandation: ").append(datePresentation.format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy"))).append("\n");
+            any = true;
+        }
+        if (dateNaiss != null || (lieuNaiss != null && !lieuNaiss.isBlank())) {
+            sb.append("• Date & Lieu naiss.: ");
+            if (dateNaiss != null) sb.append(dateNaiss.format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+            if (lieuNaiss != null && !lieuNaiss.isBlank()) sb.append(" à ").append(lieuNaiss);
+            sb.append("\n");
+            any = true;
+        }
+        if (prof != null && !prof.isBlank()) {
+            sb.append("• Profession        : ").append(prof).append("\n");
+            any = true;
+        }
+        if (motif != null && !motif.isBlank()) {
+            sb.append("• Motif             : ").append(motif).append("\n");
+            any = true;
+        }
+
+        if (!any) {
+            sb.append("Aucune information pré-détectée sur ce document.\n");
+        }
+
+        sb.append("\n=======================================================");
+        return sb.toString();
     }
 
     private void renderFilePreview(File file) {
@@ -271,8 +412,8 @@ public class MouvementsOcrController extends BaseController {
         // 1. Nom & Prénoms : Smart Extraction
         extractNomPrenomMultiStrategy(clean);
 
-        // 2. Date et lieu de naissance : "12/05/1995 à Lomé"
-        Pattern birthPat = Pattern.compile("(?i)(?:date\\s*et\\s*lieu\\s*de\\s*naissance|n[ée]\\s*\\(e\\)\\s*le|naissance)\\s*:?\\s*(\\d{1,2}[\\/\\-\\.]\\d{1,2}[\\/\\-\\.]\\d{4})(?:\\s*[àa]\\s*([^\\r\\n]+))?");
+        // 2. Date et lieu de naissance : "12/05/1995 à Lomé" ou "Date & Lieu naiss.: 12/05/2005 à Lomé"
+        Pattern birthPat = Pattern.compile("(?i)(?:date\\s*(?:et|&)?\\s*(?:lieu\\s*de\\s*)?naissance|date\\s*&\\s*lieu\\s*naiss\\.|n[ée\uFFFD]\\s*\\(e\\)\\s*le|naissance|naiss\\.)\\s*:?\\s*(\\d{1,2}[\\/\\-\\.]\\d{1,2}[\\/\\-\\.]\\d{4})(?:\\s*(?:[àa\uFFFD]|in)\\s*([^\\r\\n•]+))?");
         Matcher birthMat = birthPat.matcher(clean);
         if (birthMat.find()) {
             LocalDate birthDate = parseDateString(birthMat.group(1));
@@ -280,6 +421,7 @@ public class MouvementsOcrController extends BaseController {
             if (birthMat.groupCount() >= 2 && birthMat.group(2) != null && txtLieuNaissance != null) {
                 String lieu = birthMat.group(2).trim();
                 if (lieu.contains("\n")) lieu = lieu.split("\n")[0].trim();
+                if (lieu.contains("•")) lieu = lieu.split("•")[0].trim();
                 lieu = lieu.replaceAll("^[.:_\\s]+|[.:_\\s]+$", "");
                 txtLieuNaissance.setText(lieu);
             }
@@ -310,11 +452,11 @@ public class MouvementsOcrController extends BaseController {
             txtProfession.setText(prof);
         }
 
-        // 6. Sexe : "Sexe : Masculin X Féminin"
+        // 6. Sexe : "Masculin Féminin Sexe : X" ou "Féminin [X]"
         if (comboSexe != null) {
-            if (clean.contains("Sexe : Féminin X") || clean.contains("Féminin [X]") || clean.contains("Féminin X") || clean.contains("Sexe: Féminin")) {
+            if (clean.contains("Féminin Sexe : X") || clean.contains("Féminin [X]") || clean.contains("Féminin X") || clean.contains("Sexe: Féminin") || (clean.contains("Féminin") && clean.contains("Sexe : X"))) {
                 comboSexe.setValue(Sexe.FEMININ);
-            } else if (clean.contains("Sexe : Masculin X") || clean.contains("Masculin [X]") || clean.contains("Masculin X") || clean.contains("Sexe: Masculin")) {
+            } else if (clean.contains("Masculin Sexe : X") || clean.contains("Masculin [X]") || clean.contains("Masculin X") || clean.contains("Sexe: Masculin")) {
                 comboSexe.setValue(Sexe.MASCULIN);
             }
         }
@@ -323,7 +465,7 @@ public class MouvementsOcrController extends BaseController {
         if (comboStatutMatrimonial != null) {
             if (clean.contains("Marié(e) X") || clean.contains("Marié(e) [X]") || clean.contains("Marié [X]") || clean.contains("Marié(e) : X")) {
                 comboStatutMatrimonial.setValue(Statut.MARIE);
-            } else if (clean.contains("Célibataire X") || clean.contains("Célibataire [X]")) {
+            } else if (clean.contains("Célibataire X") || clean.contains("Célibataire [X]") || (clean.contains("Célibataire") && clean.contains("Situation matrimoniale : X"))) {
                 comboStatutMatrimonial.setValue(Statut.CELIBATAIRE);
             } else if (clean.contains("Divorcé(e) X") || clean.contains("Divorcé(e) [X]")) {
                 comboStatutMatrimonial.setValue(Statut.DIVORCE);
@@ -338,27 +480,39 @@ public class MouvementsOcrController extends BaseController {
             } catch (Exception ignored) {}
         }
 
-        // 8. Pasteur Signataire : "Je soussigné : Pasteur AD Pasteur de l'Église..."
-        Pattern pastPat = Pattern.compile("(?i)(?:je\\s*soussign[ée]\\s*:?)\\s*([A-Za-zÀ-ÿ\\-\\s.]+?)(?=\\s*(?:pasteur\\s*de|pasteur|atteste|de\\s*l'|\\r|\\n|$))");
+        // 8. Pasteur Signataire : "Pasteur AD"
+        Pattern pastPat = Pattern.compile("(?i)Pasteur\\s+([A-Z]{2,}(?:\\s+[A-Z]{2,})*|[A-ZÀ-ÿ][a-zà-ÿ]+(?:\\s+[A-ZÀ-ÿ][a-zà-ÿ]+)*)");
         Matcher pastMat = pastPat.matcher(clean);
-        if (pastMat.find() && txtPasteurSignataire != null) {
-            String p = pastMat.group(1).trim().replaceAll("^[.:_\\s]+|[.:_\\s]+$", "");
-            if (!p.isBlank() && !p.equalsIgnoreCase("le")) {
-                txtPasteurSignataire.setText(p);
+        String lastPasteur = null;
+        while (pastMat.find()) {
+            String p = pastMat.group(1).trim();
+            if (!p.equalsIgnoreCase("de") && !p.equalsIgnoreCase("du") && !p.equalsIgnoreCase("des") && !p.equalsIgnoreCase("le")) {
+                lastPasteur = "Pasteur " + p;
             }
         }
+        if (lastPasteur != null && txtPasteurSignataire != null) {
+            txtPasteurSignataire.setText(lastPasteur);
+        }
 
-        // 9. Église de Provenance / Destination : "Église : Temple de Kpalimé" ou "Temple : « DIEU NE CHANGE PAS »"
-        Pattern eglPat1 = Pattern.compile("(?i)[ÉE]glise\\s*:\\s*([^\\r\\n\\-]+)");
+        // 9. Église de Provenance / Destination : "Église : Temple de Kpalimé"
+        Pattern eglPat1 = Pattern.compile("(?i)É?glise\\s*:\\s*([^\\r\\n\\-•]+)");
         Matcher eglMat1 = eglPat1.matcher(clean);
         if (eglMat1.find() && txtEgliseOrigine != null) {
-            String egl = eglMat1.group(1).trim().replaceAll("^[.:_\\s«»\"]+|[.:_\\s«»\"]+$", "");
+            String egl = eglMat1.group(1).trim();
+            if (egl.contains("\n")) egl = egl.split("\n")[0].trim();
+            if (egl.contains("•")) egl = egl.split("•")[0].trim();
+            egl = egl.replaceAll("(?i)\\s+(•|pasteur|signataire|atteste|date|fait|objet|motif|nomm[ée]).*$", "");
+            egl = egl.replaceAll("^[.:_\\s«»\"]+|[.:_\\s«»\"]+$", "").trim();
             if (!egl.isBlank()) txtEgliseOrigine.setText(egl);
         } else {
-            Pattern eglPat2 = Pattern.compile("(?i)Temple\\s*:\\s*[«\"]?([^»\"\\r\\n]+(?:\\s+[^»\"\\r\\n]+)*)[»\"]?");
+            Pattern eglPat2 = Pattern.compile("(?i)Temple\\s*:\\s*[«\"]?([^»\"\\r\\n•]+)[»\"]?");
             Matcher eglMat2 = eglPat2.matcher(clean);
             if (eglMat2.find() && txtEgliseOrigine != null) {
-                String egl = eglMat2.group(1).trim().replaceAll("^[.:_\\s«»\"]+|[.:_\\s«»\"]+$", "");
+                String egl = eglMat2.group(1).trim();
+                if (egl.contains("\n")) egl = egl.split("\n")[0].trim();
+                if (egl.contains("•")) egl = egl.split("•")[0].trim();
+                egl = egl.replaceAll("(?i)\\s+(•|pasteur|signataire|atteste|date|fait|objet|motif|nomm[ée]).*$", "");
+                egl = egl.replaceAll("^[.:_\\s«»\"]+|[.:_\\s«»\"]+$", "").trim();
                 if (!egl.isBlank()) txtEgliseOrigine.setText(egl);
             }
         }
@@ -398,8 +552,18 @@ public class MouvementsOcrController extends BaseController {
             String line = lines[i].trim();
             String lower = line.toLowerCase();
 
-            // Case A : Line contains trigger keywords
-            if (lower.contains("nomm") || lower.contains("atteste que") || lower.contains("porteur") || lower.contains("nom et") || lower.contains("nom :")) {
+            if (lower.contains("nomm") || lower.contains("atteste") || lower.contains("membre") || lower.contains("porteur")) {
+                Pattern p1 = Pattern.compile("([A-ZÀ-ÿ]{2,}\\s+[A-ZÀ-ÿ][a-zà-ÿ]+(?:\\s+[A-ZÀ-ÿ][a-zà-ÿ]+)*)");
+                Matcher m1 = p1.matcher(line);
+                while (m1.find()) {
+                    String cand = m1.group(1).trim();
+                    if (isValidCandidateName(cand)) {
+                        fullName = cand;
+                        break;
+                    }
+                }
+                if (fullName != null) break;
+
                 int colonIdx = line.lastIndexOf(':');
                 if (colonIdx != -1) {
                     String afterColon = line.substring(colonIdx + 1).trim();
@@ -411,45 +575,22 @@ public class MouvementsOcrController extends BaseController {
                         fullName = afterColon;
                         break;
                     }
-
-                    // If after colon is empty, check the NEXT line
-                    if (afterColon.isBlank() && i + 1 < lines.length) {
-                        String nextLine = lines[i + 1].trim();
-                        nextLine = nextLine.replaceAll("(?i)\\s+est\\b.*$", "");
-                        nextLine = nextLine.replaceAll("(?i)\\s+(?:de\\s+notre|depuis|date\\s*de).*$", "");
-                        nextLine = nextLine.replaceAll("^[.:_\\s«»\"'…\\-]+|[.:_\\s«»\"'…\\-]+$", "").trim();
-                        if (isValidCandidateName(nextLine)) {
-                            fullName = nextLine;
-                            break;
-                        }
-                    }
-                } else {
-                    String stripped = line.replaceAll("(?i)^.*?(?:nomm[a-z()\\/\\s]*|atteste\\s+que(?:\\s+le\\s+ou\\s+la)?|porteur\\s*du\\s*pr[ée]sent|porteur)\\s*", "");
-                    stripped = stripped.replaceAll("(?i)\\s+est\\b.*$", "");
-                    stripped = stripped.replaceAll("(?i)\\s+(?:de\\s+notre|depuis|date\\s*de).*$", "");
-                    stripped = stripped.replaceAll("^[.:_\\s«»\"'…\\-]+|[.:_\\s«»\"'…\\-]+$", "").trim();
-                    if (isValidCandidateName(stripped)) {
-                        fullName = stripped;
-                        break;
-                    }
                 }
             }
         }
 
-        // Case B : Regex search for UPPERCASE word followed by Capitalized words
         if (fullName == null) {
-            Pattern pUpper = Pattern.compile("([A-ZÀ-ÿ\\-]{2,}\\s+[A-ZÀ-ÿ][a-zà-ÿ\\-]+(?:\\s+[A-ZÀ-ÿ][a-zà-ÿ\\-]+)*)");
+            Pattern pUpper = Pattern.compile("([A-ZÀ-ÿ]{2,}\\s+[A-ZÀ-ÿ][a-zà-ÿ]+(?:\\s+[A-ZÀ-ÿ][a-zà-ÿ]+)*)");
             Matcher mUpper = pUpper.matcher(text);
             while (mUpper.find()) {
                 String cand = mUpper.group(1).trim();
-                if (isValidCandidateName(cand) && !cand.contains("ASSEMBLEES") && !cand.contains("DIEU") && !cand.contains("LETTRE") && !cand.contains("RECOMMANDATION")) {
+                if (isValidCandidateName(cand)) {
                     fullName = cand;
                     break;
                 }
             }
         }
 
-        // Apply detected name into text fields
         if (fullName != null) {
             String[] parts = fullName.split("\\s+");
             if (parts.length >= 2) {
